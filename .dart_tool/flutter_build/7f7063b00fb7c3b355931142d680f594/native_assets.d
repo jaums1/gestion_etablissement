@@ -1,1 +1,0 @@
- H:\\Projet\\ecole\\.dart_tool\\flutter_build\\7f7063b00fb7c3b355931142d680f594\\native_assets.yaml: 
