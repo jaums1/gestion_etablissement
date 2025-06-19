@@ -1,17 +1,25 @@
+import 'package:ecole/Classe/Screen/Widget/Create/classe_create_principal.dart';
+import 'package:ecole/Classe/Screen/Widget/search_classe_dialog.dart';
 import 'package:ecole/Configs/cammon/widgets/combo/combo.dart';
 import 'package:ecole/Configs/cammon/widgets/formulaire/form.dart';
 import 'package:ecole/Configs/cammon/widgets/texts/text_widget.dart';
+import 'package:ecole/Configs/routes/route.dart';
+import 'package:ecole/Configs/utils/Popup/showdialogue.dart';
 import 'package:ecole/Inscription/Controller/inscription_function.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../../Classe/Controller/classe_controller.dart';
 import '../../../../../Classe/Controller/classe_filtre.dart';
+import '../../../../../Classe/Screen/Widget/Create/widget/info_classe.dart';
+import '../../../../../Classe/Screen/Widget/show_classe_dialog.dart';
 import '../../../../../Configs/cammon/widgets/containers/rounded_container_create.dart';
+import '../../../../../Configs/utils/Constant/enums.dart';
 import '../../../../../Configs/utils/Constant/sizes.dart';
 import '../../../../../Configs/utils/Device/devices_utility.dart';
 import '../../../../../Scolarite/Controller/scolarite_controller.dart';
 import '../../../../Controller/inscription_controller.dart';
+import 'recherche_add_inscription.dart';
 
 class InfoClasseInscription extends StatelessWidget {
   final combo = TCombo();
@@ -43,16 +51,28 @@ class InfoClasseInscription extends StatelessWidget {
             return Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              ///// combo clase
+              ///// RECHERHE ET AJOUT
               SizedBox(
-                child:  combo.comboTextChevale(
-                    // valeur: controller.dataNiveauModel.niveau,     
-                  hintText: "Classe",
-                  sections: controllerClasse.DataTableClasse.map((e)=>e.LibClasse).toList(),
-                 label: "Classe",
-                onChanged:(value)=>TClasseFiltre().H_SelectClasseNiveauSerieParID(param: value)
-                 ),
+                child: RechercheAddInscription(
+                  onPressedAdd:()=>TShowdialogue.showWidget(widgets: ShowClasseDialog(argument: TraitementAction.nouveau.name,)) ,
+                  onPressedRecherche: ()=>showSearchClasseDialog(),
+                ),
               ),
+               
+
+
+
+
+              ///// combo clase
+              // SizedBox(
+              //   child:  combo.comboTextChevale(
+              //       // valeur: controller.dataNiveauModel.niveau,     
+              //     hintText: "Classe",
+              //     sections: controllerClasse.DataTableClasse.map((e)=>e.LibClasse).toList(),
+              //    label: "Classe",
+              //   onChanged:(value)=>TClasseFiltre().H_SelectClasseNiveauSerieParID(param: value)
+              //    ),
+              // ),
               SizedBox(height: TSizes.md,),
           
               // INFORMATION SUR FRAIS INSCRIPTION, FRAIS ANNEXE ET SCOLARITE

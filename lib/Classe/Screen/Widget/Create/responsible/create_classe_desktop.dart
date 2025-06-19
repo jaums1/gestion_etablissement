@@ -8,11 +8,12 @@ import '../widget/info_classe.dart';
 
 
 class TCreateClasseDesktopScreen extends StatelessWidget {
-  const TCreateClasseDesktopScreen({super.key});
-
+  const TCreateClasseDesktopScreen({super.key,this.show = true});
+ final bool? show;
   @override
   Widget build(BuildContext context) {
       final argument = Get.arguments;
+      final routeName = Get.parameters["route"]??TRoutes.classe;
     return  SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(TSizes.defaultSpace),
@@ -23,7 +24,7 @@ class TCreateClasseDesktopScreen extends StatelessWidget {
             ///// HEADER
               TRetourHeader(titre:
               argument== TraitementAction.nouveau.name?
-               "Enregistrement de la Classe":"Modification de la Classe",route: TRoutes.classe,),
+               "Enregistrement de la Classe":"Modification de la Classe",route:routeName,),
               SizedBox(height: TSizes.spaceBtwItems,),
             SizedBox(
               width: 350,

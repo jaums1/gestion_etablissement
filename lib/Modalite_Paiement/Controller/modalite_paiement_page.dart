@@ -28,7 +28,7 @@ class TModalitePaiementPage with TPageData{
   } 
  controllerMP.variable.Montant.value.text="0";
  
-  TShowdialogue().showWidget( titre: "Enregistrer un Modalité",widgets:TCreateModalitePaiementScree(
+  TShowdialogue.showWidget( titre: "Enregistrer un Modalité",widgets:TCreateModalitePaiementScree(
     argument:TraitementAction.nouveau.name ,controller: controller,
   ) );
  
@@ -38,7 +38,7 @@ class TModalitePaiementPage with TPageData{
   H_PageModifier({int? id,String? param}) {
     // controller.H_RecupeModif(id: id);
     controllerMP.H_RecupeModif(param: param);
-   TShowdialogue().showWidget( titre: "Modifier un Modalité",widgets:TCreateModalitePaiementScree(
+   TShowdialogue.showWidget( titre: "Modifier un Modalité",widgets:TCreateModalitePaiementScree(
     argument:TraitementAction.modifier.name ,
   ) );
 

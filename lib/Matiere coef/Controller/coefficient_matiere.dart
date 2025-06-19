@@ -25,7 +25,7 @@ class TValidationCoefficient with TCoefficient {
     ////VERIFIER SI LA MATIERE A DEJA ETE SELECTIONNER
   if (index !=-1) {TLoader.warningSnack(title: param.toString().toUpperCase(),message: "La matière a déjà été sélectionner");
     return;}
-    TShowdialogue().showWidget( titre: "Matiere",
+    TShowdialogue.showWidget( titre: "Matiere",
     widgets: TEditerCoefficient( titre:param,),
     onPressedValide: ()=> H_Enregistrer(param: param)
     );
@@ -55,7 +55,7 @@ class TModificationCoefficient with TCoefficient{
     int index = controller.dataTableMatiere.indexWhere((e)=>e.matiere!.toLowerCase()==param.toString().toLowerCase());
        controller.coefficient.text=  controller.dataTableMatiere[index].coef.toString();
 
-    TShowdialogue().showWidget( titre: "Matiere",
+    TShowdialogue.showWidget( titre: "Matiere",
     widgets: TEditerCoefficient( titre:param,),
     onPressedValide: ()=> H_Modifier(param: param)
     );

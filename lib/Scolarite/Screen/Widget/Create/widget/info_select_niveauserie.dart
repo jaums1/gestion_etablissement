@@ -108,7 +108,7 @@ class TSelectionNiveauSerie extends StatelessWidget {
            SizedBox(
              // width: 5,
            child: TButton.elevatedButton(text:"Ajouter Niveau étude",onPressed:
-            ()=>TShowdialogue().showWidget( titre: "Sélectionner les niveaux de série",
+            ()=>TShowdialogue.showWidget( titre: "Sélectionner les niveaux de série",
             widgets:TDialogueNiveauSerie(onPressed: functions.H_OnchangeNiveauSerie,) )
   
            

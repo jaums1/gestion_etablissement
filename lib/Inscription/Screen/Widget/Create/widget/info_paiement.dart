@@ -64,7 +64,7 @@ class InfoPaiementInscription extends StatelessWidget {
                     textEditingController: controller.variable.MontantVersement,
                     ),
                      Divider(thickness: 0.5,height: 0.1),
-
+                         
                      //// AFFICHIER TOTAL
                      InfoAffichageInscription(titre: "Total",montant: "$TotalScolarite",color: Colors.redAccent,top: 20,
                      bottom: 0,),

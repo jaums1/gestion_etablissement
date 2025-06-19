@@ -10,6 +10,7 @@ import 'classe_controller.dart';
 class TClasseValidation with TControllerData {
   final controller = Get.find<TClasseController>();
   final filitre = TClasseFiltre();
+  
   @override
   H_Enregistrer() async{
     if (filitre.H_Verification(param: controller.variable.LibClasse.text)!=-1) {
@@ -26,7 +27,7 @@ class TClasseValidation with TControllerData {
 
 @override
   H_Modifier() async {
-     final result = await controller.H_Modifier();
+    final result = await controller.H_Modifier();
     if(result){ 
     TLoader.successSnack(title: "MODIFIER",message: "Vos données ont été modifiée");
     Get.offNamed(TRoutes.classe);
@@ -42,4 +43,26 @@ class TClasseValidation with TControllerData {
     );
     
   }
+
+  H_EnregistrerShowDialog() async{
+     if (filitre.H_Verification(param: controller.variable.LibClasse.text)!=-1) {
+      TLoader.errorSnack(title: "CLASSE",message: "La classe ${controller.variable.LibClasse.text} existe déjà");
+      return;
+    }
+    final result =await controller.H_Enregistrer();
+   if(result){ 
+    TLoader.successSnack(title: "ENREGISTRER",message: "Vos données ont été enregistrée");
+    Get.back();
+    }
+  }
+
+  H_ModifierShowDialog()async{
+    final result = await controller.H_Modifier();
+    if(result){ 
+    TLoader.successSnack(title: "MODIFIER",message: "Vos données ont été modifiée");
+    Get.back();
+    }
+  }
+
+
 }

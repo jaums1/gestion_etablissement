@@ -12,8 +12,9 @@ import '../../../../Controller/classe_validation.dart';
 
 
 class TClasseInformation extends StatelessWidget {
-  const TClasseInformation({super.key, required this.argument});
+  const TClasseInformation({super.key, required this.argument, this.show=false});
  final String argument;
+ final        bool? show;
   @override
   Widget build(BuildContext context) {
     final formulaire = TFormulaire();
@@ -50,9 +51,12 @@ class TClasseInformation extends StatelessWidget {
               child: SizedBox(
                 width: MediaQuery.of(context).size.width,
                 child: ElevatedButton(onPressed: (){
-                  print(controller.variable.Capacite);
                final keyClasse  =  controller.variable.keyClasse.currentState!.validate();
                 if (keyClasse) {
+               /////// VALIDATION NORMAL
+              if(show==false)  argument == TraitementAction.nouveau.name?validate.H_Enregistrer():validate.H_Modifier();
+               ////// VALIDATION PASSANT PAR SHOW DIALOG
+              if(show==true)  argument == TraitementAction.nouveau.name?validate.H_EnregistrerShowDialog():validate.H_ModifierShowDialog();
                 argument == TraitementAction.nouveau.name?validate.H_Enregistrer():validate.H_Modifier();
                }}, child: Text("Valider"))
                )

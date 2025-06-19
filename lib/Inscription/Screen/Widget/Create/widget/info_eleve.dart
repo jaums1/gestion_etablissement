@@ -1,5 +1,4 @@
 import 'package:ecole/Configs/cammon/widgets/Data_table/table_action_icon_button.dart';
-import 'package:ecole/Configs/cammon/widgets/buttons/button.dart';
 import 'package:ecole/Configs/cammon/widgets/texts/texte_riche.dart';
 import 'package:ecole/Configs/routes/route.dart';
 import 'package:ecole/Configs/utils/Constant/colors.dart';
@@ -7,21 +6,22 @@ import 'package:ecole/Configs/utils/Device/devices_utility.dart';
 import 'package:ecole/Eleves/Controller/eleve_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
 import '../../../../../Configs/cammon/widgets/containers/rounded_container_create.dart';
 import '../../../../../Configs/utils/Constant/enums.dart';
 import '../../../../../Configs/utils/Constant/sizes.dart';
 import '../../../../../Eleves/Screen/Widget/Create/create_eleve_principal.dart';
 import '../../../../../Eleves/Screen/Widget/search_eleve_dialog.dart';
 import '../../../../Controller/inscription_controller.dart';
+import 'recherche_add_inscription.dart';
 
 class InfoEleveInscription extends StatelessWidget {
-  final controllerEleve = Get.find<TEleveController>();
-   InfoEleveInscription({super.key, this.controller});
+  
+  const InfoEleveInscription({super.key, this.controller});
   final TInscriptionController? controller;
   @override
   Widget build(BuildContext context) {
-    
+    final controllerEleve = Get.find<TEleveController>();
+    print(controllerEleve.DataEleve.Nom);
     return TRoundedContainerCreate(
       child: Obx(
         (){
@@ -34,7 +34,11 @@ class InfoEleveInscription extends StatelessWidget {
             children: [
               ///// RECHERHE ET AJOUT
               SizedBox(
-                child: RechercheAddInscription(),
+                child: RechercheAddInscription(
+                  onPressedAdd:()=> Get.to(TCreateElevePrincipaleScreen(argument: TRoutes.registerinscription,),
+                                      arguments: TraitementAction.nouveau.name) ,
+                  onPressedRecherche: ()=>showSearchEleveDialog(),
+                ),
               ),
              DataEleve.IDEtudiant==null?SizedBox():  SizedBox(
                 height: TSizes.spaceBtwSections,
@@ -130,24 +134,4 @@ final TEleveController controller;
   }
 }
 
-class RechercheAddInscription extends StatelessWidget {
-  const RechercheAddInscription({
-    super.key,
-  });
 
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        TButton.iconButton(text: "Recherche",icon: Iconsax.search_normal,size: TSizes.md,
-        onPressed: ()=>showSearchEleveDialog() ),
-        SizedBox(width: TSizes.sm,),
-        TButton.iconButton(text: "Ajouter",icon: Iconsax.add,size: TSizes.md,
-        onPressed: ()=> Get.to(TCreateElevePrincipaleScreen(argument: TRoutes.registerinscription,),
-        arguments: TraitementAction.nouveau.name
-        )),
-      ],
-    );
-  }
-}

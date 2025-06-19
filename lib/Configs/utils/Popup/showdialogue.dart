@@ -48,7 +48,7 @@ contentPadding: EdgeInsets.symmetric(horizontal:20,vertical: 15),
 
 
 
-void showWidget({String? titre,Widget? widgets,VoidCallback? onPressedValide,VoidCallback? onPressedFerme}){
+static showWidget({String? titre,Widget? widgets,VoidCallback? onPressedValide,VoidCallback? onPressedFerme}){
 
 Get.dialog(
   barrierDismissible: false,

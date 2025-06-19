@@ -22,7 +22,7 @@ class TEnregistrerMatiere with TValidattionMatiere {
   void H_OnSelect({String? param}) {
     controller.matiere = TextEditingController();
    
-    TShowdialogue().showWidget( titre: "Matiere",
+    TShowdialogue.showWidget( titre: "Matiere",
     widgets: TEditerMatiere(),
     onPressedValide: ()=> H_Enregistrer()
     );
@@ -55,7 +55,7 @@ class TModifierMatiere with TValidattionMatiere{
        controller.matiereModel=  controller.dataTableMatiere[index];
        controller.matiere.text=  controller.dataTableMatiere[index].matiere.toString();
 
-    TShowdialogue().showWidget( titre: "Matiere",
+    TShowdialogue.showWidget( titre: "Matiere",
     widgets: TEditerMatiere( ),
     onPressedValide: ()=> H_Modifier(param: param),
     );
