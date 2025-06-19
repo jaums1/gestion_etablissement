@@ -1,0 +1,32 @@
+{
+    "primaire": {
+        "type": "Matières de Primaire",
+        "matiere":[
+        "Français",
+        "Mathématiques",
+        "Éveil scientifique",
+        "Éducation civique et morale",
+        "Lecture",
+        "Écriture",
+        "Dessin",
+        "Chant et musique",
+        "Éducation physique et sportive"
+    ]},
+    "secondaire_premier_cycle":{ 
+       "type": "Matière de Premier et Second cycle",
+       "matiere": [
+        "Français",
+        "Mathématiques",
+        "Histoire-Géographie",
+        "Sciences de la Vie et de la Terre (SVT)",
+        "Physique-Chimie",
+        "Anglais",
+        "Espagnol",
+        "Allemand",
+        "Éducation civique",
+        "Technologie",
+        "Éducation artistique",
+        "Éducation physique et sportive",
+        "Philosophie"
+    ]}
+}

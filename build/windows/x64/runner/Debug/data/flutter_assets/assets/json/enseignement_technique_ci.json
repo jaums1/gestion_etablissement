@@ -1,0 +1,42 @@
+{
+    "secondaire_technique": {
+        "cycle": "Enseignement secondaire technique",
+        "niveaux": {
+            "4e T": "Quatrième technique",
+            "3e T": "Troisième technique",
+            "2nde T": [
+                "2nde TI",
+                "2nde F1",
+                "2nde F2",
+                "2nde G1",
+                "2nde G2"
+            ],
+            "1ère T": [
+                "1ère TI",
+                "1ère F1",
+                "1ère F2",
+                "1ère G1",
+                "1ère G2"
+            ],
+            "Tle T": [
+                "Tle TI",
+                "Tle F1",
+                "Tle F2",
+                "Tle G1",
+                "Tle G2"
+            ]
+        }
+    },
+    "post_bac_technique": {
+        "cycle": "Enseignement supérieur technique",
+        "niveaux": [
+            "BTS 1",
+            "BTS 2",
+            "Licence Pro 1",
+            "Licence Pro 2",
+            "Licence Pro 3",
+            "Master Pro 1",
+            "Master Pro 2"
+        ]
+    }
+}
