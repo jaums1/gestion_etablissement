@@ -28,7 +28,7 @@ class TScolariteFiltre with TFiltre {
    final index = controller.DataTableScolarite.indexWhere((e)=> e.IDNiveauSerie==id );
     if(index==-1) return;
     controller.DataScolarite.value = controller.DataTableFiltreScolarite[index];
-    controller.edite.value =false;
+  
  }
 
   H_RecupeVersement({String? param}){

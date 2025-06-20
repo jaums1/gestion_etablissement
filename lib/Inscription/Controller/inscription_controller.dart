@@ -47,8 +47,8 @@ class TInscriptionController extends GetxController with TControllerData {
       variable.Statut.text           = DataInscription.Statut.toString();
     } else {
       
-      DataInscription.IDClasse        = controllerClasse.DataClasse.IDClasse;
-      DataInscription.IDEtablissement = controllerClasse.DataClasse.IDEtablissement;
+      DataInscription.IDClasse        = controllerClasse.DataClasse.value.IDClasse;
+      DataInscription.IDEtablissement = controllerClasse.DataClasse.value.IDEtablissement;
       DataInscription.MontantVersement= int.tryParse(variable.MontantVersement.text) ?? 0;
       DataInscription.DroitInscription= int.tryParse(variable.DroitInscription.text) ?? 0;
       DataInscription.FraisAnnexe     = int.tryParse(variable.FraisAnnexe.text) ?? 0;

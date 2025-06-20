@@ -57,7 +57,7 @@ class TClasseInformation extends StatelessWidget {
               if(show==false)  argument == TraitementAction.nouveau.name?validate.H_Enregistrer():validate.H_Modifier();
                ////// VALIDATION PASSANT PAR SHOW DIALOG
               if(show==true)  argument == TraitementAction.nouveau.name?validate.H_EnregistrerShowDialog():validate.H_ModifierShowDialog();
-                argument == TraitementAction.nouveau.name?validate.H_Enregistrer():validate.H_Modifier();
+                // argument == TraitementAction.nouveau.name?validate.H_Enregistrer():validate.H_Modifier();
                }}, child: Text("Valider"))
                )
                ) ,

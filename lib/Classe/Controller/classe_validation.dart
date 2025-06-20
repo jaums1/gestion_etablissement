@@ -51,16 +51,18 @@ class TClasseValidation with TControllerData {
     }
     final result =await controller.H_Enregistrer();
    if(result){ 
-    TLoader.successSnack(title: "ENREGISTRER",message: "Vos données ont été enregistrée");
     Get.back();
+    TLoader.successSnack(title: "ENREGISTRER",message: "Vos données ont été enregistrée");
+    
     }
   }
 
   H_ModifierShowDialog()async{
     final result = await controller.H_Modifier();
     if(result){ 
+      Get.back();
     TLoader.successSnack(title: "MODIFIER",message: "Vos données ont été modifiée");
-    Get.back();
+    
     }
   }
 

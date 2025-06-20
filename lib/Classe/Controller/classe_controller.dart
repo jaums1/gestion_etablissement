@@ -16,13 +16,13 @@ import 'classe_variable.dart';
 class TClasseController extends GetxController with TControllerData{
    static TClasseController get instance => Get.find();
   ///// DECLARATION DE VARIABLE 
-  var action ="";
-  final variable =TClasseVariable();
-  final isLoading=false.obs;
-  var edite=false.obs;
-  var DataClasse = TClasseModel();
-  var DataTableClasse =<TClasseModel>[].obs;
-  var DataTableFiltreClasse =<TClasseModel>[].obs;
+  final action = "".obs;
+  final variable = TClasseVariable();
+  final isLoading = false.obs;
+  final edite = false.obs;
+  final DataClasse = TClasseModel().obs;
+  final DataTableClasse = RxList<TClasseModel>([]);
+  final DataTableFiltreClasse = RxList<TClasseModel>([]);
  
   final repositorycontroller    = Get.put(TClasseRepository());
   final controllerNiveauSerie    = Get.find<TNiveauSerieController>();
@@ -32,16 +32,18 @@ class TClasseController extends GetxController with TControllerData{
   //////TRAITEMENT
   HLitClasse({String? param="AFFICHIER"}){
     if (param=="AFFICHIER") {
-variable.IDEtablissement.text   = DataClasse.IDEtablissement.toString();
-variable.LibClasse.text         = DataClasse.LibClasse.toString();
-variable.IDNiveauSerie.text     = DataClasse.IDNiveauSerie.toString();
-variable.Capacite.text          = DataClasse.Capacite.toString();
+variable.IDEtablissement.text   = DataClasse.value.IDEtablissement.toString();
+variable.LibClasse.text         = DataClasse.value.LibClasse.toString();
+variable.IDNiveauSerie.text     = DataClasse.value.IDNiveauSerie.toString();
+variable.Capacite.text          = DataClasse.value.Capacite.toString();
     }else{
         
- DataClasse.IDEtablissement   = int.tryParse(variable.IDEtablissement.text) ?? 0;
-DataClasse.LibClasse          = variable.LibClasse.text;
-DataClasse.IDNiveauSerie      = int.parse(variable.IDNiveauSerie.text);
-DataClasse.Capacite           = int.parse(variable.Capacite.text);
+ DataClasse.update((val) {
+   val?.IDEtablissement = int.tryParse(variable.IDEtablissement.text) ?? 0;
+   val?.LibClasse = variable.LibClasse.text;
+   val?.IDNiveauSerie = int.parse(variable.IDNiveauSerie.text);
+   val?.Capacite = int.parse(variable.Capacite.text);
+ });
     }
   }
  
@@ -61,12 +63,15 @@ DataClasse.Capacite           = int.parse(variable.Capacite.text);
   TAnimationLoaderWidget(text: "enregistrement encours...",color: Colors.white,
   animation: TImages.docerAnimation,width: 250,));
   ///// ENVOIE DES DONNEES
-   final result = await  repositorycontroller.H_EnregistrerData(DataClasse);
+   final result = await  repositorycontroller.H_EnregistrerData(DataClasse.value);
   ///// FERMER LOADING
+   H_RecupeData();
+   if(DataTableClasse.isNotEmpty)  DataClasse.value = DataTableClasse[DataTableClasse.length-1];
   Get.back();
   ///// TRAITEMENT RESULTAT
   if(result==false){TLoader.errorSnack(title: "Erreur",message: "Veuillez vérifier votre connexions");
    return false;}
+  
     return true;
    } catch (e) {
      TLoader.errorSnack(title: "Erreur",message: "Veuillez vérifier votre connexion source erreur $e");
@@ -86,7 +91,7 @@ DataClasse.Capacite           = int.parse(variable.Capacite.text);
   ///// ENVOIE DES DONNEES
      final result = await  repositorycontroller.H_SupprimerData(id);
   ///// FERMER LOADING
-  Get.back();
+  // Get.back();
   ///// TRAITEMENT RESULTAT   
       if(result==false){TLoader.errorSnack(title: "Erreur",message: "Veuillez vérifier votre connexion");
    return false;}
@@ -113,7 +118,7 @@ DataClasse.Capacite           = int.parse(variable.Capacite.text);
 
   ///// ENVOIE DES DONNEES
      
-    final result=  await  repositorycontroller.H_ModifierData(DataClasse);
+    final result=  await  repositorycontroller.H_ModifierData(DataClasse.value);
     ///// FERMER LOADING
   Get.back();
   ///// TRAITEMENT RESULTAT 
@@ -156,7 +161,8 @@ DataClasse.Capacite           = int.parse(variable.Capacite.text);
 
   @override
   void H_Initialise() {
-    DataClasse=TClasseModel();
+    DataClasse.value = TClasseModel();
+    HLitClasse();
   }
   
 

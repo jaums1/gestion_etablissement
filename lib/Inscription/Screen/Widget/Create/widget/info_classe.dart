@@ -1,20 +1,18 @@
-import 'package:ecole/Classe/Screen/Widget/Create/classe_create_principal.dart';
+import 'package:ecole/Classe/Controller/classe_filtre.dart';
+import 'package:ecole/Classe/Controller/classe_page.dart';
 import 'package:ecole/Classe/Screen/Widget/search_classe_dialog.dart';
 import 'package:ecole/Configs/cammon/widgets/combo/combo.dart';
 import 'package:ecole/Configs/cammon/widgets/formulaire/form.dart';
 import 'package:ecole/Configs/cammon/widgets/texts/text_widget.dart';
-import 'package:ecole/Configs/routes/route.dart';
-import 'package:ecole/Configs/utils/Popup/showdialogue.dart';
+import 'package:ecole/Configs/utils/Constant/colors.dart';
+import 'package:ecole/Configs/utils/Emplacement_Texte/text_affiche_enligne.dart';
+import 'package:ecole/Configs/utils/Emplacement_Texte/texte_cheval.dart';
 import 'package:ecole/Inscription/Controller/inscription_function.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../../Classe/Controller/classe_controller.dart';
-import '../../../../../Classe/Controller/classe_filtre.dart';
-import '../../../../../Classe/Screen/Widget/Create/widget/info_classe.dart';
-import '../../../../../Classe/Screen/Widget/show_classe_dialog.dart';
 import '../../../../../Configs/cammon/widgets/containers/rounded_container_create.dart';
-import '../../../../../Configs/utils/Constant/enums.dart';
 import '../../../../../Configs/utils/Constant/sizes.dart';
 import '../../../../../Configs/utils/Device/devices_utility.dart';
 import '../../../../../Scolarite/Controller/scolarite_controller.dart';
@@ -35,7 +33,7 @@ class InfoClasseInscription extends StatelessWidget {
         width: TDeviceUtility.isDesktopScreen(context)? 500:200,
         child: Obx(
           (){ 
-            
+            final DataClasse = controllerClasse.DataClasse.value;
             if (controllerClasse.edite.value==false) {
                controller.variable.FraisAnnexe.text = controllerScolarite.DataScolarite.value.FraisAnnexe.toString();
             controller.variable.DroitInscription.text = controllerScolarite.DataScolarite.value.FraisInscription.toString();
@@ -49,47 +47,53 @@ class InfoClasseInscription extends StatelessWidget {
            
           
             return Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ///// RECHERHE ET AJOUT
               SizedBox(
                 child: RechercheAddInscription(
-                  onPressedAdd:()=>TShowdialogue.showWidget(widgets: ShowClasseDialog(argument: TraitementAction.nouveau.name,)) ,
+                  onPressedAdd:()=>TClassePage().H_PageShowDialogNouveau() ,
                   onPressedRecherche: ()=>showSearchClasseDialog(),
                 ),
               ),
-               
+          DataClasse.LibClasse==null ?SizedBox():      SizedBox(height: TSizes.md,),
+               ////// CLASSE ET NIVEAU
+        DataClasse.LibClasse==null ?SizedBox() :  TAffichageTextEnChevel(
+                label: "Classe",
+                color: TColors.primary,
+                valeur: DataClasse.LibClasse,
+                onPressed:()=> TClassePage().H_PageShowDialogModifier(id: DataClasse.IDClasse) ,
+               ),
+              SizedBox(height: TSizes.xs,),
+            //// NIVEAU SCOLAIRE
+          DataClasse.LibClasse==null ?SizedBox() :  TAffichageTextEnLigne(
+              label: "Niveau d'etude",
+              valeur: DataClasse.DataNiveauSerie?.niveauSerie??"",
+            ),
 
+          SizedBox(height: TSizes.md,),
 
-
-
-              ///// combo clase
-              // SizedBox(
-              //   child:  combo.comboTextChevale(
-              //       // valeur: controller.dataNiveauModel.niveau,     
-              //     hintText: "Classe",
-              //     sections: controllerClasse.DataTableClasse.map((e)=>e.LibClasse).toList(),
-              //    label: "Classe",
-              //   onChanged:(value)=>TClasseFiltre().H_SelectClasseNiveauSerieParID(param: value)
-              //    ),
-              // ),
-              SizedBox(height: TSizes.md,),
-          
               // INFORMATION SUR FRAIS INSCRIPTION, FRAIS ANNEXE ET SCOLARITE
-              SizedBox(
+       DataClasse.LibClasse==null ?SizedBox(): SizedBox(
                 child: Column(
                   children: [
-                    /////// CLASSE
+                    /////// FRAIS INSCRIPTION
                     InfoScolariteInscription(formulaire: formulaire,text: "Frais Inscription",
                     textEditingController: controller.variable.DroitInscription,controller: controllerClasse,
                     onChanged:TInscriptionFunction().H_onChangeFraisInscription ,checkboxvalue: controller.isFraisInscription.value,
                     ),
+
                     Divider(thickness: 1,height: 0.1),
+
+                    /////// FRAIS INSCRIPTION
                     InfoScolariteInscription(formulaire: formulaire,text: "Frais Annexe",
                     textEditingController: controller.variable.FraisAnnexe,controller: controllerClasse,
                     onChanged:TInscriptionFunction().H_onChangeFraisAnnexe ,checkboxvalue: controller.isFraisAnnexe.value,
                     ),
+
                     Divider(thickness: 1,height: 0.1,),
+
+                    /////// SCOLARITE
                     InfoScolariteInscription(formulaire: formulaire,text: "Scolarite",checkbox: false,
                     textEditingController: controller.variable.Scolarite,controller: controllerClasse,
                     ),

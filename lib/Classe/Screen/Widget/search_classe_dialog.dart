@@ -37,6 +37,7 @@ class SearchClasseDialog extends StatelessWidget {
               height: 300,
               width: 400,
               child: ListView.builder(
+                reverse: true,
                 itemCount: filteredClasses.length,
                 itemBuilder: (context, index) {
                   final classe = filteredClasses[index];
@@ -45,10 +46,11 @@ class SearchClasseDialog extends StatelessWidget {
                       child: Icon(Icons.class_),
                     ),
                     title: Text(classe.LibClasse.toString()),
-                    subtitle: Text('Code: ${classe.DataNiveauSerie!.niveauSerie.toString()}'),
+                    subtitle: Text('Niveau étude: ${classe.DataNiveauSerie!.niveauSerie.toString()}'),
                     onTap: () {
-                      classeController.DataClasse = classe;
-                      classeController.edite.value = !classeController.edite.value;
+                      TClasseFiltre().H_SelectClasseNiveauSerieParID(param: classe.LibClasse);
+                      classeController.DataClasse.value = classe;
+                      
                       Get.back(result: classe);
                     },
                   );

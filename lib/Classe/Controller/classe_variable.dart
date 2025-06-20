@@ -24,7 +24,11 @@ class TClasseVariable {
 
  final GlobalKey<FormState> keyClasse=GlobalKey<FormState>();
  
-  
+ H_Initialise(){
+    LibClasse.clear();
+    Capacite.clear();
+    NiveauSerie.value.clear();
+  }
 
 
 }

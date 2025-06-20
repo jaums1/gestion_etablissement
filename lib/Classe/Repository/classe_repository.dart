@@ -10,10 +10,11 @@ class TClasseRepository extends GetxController with TRepositoryData<TClasseModel
 
  ///// ENREGISTRER
  @override
-  Future<bool?> H_EnregistrerData(TClasseModel Model) async{
+   H_EnregistrerData(TClasseModel Model) async{
     try {
-    await THttpHelper.post(TEndpoint.linkClasse, Model.toMap());
-      return true;
+  final result=  await THttpHelper.post(TEndpoint.linkClasse, Model.toMap());
+  
+      return result;
     } catch (e) {
       return false;
     }

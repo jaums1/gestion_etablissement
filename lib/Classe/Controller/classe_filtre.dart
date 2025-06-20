@@ -23,7 +23,7 @@ class TClasseFiltre with TFiltre {
   H_FiltreElementParID({int? id}) {
     final index = controller.DataTableClasse.indexWhere((e)=> e.IDClasse==id );
     if(index==-1) return;
-    controller.DataClasse = controller.DataTableFiltreClasse[index];
+    controller.DataClasse.value = controller.DataTableFiltreClasse[index];
   }
 
   @override
@@ -35,8 +35,9 @@ class TClasseFiltre with TFiltre {
 
    void H_SelectClasseNiveauSerieParID({String? param}){
    final index = controller.DataTableClasse.indexWhere((e)=> e.LibClasse==param);
-   controller.DataClasse=controller.DataTableClasse[index];
-   filtreScolarite.H_RecupeParNiveauSerie(id: controller.DataClasse.IDNiveauSerie);
+    if(index==-1) return;
+   controller.DataClasse.value = controller.DataTableClasse[index];
+   filtreScolarite.H_RecupeParNiveauSerie(id: controller.DataClasse.value.IDNiveauSerie);
    controller.edite.value=true;
    controller.edite.value=false;
  }

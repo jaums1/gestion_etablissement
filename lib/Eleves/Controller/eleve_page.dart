@@ -3,6 +3,8 @@ import 'package:ecole/Configs/utils/Constant/enums.dart';
 import 'package:get/get.dart';
 
 import '../../Configs/utils/Implements/page_data.dart';
+import '../../Configs/utils/Popup/showdialogue.dart';
+import '../Screen/Widget/show_eleve_dialog.dart';
 import 'eleve_controller.dart';
 
 class TElevePage with TPageData{
@@ -27,4 +29,22 @@ class TElevePage with TPageData{
   
    Get.offNamed(TRoutes.registereleve,arguments: TraitementAction.detail.name);
   }
+
+ @override
+  H_PageShowDialogNouveau() {
+    controller.variable.H_Initialise();
+    TShowdialogue.showWidget(
+      titre: "Enregistrement",
+      widgets: ShowEleveDialog(argument: TraitementAction.nouveau.name,));
+  }
+
+  @override
+  H_PageShowDialogModifier({int? id}) {
+    controller.H_RecupeModif(id: id);
+    TShowdialogue.showWidget(
+      titre: "Modification",
+      widgets: ShowEleveDialog(argument: TraitementAction.modifier.name,));
+  }
+
+
 }

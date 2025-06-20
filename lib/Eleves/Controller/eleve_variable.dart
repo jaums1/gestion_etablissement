@@ -41,6 +41,24 @@ class TVariableEleve {
  final GlobalKey<FormState> keyInfoStatut=GlobalKey<FormState>();
  final keyInfoParent=GlobalKey<FormState>();
   
-
+ void H_Initialise(){
+ matricule.clear();
+   nom.clear();
+   prenoms.clear();
+   sexe.clear();
+   dateNaissance.value.clear();
+   dateNaissanceValide.value.clear();
+   lieuNaissance.clear();
+   phoneEleve1.clear();
+   phoneEleve2.clear();
+   statut.clear();
+   regime.clear();
+   adresse.clear();
+  nomParent.clear();
+   prenomsParent.clear();
+   phoneParent1.clear();
+   phoneParent2.clear();
+  
+ }
 
 }

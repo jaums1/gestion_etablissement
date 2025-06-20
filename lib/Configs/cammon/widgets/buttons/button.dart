@@ -48,7 +48,7 @@ Color? color=Colors.white,Color? backgroundColor= TColors.primary
 
 static Widget ValidateButton({required String titre,VoidCallback? onPressed}){
   return  Align(
-              alignment:TDeviceUtility.isDesktopScreen(Get.context!)? Alignment.centerRight: Alignment.center,
+              alignment:TDeviceUtility.isDesktopScreen(Get.context!)? Alignment.centerLeft: Alignment.center,
               child:SizedBox(
                 width:TDeviceUtility.isDesktopScreen(Get.context!)?
                  MediaQuery.of(Get.context!).size.width*0.1:  MediaQuery.of(Get.context!).size.width*0.4,

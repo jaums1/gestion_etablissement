@@ -9,19 +9,19 @@ import 'package:get/get.dart';
 import '../../../../../Configs/cammon/widgets/containers/rounded_container_create.dart';
 import '../../../../../Configs/utils/Constant/enums.dart';
 import '../../../../../Configs/utils/Constant/sizes.dart';
+import '../../../../../Eleves/Controller/eleve_page.dart';
 import '../../../../../Eleves/Screen/Widget/Create/create_eleve_principal.dart';
 import '../../../../../Eleves/Screen/Widget/search_eleve_dialog.dart';
 import '../../../../Controller/inscription_controller.dart';
 import 'recherche_add_inscription.dart';
 
 class InfoEleveInscription extends StatelessWidget {
-  
-  const InfoEleveInscription({super.key, this.controller});
+    final controllerEleve = Get.find<TEleveController>();
+   InfoEleveInscription({super.key, this.controller});
   final TInscriptionController? controller;
   @override
   Widget build(BuildContext context) {
-    final controllerEleve = Get.find<TEleveController>();
-    print(controllerEleve.DataEleve.Nom);
+  
     return TRoundedContainerCreate(
       child: Obx(
         (){
@@ -35,8 +35,7 @@ class InfoEleveInscription extends StatelessWidget {
               ///// RECHERHE ET AJOUT
               SizedBox(
                 child: RechercheAddInscription(
-                  onPressedAdd:()=> Get.to(TCreateElevePrincipaleScreen(argument: TRoutes.registerinscription,),
-                                      arguments: TraitementAction.nouveau.name) ,
+                  onPressedAdd:()=> TElevePage().H_PageShowDialogNouveau() ,
                   onPressedRecherche: ()=>showSearchEleveDialog(),
                 ),
               ),
