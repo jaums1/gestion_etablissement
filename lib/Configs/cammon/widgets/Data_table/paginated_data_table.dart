@@ -71,7 +71,7 @@ class TPaginatedDataTable extends StatelessWidget {
            borderRadius: BorderRadius.only(topLeft: Radius.circular(TSizes.borderRaduisMd),
            topRight: Radius.circular(TSizes.borderRaduisMd),)),
            empty:TAnimationLoaderWidget(
-            text: "AUCUNE DONNEE",
+            text: 'Aucune donnée disponible',
             animation: TImages.videAnimation,height: 250,width: 250,),
            sortArrowBuilder: (ascending, sorted) {
               if (sorted) {

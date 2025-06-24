@@ -32,7 +32,7 @@ DateTime? dateFin;
 ///// RECUPERATION
   factory TEtablissementModel.fromMap(Map<String,dynamic> data){
     return TEtablissementModel(
-      idEtablissement: data.containsKey("IDEtablissement")?data["IDEtablissement"]:"",
+      idEtablissement: data.containsKey("IDEtablissement")?data["IDEtablissement"]:0,
       nom: data.containsKey("NomEtablissement")?data["NomEtablissement"]:"",
       codeEtatblissement: data.containsKey("CodeEtatblissement")?data["CodeEtatblissement"]:"",
       typeEtablissement: data.containsKey("TypeEtablissement")?data["TypeEtablissement"]:"",

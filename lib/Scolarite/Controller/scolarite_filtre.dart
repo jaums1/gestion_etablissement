@@ -25,6 +25,7 @@ class TScolariteFiltre with TFiltre {
   }
 
  H_RecupeParNiveauSerie({int? id}){
+   controller.H_Initialise();
    final index = controller.DataTableScolarite.indexWhere((e)=> e.IDNiveauSerie==id );
     if(index==-1) return;
     controller.DataScolarite.value = controller.DataTableFiltreScolarite[index];

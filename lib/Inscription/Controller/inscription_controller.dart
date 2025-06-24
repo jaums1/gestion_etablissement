@@ -7,7 +7,7 @@ import '../../Configs/utils/Implements/controller_data.dart';
 import '../../Configs/utils/Popup/animation_loader.dart';
 import '../../Configs/utils/Popup/loaders.dart';
 import '../../Configs/utils/Popup/showdialogue.dart';
-import '../../Configs/utils/Statut/statut_paiement.dart';
+import '../../Configs/utils/Statut/statut.dart';
 import '../../Eleves/Controller/eleve_controller.dart';
 import '../Model/inscription_model.dart';
 import '../Repository/inscription_repository.dart';
@@ -21,6 +21,7 @@ class TInscriptionController extends GetxController with TControllerData {
   var action = "";
   final variable = TInscriptionVariable();
   final isLoading = false.obs;
+  final isInitialise = false.obs;
   var isFraisAnnexe = false.obs;
   var isFraisInscription = false.obs;
   var DataInscription = TInscriptionModel();
@@ -58,7 +59,7 @@ class TInscriptionController extends GetxController with TControllerData {
       
       DataInscription.ResteAPayer     =  DataInscription.NetAPayer! -DataInscription.MontantVersement!-sommeAnnexeInscription;
       DataInscription.Paiement        = sommeAnnexeInscription+DataInscription.MontantVersement!;
-      DataInscription.IDEtudiant      = controllerEleve.DataEleve.IDEtudiant;
+      DataInscription.IDEtudiant      = controllerEleve.DataEleve.value.IDEtudiant;
       DataInscription.Statut          = TStatutCustom.paiement(DataInscription.ResteAPayer);
      ;
     }

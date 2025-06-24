@@ -18,16 +18,11 @@ class TInformationParentEleve extends StatelessWidget {
           child: Column(
           children: [
             //// NOM
-            TFormulaire().formulaireTextCheval(label: "Nom",iconPrefix: Iconsax.user),
-            SizedBox(height: TSizes.spaceBtwItems,),
-
+            TFormulaire().formulaireTextCheval(label: "Nom",iconPrefix: Iconsax.user),          
             //// PRENOMS
             TFormulaire().formulaireTextCheval(label: "Prénoms",iconPrefix: Iconsax.user),
-            SizedBox(
-              height: TSizes.spaceBtwItems,
-            ),
              
-             ///// SEXE ET DATE NAISANCE
+             ///// CONTACT
              SizedBox(
               child: Row(
                 children: [

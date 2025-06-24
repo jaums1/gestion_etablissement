@@ -7,11 +7,14 @@ class TInscriptionVariable {
  
   final List<DataColumn> columns = [
     DataColumn2(label: Text("N°"), fixedWidth: 50, headingRowAlignment: MainAxisAlignment.center),
-    DataColumn2(label: Text("Étudiant"), size: ColumnSize.L),
-    DataColumn2(label: Text("Classe"), size: ColumnSize.L),
-    DataColumn2(label: Text("Montant"), size: ColumnSize.S),
-    DataColumn2(label: Text("Statut"), size: ColumnSize.S),
-    DataColumn2(label: Text("Action"), fixedWidth: 100, headingRowAlignment: MainAxisAlignment.center),
+    DataColumn2(label: Text("Matricule",softWrap: true), size: ColumnSize.S),
+    DataColumn2(label: Text("Étudiant",softWrap: true), size: ColumnSize.L),
+    DataColumn2(label: Text("Classe",softWrap: true), size: ColumnSize.L),
+    DataColumn2(label: Text("Paiement Effectue",softWrap: true,), size: ColumnSize.S),
+    DataColumn2(label: Text("Solde",softWrap: true), size: ColumnSize.S),
+    DataColumn2(label: Text("Net à payer",softWrap: true), size: ColumnSize.S),
+    DataColumn2(label: Text("Statut",softWrap: true), size: ColumnSize.S),
+    DataColumn2(label: Text("Action",softWrap: true), fixedWidth: 100, headingRowAlignment: MainAxisAlignment.center),
   ];
 
   final IDInscription = TextEditingController();
@@ -31,4 +34,18 @@ class TInscriptionVariable {
   final Scolarite = TextEditingController();
 
   final GlobalKey<FormState> keyInscription = GlobalKey<FormState>();
+
+  H_Initialise(){
+  MontantVersement.clear();
+  DroitInscription.clear();
+  FraisAnnexe.clear();
+  DateInscription.clear();
+  NbrVersement.clear();
+  NetAPayer.clear();
+  ResteAPayer.clear();
+  Paiement.clear();
+  IDEtudiant.clear();
+  Statut.clear();
+  Scolarite.clear();
+  }
 } 

@@ -10,10 +10,10 @@ class TRepositoryEleve extends GetxController with TRepositoryData<TModelEleve>{
 
  ///// ENREGISTRER
  @override
-  Future<bool?> H_EnregistrerData(TModelEleve Model) async{
+   H_EnregistrerData(TModelEleve Model) async{
     try {
-    await THttpHelper.post(TEndpoint.linkEleve, Model.toMap());
-      return true;
+   final result =  await THttpHelper.post(TEndpoint.linkEleve, Model.toMap());
+      return result;
     } catch (e) {
       return false;
     }

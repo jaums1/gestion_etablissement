@@ -1,22 +1,35 @@
 import 'package:ecole/Classe/Model/classe_model.dart';
 import 'package:ecole/Configs/cammon/widgets/formulaire/form.dart';
+import 'package:ecole/Matiere/Controller/validation_matiere.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import '../../../Scolarite/Controller/scolarite_controller.dart';
 import '../../Controller/classe_controller.dart';
 import '../../Controller/classe_filtre.dart';
 
 
+// ignore: must_be_immutable
 class SearchClasseDialog extends StatelessWidget {
-  SearchClasseDialog({super.key});
-
+  SearchClasseDialog({super.key, this.isScolarite=false});
+  bool? isScolarite;
   final searchController = TextEditingController();
   final classeController = Get.find<TClasseController>();
+  final controllerScolrite = Get.find<TScolariteController>();
   final formulaire = TFormulaire();
   final filtre = TClasseFiltre();
 
   @override
   Widget build(BuildContext context) {
+      bool? isRecherche=true;
+    // var filteredClasses=<TClasseModel>[];
+    var DataTableClasse=<TClasseModel>[];
+        classeController.DataTableFiltreClasse.value=classeController.DataTableClasse;
+    var listeScolarite=controllerScolrite.DataTableScolarite.map((e) =>e.IDNiveauSerie).toList();
+      if (isScolarite==true) {
+                  DataTableClasse =   classeController.DataTableFiltreClasse.map((e) => e)
+                        .where((data) => listeScolarite.contains(data.IDNiveauSerie)).toList();      
+            }
     return AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       backgroundColor: Colors.white,
@@ -28,16 +41,28 @@ class SearchClasseDialog extends StatelessWidget {
             hintText: 'Nom ou Code de la classe',
             label: 'Rechercher',
             iconPrefix: Iconsax.search_normal,
-            onChanged: (value) => filtre.H_FiltreElement(param: value),
+            onChanged: (value) => isScolarite==true ?filtre.H_FiltreElementParIDNiveauSerie(param: value,
+            DataTableClasse: DataTableClasse,length:DataTableClasse.length)
+              : filtre.H_FiltreElement(param: value),
           ),
           const SizedBox(height: 20),
           Obx(() {
-            final filteredClasses = classeController.DataTableFiltreClasse;
+         List<TClasseModel> filteredClasses= classeController.DataTableFiltreClasse;
+           if(classeController.DataTableFiltreClasse.isEmpty) null;
+            // filteredClasses = classeController.DataTableFiltreClasse;
+            
+             if (isScolarite == false) filteredClasses = classeController.DataTableFiltreClasse;
+             if (isScolarite == true){
+               isRecherche == true?filteredClasses =  DataTableClasse:null;
+               isRecherche = false;
+             }
+
+
+
             return SizedBox(
               height: 300,
               width: 400,
               child: ListView.builder(
-                reverse: true,
                 itemCount: filteredClasses.length,
                 itemBuilder: (context, index) {
                   final classe = filteredClasses[index];
@@ -49,9 +74,11 @@ class SearchClasseDialog extends StatelessWidget {
                     subtitle: Text('Niveau étude: ${classe.DataNiveauSerie!.niveauSerie.toString()}'),
                     onTap: () {
                       TClasseFiltre().H_SelectClasseNiveauSerieParID(param: classe.LibClasse);
-                      classeController.DataClasse.value = classe;
                       
-                      Get.back(result: classe);
+                      classeController.DataClasse.value = classe;
+                      classeController.isinit.value =false;
+                      classeController.isinit.value =true;
+                      Get.back();
                     },
                   );
                 },
@@ -71,9 +98,9 @@ class SearchClasseDialog extends StatelessWidget {
 }
 
 // Fonction pour afficher le dialogue de recherche
-Future<TClasseModel?> showSearchClasseDialog() {
+Future<TClasseModel?> showSearchClasseDialog({bool? isScolarite}) {
   return showDialog<TClasseModel>(
     context: Get.context!,
-    builder: (BuildContext context) => SearchClasseDialog(),
+    builder: (BuildContext context) => SearchClasseDialog(isScolarite: isScolarite,),
   );
 } 

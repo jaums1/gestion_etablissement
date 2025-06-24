@@ -21,6 +21,6 @@ class TEleveFunction with TFunctionData {
    final date= await TShowDate().H_RecupDate();
    controller.variable.dateNaissance.value.text = TFormatters.formatDateFr(date).toString();
    controller.variable.dateNaissanceValide.value.text =TFormatters.formatDateAng(date).toString();
-   controller.DataEleve.DateNaissance = date;
+   controller.DataEleve.value.DateNaissance = date;
   }
 }

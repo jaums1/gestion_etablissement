@@ -1,4 +1,3 @@
-import 'package:ecole/Classe/Controller/classe_filtre.dart';
 import 'package:ecole/Classe/Controller/classe_page.dart';
 import 'package:ecole/Classe/Screen/Widget/search_classe_dialog.dart';
 import 'package:ecole/Configs/cammon/widgets/combo/combo.dart';
@@ -7,17 +6,18 @@ import 'package:ecole/Configs/cammon/widgets/texts/text_widget.dart';
 import 'package:ecole/Configs/utils/Constant/colors.dart';
 import 'package:ecole/Configs/utils/Emplacement_Texte/text_affiche_enligne.dart';
 import 'package:ecole/Configs/utils/Emplacement_Texte/texte_cheval.dart';
+import 'package:ecole/Configs/utils/Popup/loaders.dart';
 import 'package:ecole/Inscription/Controller/inscription_function.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../../Classe/Controller/classe_controller.dart';
+import '../../../../../Configs/cammon/widgets/Recherche_Add/recherche_add_create.dart';
 import '../../../../../Configs/cammon/widgets/containers/rounded_container_create.dart';
 import '../../../../../Configs/utils/Constant/sizes.dart';
 import '../../../../../Configs/utils/Device/devices_utility.dart';
 import '../../../../../Scolarite/Controller/scolarite_controller.dart';
 import '../../../../Controller/inscription_controller.dart';
-import 'recherche_add_inscription.dart';
 
 class InfoClasseInscription extends StatelessWidget {
   final combo = TCombo();
@@ -34,6 +34,7 @@ class InfoClasseInscription extends StatelessWidget {
         child: Obx(
           (){ 
             final DataClasse = controllerClasse.DataClasse.value;
+             
             if (controllerClasse.edite.value==false) {
                controller.variable.FraisAnnexe.text = controllerScolarite.DataScolarite.value.FraisAnnexe.toString();
             controller.variable.DroitInscription.text = controllerScolarite.DataScolarite.value.FraisInscription.toString();
@@ -50,10 +51,11 @@ class InfoClasseInscription extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ///// RECHERHE ET AJOUT
+              
               SizedBox(
-                child: RechercheAddInscription(
+                child: TRechercheAddCreate(
                   onPressedAdd:()=>TClassePage().H_PageShowDialogNouveau() ,
-                  onPressedRecherche: ()=>showSearchClasseDialog(),
+                  onPressedRecherche: ()=>showSearchClasseDialog(isScolarite: true),
                 ),
               ),
           DataClasse.LibClasse==null ?SizedBox():      SizedBox(height: TSizes.md,),

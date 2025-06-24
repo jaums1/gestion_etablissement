@@ -4,12 +4,17 @@ import 'package:get/get.dart';
 import '../../Configs/utils/Implements/controller_data.dart';
 import '../../Configs/utils/Popup/loaders.dart';
 import 'eleve_controller.dart';
+import 'eleve_filtre.dart';
 
 class TValidationEleve with TControllerData {
   final controller = Get.find<TEleveController>();
-
+  final filtre      = TFiltreEleve();
   @override
   H_Enregistrer() async{
+    if (filtre.H_Verification(param: controller.variable.matricule.text) !=-1) {
+      TLoader.errorSnack(title: "ELEVE",message: "L'élève au matricule ${controller.variable.matricule.text} existe déjà");
+      return;
+    }
     final result =await controller.H_Enregistrer();
    if(result){ 
     TLoader.successSnack(title: "ENREGISTRER",message: "Vos données ont été enregistrée");
@@ -36,4 +41,28 @@ class TValidationEleve with TControllerData {
     );
     
   }
+
+  @override
+  H_EnregistrerShowDialog() async{
+     if (filtre.H_Verification(param: controller.variable.matricule.text) !=-1) {
+      TLoader.errorSnack(title: "ELEVE",message: "L'élève au matricule ${controller.variable.matricule.text} existe déjà");
+      return;
+    }
+    final result =await controller.H_Enregistrer();
+   if(result){ 
+    Get.back();
+    TLoader.successSnack(title: "ENREGISTRER",message: "Vos données ont été enregistrée");
+    
+    }
+  }
+@override
+  H_ModifierShowDialog()async{
+    final result = await controller.H_Modifier();
+    if(result){ 
+      Get.back();
+    TLoader.successSnack(title: "MODIFIER",message: "Vos données ont été modifiée");
+    
+    }
+  }
+
 }

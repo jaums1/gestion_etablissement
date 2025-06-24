@@ -43,7 +43,7 @@ class TClasseValidation with TControllerData {
     );
     
   }
-
+@override
   H_EnregistrerShowDialog() async{
      if (filitre.H_Verification(param: controller.variable.LibClasse.text)!=-1) {
       TLoader.errorSnack(title: "CLASSE",message: "La classe ${controller.variable.LibClasse.text} existe déjà");
@@ -56,7 +56,7 @@ class TClasseValidation with TControllerData {
     
     }
   }
-
+@override
   H_ModifierShowDialog()async{
     final result = await controller.H_Modifier();
     if(result){ 

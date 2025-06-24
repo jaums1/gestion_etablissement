@@ -27,4 +27,9 @@ class TInscriptionFiltre with TFiltre {
     final index = controller.DataTableInscription.indexWhere((e) => e.IDInscription.toString().trim().toLowerCase() == param.trim().toLowerCase());
     return index;
   }
+
+  H_VerificationInscription({int? id}){
+    final index = controller.DataTableInscription.indexWhere((e) => e.IDEtudiant == id);
+    return index;
+  }
 } 

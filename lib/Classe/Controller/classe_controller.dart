@@ -19,6 +19,7 @@ class TClasseController extends GetxController with TControllerData{
   final action = "".obs;
   final variable = TClasseVariable();
   final isLoading = false.obs;
+  final isinit = false.obs;
   final edite = false.obs;
   final DataClasse = TClasseModel().obs;
   final DataTableClasse = RxList<TClasseModel>([]);

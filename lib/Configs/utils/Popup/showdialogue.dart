@@ -48,12 +48,13 @@ contentPadding: EdgeInsets.symmetric(horizontal:20,vertical: 15),
 
 
 
-static showWidget({String? titre,Widget? widgets,VoidCallback? onPressedValide,VoidCallback? onPressedFerme}){
+static showWidget({String? titre,Color? color=Colors.white,Widget? widgets,VoidCallback? onPressedValide,VoidCallback? onPressedFerme}){
 
 Get.dialog(
   barrierDismissible: false,
+  // barrierColor: color,
   AlertDialog(
-  backgroundColor: TColors.white,
+  backgroundColor: color,
   shape: RoundedRectangleBorder(
     borderRadius: BorderRadius.all(Radius.circular(8))
   ),

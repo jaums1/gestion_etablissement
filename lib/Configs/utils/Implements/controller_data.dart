@@ -5,8 +5,16 @@ mixin class TControllerData{
   H_Enregistrer(){
    throw UnimplementedError();
  }
+
+  H_EnregistrerShowDialog(){
+   throw UnimplementedError();
+ }
  
   H_Modifier(){
+   throw UnimplementedError();
+ }
+ 
+ H_ModifierShowDialog(){
    throw UnimplementedError();
  }
 

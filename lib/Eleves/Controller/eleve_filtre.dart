@@ -21,9 +21,15 @@ class TFiltreEleve with TFiltre {
   @override
   H_FiltreElementParID({int? id}) {
     final index = controller.DataTableEleve.indexWhere((e)=> e.IDEtudiant==id );
-    if(index==-1) return;
-    controller.DataEleve = controller.DataTableEleve[index];
+    if(index==-1) return index;
+    controller.DataEleve.value = controller.DataTableEleve[index];
    
+  }
+    @override
+   H_Verification({String param = ""}) {
+    final index = controller.DataTableEleve.indexWhere((e)=> e.Matricule!.trim().toLowerCase()==param.trim().toLowerCase() );
+     return index;
+    
   }
 
 }

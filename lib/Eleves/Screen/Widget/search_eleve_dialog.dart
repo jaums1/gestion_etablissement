@@ -46,8 +46,8 @@ class SearchEleveDialog extends StatelessWidget {
                     subtitle: Text('Matricule: ${eleve.Matricule}'),
                     onTap: () {
                       
-                      eleveController.DataEleve= eleve;
-                      eleveController.edite.value = !eleveController.edite.value;
+                      eleveController.DataEleve.value= eleve;
+                      // eleveController.edite.value = !eleveController.edite.value;
                       Get.back(result: eleve);
                     },
                   );

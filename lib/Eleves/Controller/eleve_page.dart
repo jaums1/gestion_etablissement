@@ -2,6 +2,7 @@ import 'package:ecole/Configs/routes/route.dart';
 import 'package:ecole/Configs/utils/Constant/enums.dart';
 import 'package:get/get.dart';
 
+import '../../Configs/utils/Constant/colors.dart';
 import '../../Configs/utils/Implements/page_data.dart';
 import '../../Configs/utils/Popup/showdialogue.dart';
 import '../Screen/Widget/show_eleve_dialog.dart';
@@ -34,6 +35,7 @@ class TElevePage with TPageData{
   H_PageShowDialogNouveau() {
     controller.variable.H_Initialise();
     TShowdialogue.showWidget(
+      color:  TColors.softGrey,
       titre: "Enregistrement",
       widgets: ShowEleveDialog(argument: TraitementAction.nouveau.name,));
   }
@@ -42,6 +44,7 @@ class TElevePage with TPageData{
   H_PageShowDialogModifier({int? id}) {
     controller.H_RecupeModif(id: id);
     TShowdialogue.showWidget(
+       color:  TColors.softGrey,
       titre: "Modification",
       widgets: ShowEleveDialog(argument: TraitementAction.modifier.name,));
   }

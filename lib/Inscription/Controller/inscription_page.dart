@@ -10,7 +10,7 @@ class TInscriptionPage with TPageData {
 
   @override
   H_PageNouveau() {
-    controller.H_Initialise();
+    controller.variable.H_Initialise();
     Get.offNamed(TRoutes.registerinscription, arguments: TraitementAction.nouveau.name);
   }
 

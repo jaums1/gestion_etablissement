@@ -1,3 +1,4 @@
+import 'package:ecole/Configs/utils/Popup/loaders.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -26,13 +27,13 @@ class TCreateInscriptionDesktopForm extends StatelessWidget {
       child: Obx(
         (){
           if(controllerEleve.edite.value) null;
-          final DataEleve = controllerEleve.DataEleve;
+          final DataEleve = controllerEleve.DataEleve.value;
           final DataClasse = controllerClasse.DataClasse.value;
           return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
              ///// HEADER
-              TRetourHeader(titre:"Incription",route: TRoutes.inscription,),
+              TRetourHeader(titre:"Je fais une inscription",route: TRoutes.inscription,),
               SizedBox(height: TSizes.spaceBtwItems,),
               //// ELEVE
              InfoEleveInscription(controller: controller,),
@@ -52,7 +53,20 @@ class TCreateInscriptionDesktopForm extends StatelessWidget {
              ///// BUTTON VALIDER
              SizedBox(height: TSizes.md,),
           DataClasse.LibClasse==null? SizedBox():SizedBox(child:
-           TButton.ValidateButton(titre: "Valider",onPressed: ()=> TInscriptionValidation().H_Enregistrer()))
+           TButton.ValidateButton(titre: "Valider",onPressed:(){ 
+           final result = controller.variable.keyInscription.currentState!.validate();
+            
+            if (result) {
+              if(controller.isFraisAnnexe.value && controller.isFraisInscription.value){
+                   TInscriptionValidation().H_Enregistrer(); 
+              }else{
+                TLoader.errorSnack(title: "CASE A COCHE",message:"Veuillez cocher "
+                "les cases a cocher pour valider le paiement");
+              }
+            }
+           
+             
+            }))
         
            
           

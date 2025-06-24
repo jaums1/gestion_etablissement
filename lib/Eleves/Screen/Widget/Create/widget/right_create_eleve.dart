@@ -10,17 +10,20 @@ class TRightCreatePhotoEleve extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TRoundedContainer(
-         showShadow: false,
-         child: Center(
-           child: TImageUploader(
-            bottom: 0.5,
-            
-            width: 150,height: 150,
-            onIconButtonPressed: (){},
-            imageType: ImageType.asset, image: TImages.appLogo),
-         ),
-
+    return SizedBox(
+      width: 170,
+      child: TRoundedContainer(
+           showShadow: false,
+           child: Center(
+             child: TImageUploader(
+              bottom: 0.5,
+              
+              width: 100,height: 100,
+              onIconButtonPressed: (){},
+              imageType: ImageType.asset, image: TImages.appLogo),
+           ),
+      
+      ),
     );
   }
 }

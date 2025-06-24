@@ -32,8 +32,9 @@ class InfoPaiementInscription extends StatelessWidget {
             int TotalAnnexeInscription =0;
             int TotalScolarite =0;
              if (controller.isFraisAnnexe.value==true && controller.isFraisInscription.value==true) {
-            FraisAnnexe = int.parse(controller.variable.FraisAnnexe.text);
-            FraisInscription = int.parse(controller.variable.DroitInscription.text);
+            FraisAnnexe =controller.variable.FraisAnnexe.text ==""?0: int.parse(controller.variable.FraisAnnexe.text);
+            FraisInscription =controller.variable.DroitInscription.text ==""?0: int.parse(controller.variable.DroitInscription.text);
+           
             TotalAnnexeInscription = FraisInscription+FraisAnnexe;
             }
         
@@ -43,32 +44,35 @@ class InfoPaiementInscription extends StatelessWidget {
             children: [
               // INFORMATION SUR FRAIS INSCRIPTION, FRAIS ANNEXE ET SCOLARITE
               SizedBox(
-                child: Column(
-                  children: [
-                    /////// CLASSE
-                    InfoAffichageInscription(titre: "Inscription + Frais Annexe",montant: "$TotalAnnexeInscription",),
-                    
-                    ///// DATE 
-                    InfoScolariteInscription(
-                      onChanged: () => TInscriptionFunction().H_OnChangedDate(),
-                    readOnly: true,
-                    controller: controllerScolarite,
-                    formulaire: formulaire,text: "Date Inscription",
-                    textEditingController: controller.variable.DateInscription,
-                    ), 
-
-                    //// SCOLARITE
-                    InfoScolariteInscription(
-                    controller: controllerScolarite,
-                    formulaire: formulaire,text: "Scolarite",
-                    textEditingController: controller.variable.MontantVersement,
-                    ),
-                     Divider(thickness: 0.5,height: 0.1),
-                         
-                     //// AFFICHIER TOTAL
-                     InfoAffichageInscription(titre: "Total",montant: "$TotalScolarite",color: Colors.redAccent,top: 20,
-                     bottom: 0,),
-                  ],
+                child: Form(
+                  key: controller.variable.keyInscription,
+                  child: Column(
+                    children: [
+                      /////// CLASSE
+                      InfoAffichageInscription(titre: "Inscription + Frais Annexe",montant: "$TotalAnnexeInscription",),
+                      
+                      ///// DATE 
+                      InfoScolariteInscription(
+                        onChanged: () => TInscriptionFunction().H_OnChangedDate(),
+                      readOnly: true,
+                      controller: controllerScolarite,
+                      formulaire: formulaire,text: "Date Inscription",
+                      textEditingController: controller.variable.DateInscription,
+                      ), 
+                  
+                      //// SCOLARITE
+                      InfoScolariteInscription(
+                      controller: controllerScolarite,
+                      formulaire: formulaire,text: "Scolarite",
+                      textEditingController: controller.variable.MontantVersement,
+                      ),
+                       Divider(thickness: 0.5,height: 0.1),
+                           
+                       //// AFFICHIER TOTAL
+                       InfoAffichageInscription(titre: "Total",montant: "$TotalScolarite",color: Colors.redAccent,top: 20,
+                       bottom: 0,),
+                    ],
+                  ),
                 ),
               )
             ],

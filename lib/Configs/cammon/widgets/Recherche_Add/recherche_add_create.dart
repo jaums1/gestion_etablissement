@@ -4,8 +4,8 @@ import 'package:iconsax/iconsax.dart';
 import '../../../../../Configs/cammon/widgets/buttons/button.dart';
 import '../../../../../Configs/utils/Constant/sizes.dart';
 
-class RechercheAddInscription extends StatelessWidget {
-  const RechercheAddInscription({
+class TRechercheAddCreate extends StatelessWidget {
+  const TRechercheAddCreate({
     super.key, this.onPressedRecherche, this.onPressedAdd,
   });
  final VoidCallback? onPressedRecherche;

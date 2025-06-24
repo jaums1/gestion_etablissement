@@ -7,6 +7,7 @@ class TModelEleve {
   String? Matricule;
   String? Nom;
   String? Prenoms;
+  String? NomComplet;
   String? Sexe;
   DateTime? DateNaissance;
   String? LieuNaissance;
@@ -39,6 +40,7 @@ class TModelEleve {
     this.PrenomsParent,
     this.ContactParent1,
     this.ContactParent2,
+    this.NomComplet
   });
 
    ///// RECUPERATION
@@ -48,6 +50,7 @@ class TModelEleve {
       Matricule: data.containsKey("Matricule")?data["Matricule"]??'':'',
       Nom: data.containsKey("Nom")?data["Nom"]??'':'',
       Prenoms: data.containsKey("Prenoms")?data["Prenoms"]??'':'',
+      NomComplet: data.containsKey("NomComplet")?data["NomComplet"]??'':'',
       Sexe: data.containsKey("Sexe")?data["Sexe"]??'':'',
       DateNaissance: data.containsKey("DateNaissance")?DateTime.parse(data["DateNaissance"]):DateTime.now(),
       LieuNaissance: data.containsKey("LieuNaissance")?data["LieuNaissance"]??'':'',
