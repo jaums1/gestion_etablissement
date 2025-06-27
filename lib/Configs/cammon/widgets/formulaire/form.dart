@@ -3,6 +3,7 @@ import 'package:ecole/Configs/utils/Constant/sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 // import '../../../utils/Constant/colors.dart';
 import '../../../utils/validators/validation.dart';
@@ -47,7 +48,7 @@ class TFormulaire {
 
 
   formulaireTextCheval({ String ?label,bool isPassword=false,IconData? iconOpen,IconData? iconOff,IconData? iconPrefix,IconData? iconSuffix,
-  VoidCallback? onPressedIcon,bool? isphone=false,bool? readOnly=false,bool? isint=true,
+  VoidCallback? onPressedIcon,bool? isphone=false,bool? readOnly=false,bool? isint=true,bool? isMonetaire=false,
    TextEditingController? textEditingController,TextInputType? textInputType = TextInputType.text,bool? isVerification =false,
    bool? isIconSuffix=false,bool? isVerifiePass =false,bool? isVerifieEmail=false,Function(dynamic)? onChanged
   }){
@@ -79,6 +80,7 @@ class TFormulaire {
         if(textInputType ==TextInputType.number && isint==false  )FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')),
         if(textInputType ==TextInputType.number && isint==true )FilteringTextInputFormatter.allow(RegExp(r'^\d*')),
         if(textInputType ==TextInputType.text  && isphone==true )FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+        if(textInputType ==TextInputType.number  && isMonetaire==true )CurrencyInputFormatter(),
      ],
      maxLength: isphone==true ?10:null,
      controller: textEditingController,
@@ -100,5 +102,25 @@ class TFormulaire {
       ],
     ),
   );
+  }
+}
+
+
+class CurrencyInputFormatter extends TextInputFormatter {
+  final NumberFormat format = NumberFormat.currency(
+    locale: "fr_FR",
+    decimalDigits: 0,
+    symbol: 'Fcfa',
+  );
+  
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+   String text =newValue.text.replaceAll(RegExp(r'[^0-9]'), '');
+   
+   if(text.isEmpty)return newValue.copyWith(text: '');
+   final number = int.parse(text);
+   final newText = format.format(number);
+
+    return TextEditingValue( text:newText,selection: TextSelection.collapsed(offset: newText.length) );
   }
 }

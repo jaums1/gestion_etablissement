@@ -32,7 +32,11 @@ class TClasseFiltre with TFiltre {
     if(index==-1) return index;
     controller.DataClasse.value = controller.DataTableFiltreClasse[index];
   }
-
+ H_FiltreParID({int? id}){
+   final index = controller.DataTableClasse.indexWhere((e)=> e.IDClasse==id );
+    if(index==-1) return;
+   return controller.DataTableFiltreClasse[index];
+ }
   @override
   H_Verification({String param = ""}) {
     final index = controller.DataTableClasse.indexWhere((e)=> e.LibClasse!.trim().toLowerCase()==param.trim().toLowerCase() );

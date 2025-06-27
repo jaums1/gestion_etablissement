@@ -23,6 +23,7 @@ import '../../Niveau Serie/Controller/page_niveau_serie_model.dart';
 import '../../Niveau_Scolaire/Controller/niveauscolaire_controller.dart';
 import '../../Scolarite/Controller/scolarite_controller.dart';
 import '../../Type_Decoupage_Scolaire/Controller/typedecoupage_controller.dart';
+import '../../Versement/Controller/versement_controller.dart';
 import '../cammon/widgets/layouts/sidebar/sidebar_controller.dart';
 
 class TGeneralBinding extends Bindings {
@@ -71,5 +72,7 @@ class TGeneralBinding extends Bindings {
       Get.lazyPut(()=>TScolariteController(),fenix: true);
       
         Get.lazyPut(()=>TInscriptionController(),fenix: true);
+
+        Get.lazyPut(()=>TVersementController(),fenix: true);
   }
 }

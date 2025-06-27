@@ -11,6 +11,7 @@ import '../../Eleves/Screen/eleve_principale.dart';
 import '../../Employe/Screen/employe_principale.dart';
 import '../../Etablissement/Screen/etablissement.dart';
 import '../../Inscription/Screen/Widget/Create/create_inscription_principal.dart';
+import '../../Inscription/Screen/Widget/Details/details_inscription_principal.dart';
 import '../../Inscription/Screen/Widget/view/inscription_screen_principale.dart';
 import '../../Login/Screen/Widget/widget Code Etatblissement/code_etablissement.dart';
 import '../../Login/Screen/Widget/widget register/register.dart';
@@ -22,6 +23,7 @@ import '../../Scolarite/Screen/Widget/Create/create_scolarite_principal.dart';
 import '../../Scolarite/Screen/Widget/update/update_scolarite_principal.dart';
 import '../../Scolarite/Screen/Widget/view/scolarite_screen_principale.dart';
 import '../../Serie/Screen/serie_scolaire.dart';
+import '../../Versement/Screen/Widget/Create/versement_create_principal.dart';
 import 'route.dart';
 
 class TAppRoute {
@@ -55,6 +57,11 @@ class TAppRoute {
     //// INSCRIPTION
     GetPage(name: TRoutes.inscription, page: ()=>const TInscriptionScreenPrincipale()),
     GetPage(name: TRoutes.registerinscription, page: ()=>const TCreateInscriptionPrincipal()),
+    GetPage(name: TRoutes.detailsinscription, page: ()=>const TDetailsInscriptionPrincipal()),
+
+    //// VERSEMENT
+
+    GetPage(name: TRoutes.registerversement, page: ()=>const TCreateVersementPrincipaleScreen()),
   ]; 
 }
 

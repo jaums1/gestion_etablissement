@@ -61,8 +61,14 @@ class TInscriptionController extends GetxController with TControllerData {
       DataInscription.Paiement        = sommeAnnexeInscription+DataInscription.MontantVersement!;
       DataInscription.IDEtudiant      = controllerEleve.DataEleve.value.IDEtudiant;
       DataInscription.Statut          = TStatutCustom.paiement(DataInscription.ResteAPayer);
-     ;
     }
+  }
+
+  //// INITIALISER
+  @override
+  void onInit() {
+   H_RecupeData();
+    super.onInit();
   }
 
   ///// ENREGISTREMENT 
@@ -71,20 +77,20 @@ class TInscriptionController extends GetxController with TControllerData {
     try {
       HLitInscription(param: "ENVOYER");
 
-      print(DataInscription.toMap());
       ///LOADING
-      // TShowdialogue().showWidgetLoad(widgets: 
-      //   TAnimationLoaderWidget(text: "enregistrement en cours...", color: Colors.white,
-      //     animation: TImages.docerAnimation, width: 250,));
-      // ///// ENVOIE DES DONNEES
-      // final result = await repositorycontroller.H_EnregistrerData(DataInscription);
-      // ///// FERMER LOADING
-      // Get.back();
-      // ///// TRAITEMENT RESULTAT
-      // if (result == false) {
-      //   TLoader.errorSnack(title: "Erreur", message: "Veuillez vérifier votre connexion");
-      //   return false;
-      // }
+      TShowdialogue().showWidgetLoad(widgets: 
+        TAnimationLoaderWidget(text: "enregistrement en cours...", color: Colors.white,
+          animation: TImages.docerAnimation, width: 250,));
+      ///// ENVOIE DES DONNEES
+      final result = await repositorycontroller.H_EnregistrerData(DataInscription);
+      H_RecupeData();
+      ///// FERMER LOADING
+      Get.back();
+      ///// TRAITEMENT RESULTAT
+      if (result == false) {
+        TLoader.errorSnack(title: "Erreur", message: "Veuillez vérifier votre connexion");
+        return false;
+      }
       return true;
     } catch (e) {
       TLoader.errorSnack(title: "Erreur", message: "Veuillez vérifier votre connexion source erreur $e");
@@ -133,6 +139,7 @@ class TInscriptionController extends GetxController with TControllerData {
       ///// ENVOIE DES DONNEES
       final result = await repositorycontroller.H_ModifierData(DataInscription);
       ///// FERMER LOADING
+      H_RecupeData();
       Get.back();
       ///// TRAITEMENT RESULTAT 
       if (result == false) {

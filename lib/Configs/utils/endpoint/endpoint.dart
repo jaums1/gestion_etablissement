@@ -40,4 +40,5 @@ class TEndpoint {
 
  /////// INSCRIPTION
  static const linkInscription = "Inscription";
+ static const linkVersement = "Versement";
 }

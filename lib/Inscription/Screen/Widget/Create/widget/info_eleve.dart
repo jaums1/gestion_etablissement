@@ -23,9 +23,7 @@ class InfoEleveInscription extends StatelessWidget {
     return TRoundedContainerCreate(
       child: Obx(
         (){
-         print("Jaums")
-        if(controllerEleve.edite.value) null;
-        final DataEleve = controllerEleve.DataEleve.value;
+        var DataEleve = controllerEleve.DataEleve.value;
        return SizedBox(
           width: TDeviceUtility.isDesktopScreen(context) ? 500 : 200,
           child: Column(
@@ -35,7 +33,15 @@ class InfoEleveInscription extends StatelessWidget {
               SizedBox(
                 child: TRechercheAddCreate(
                   onPressedAdd:()=> TElevePage().H_PageShowDialogNouveau() ,
-                  onPressedRecherche: ()=>showSearchEleveDialog(),
+                  onPressedRecherche: () async{
+                 final resul= await showSearchEleveDialog();
+                 if(resul !=null){
+                  controllerEleve.DataEleve.value = resul;
+                  DataEleve = controllerEleve.DataEleve.value ;
+                 }
+                
+                 },
+                  // onPressedRecherche: ()=>showSearchEleveDialog(),
                 ),
               ),
              DataEleve.IDEtudiant==null?SizedBox():  SizedBox(height: TSizes.spaceBtwSections,),

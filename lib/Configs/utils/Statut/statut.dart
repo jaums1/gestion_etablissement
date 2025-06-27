@@ -7,13 +7,13 @@ class TStatutCustom {
   
  Widget H_CardreCouleur({Color? color,String? titre}){
   return Container(
-          padding: EdgeInsets.symmetric(horizontal: TSizes.md,vertical: 3),
+          padding: EdgeInsets.symmetric(horizontal: TSizes.md,vertical: 4),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(8)),
-            color: color!.withValues(alpha: 0.2)
+            color: color!.withValues(alpha: 0.1)
           ),
           child: Text(titre.toString(),style: Theme.of(Get.context!).textTheme.bodyMedium!.copyWith(
-            color: color,fontWeight: FontWeight.bold),overflow: TextOverflow.ellipsis,maxLines: 1,),
+            color: color,fontSize: 13,fontWeight: FontWeight.w500),overflow: TextOverflow.ellipsis,maxLines: 1,),
         );
  }
 

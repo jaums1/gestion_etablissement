@@ -6,14 +6,8 @@ import 'inscription_controller.dart';
 
 class TInscriptionFunction with TFunctionData {
   final controller = Get.find<TInscriptionController>();
-  
-  void H_OnChangedClasse(param) {
-    // TODO: Implémenter la logique de changement de classe
-  }
+  // final controller = Get.find<TInscriptionController>();
 
-  void H_OnChangedClasseID({int? id}) {
-    // TODO: Implémenter la logique de changement de classe par ID
-  }
 
   void H_onChangeFraisAnnexe(bool? value){
     controller.isFraisAnnexe.value = value!;

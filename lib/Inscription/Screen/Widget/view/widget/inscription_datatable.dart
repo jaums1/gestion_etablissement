@@ -3,8 +3,7 @@ import 'package:get/get.dart';
 
 import '../../../../../Configs/cammon/widgets/Chargement/etat_chargement.dart';
 import '../../../../../Configs/cammon/widgets/Data_table/paginated_data_table.dart';
-import '../../../../../Configs/utils/Constant/image_string.dart';
-import '../../../../../Configs/utils/Popup/animation_loader.dart';
+
 import '../../../../Controller/inscription_controller.dart';
 import '../../../../Data/inscription_data_sourcetable.dart';
 
@@ -25,7 +24,7 @@ class TInscriptionDataTable extends StatelessWidget {
       
       // État quand les données sont vides
       if (controller.DataTableInscription.isEmpty) {
-        return TEtatChargement.H_EtatDataVide();
+        return TEtatChargement.H_EtatDataVide(onPressedChargement: () => controller.H_RecupeData(),);
       }
 
          // Affichage des données

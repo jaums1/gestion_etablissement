@@ -1,3 +1,8 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
+
+import '../../Configs/utils/formatters/formatters.dart';
+
 
 class TInscriptionModel {
    int? IDInscription;
@@ -42,32 +47,9 @@ class TInscriptionModel {
     this.Statut,
   });
 
-  factory TInscriptionModel.fromMap(Map<String, dynamic> json) {
-    return TInscriptionModel(
-      IDInscription: json['IDInscription'],
-      IDClasse: json['IDClasse'],
-      IDAnneeScolaire: json['IDAnneeScolaire'],
-      IDEtablissement: json['IDEtablissement'],
-      MontantVersement: json['MontantVersement']?.toDouble(),
-      DroitInscription: json['DroitInscription']?.toDouble(),
-      FraisAnnexe: json['FraisAnnexe']?.toDouble(),
-      DateInscription: json['DateInscription'] != null ? DateTime.parse(json['DateInscription']) : null,
-      NbrVersement: json['NbrVersement'],
-      NetAPayer: json['NetAPayer']?.toDouble(),
-      ResteAPayer: json['ResteAPayer']?.toDouble(),
-      Paiement: json['Paiement']?.toDouble(),
-      Annee: json['Annee'],
-      MoisEnLettre: json['MoisEnLettre'],
-      MoisAnnee: json['MoisAnnee'],
-      DateCreation: json['DateCreation'] != null ? DateTime.parse(json['DateCreation']) : null,
-      HeureCreation: json['HeureCreation'],
-      IDEtudiant: json['IDEtudiant'],
-      Statut: json['Statut'],
-    );
-  }
 
   Map<String, dynamic> toMap() {
-    return {
+    return <String, dynamic>{
       'IDInscription': IDInscription,
       'IDClasse': IDClasse,
       'IDAnneeScolaire': IDAnneeScolaire,
@@ -75,18 +57,39 @@ class TInscriptionModel {
       'MontantVersement': MontantVersement,
       'DroitInscription': DroitInscription,
       'FraisAnnexe': FraisAnnexe,
-      'DateInscription': DateInscription?.toIso8601String(),
-      // 'NbrVersement': NbrVersement,
+      'DateInscription': TFormatters.formatDate(DateInscription),
+      'NbrVersement': NbrVersement,
       'NetAPayer': NetAPayer,
       'ResteAPayer': ResteAPayer,
       'Paiement': Paiement,
-      // 'Annee': Annee,
-      // 'MoisEnLettre': MoisEnLettre,
-      // 'MoisAnnee': MoisAnnee,
-      // 'DateCreation': DateCreation?.toIso8601String(),
-      // 'HeureCreation': HeureCreation,
       'IDEtudiant': IDEtudiant,
-      'Statut': Statut,
+      
     };
   }
+
+  factory TInscriptionModel.fromMap(Map<String, dynamic> map) {
+    return TInscriptionModel(
+      IDInscription: map['IDInscription'] != null ? map['IDInscription'] as int : 0,
+      IDClasse: map['IDClasse'] != null ? map['IDClasse'] as int : null,
+      IDAnneeScolaire: map['IDAnneeScolaire'] != null ? map['IDAnneeScolaire'] as int : null,
+      IDEtablissement: map['IDEtablissement'] != null ? map['IDEtablissement'] as int : null,
+      MontantVersement: map['MontantVersement'] != null ? map['MontantVersement'] as int : null,
+      DroitInscription: map['DroitInscription'] != null ? map['DroitInscription'] as int : null,
+      FraisAnnexe: map['FraisAnnexe'] != null ? map['FraisAnnexe'] as int : null,
+      DateInscription: map['DateInscription'] != null ? DateTime.parse(map['DateInscription']) : null,
+      NbrVersement: map['NbrVersement'] != null ? map['NbrVersement'] as int : null,
+      NetAPayer: map['NetAPayer'] != null ? map['NetAPayer'] as int : null,
+      ResteAPayer: map['ResteAPayer'] != null ? map['ResteAPayer'] as int : null,
+      Paiement: map['Paiement'] != null ? map['Paiement'] as int : null,
+      Annee: map['Annee'] != null ? map['Annee'] as String : null,
+      MoisEnLettre: map['MoisEnLettre'] != null ? map['MoisEnLettre'] as String : null,
+      MoisAnnee: map['MoisAnnee'] != null ? map['MoisAnnee'] as String : null,
+      DateCreation: map['DateCreation'] != null ? DateTime.parse(map['DateCreation']) : null,
+      HeureCreation: map['HeureCreation'] != null ? map['HeureCreation'] as String : null,
+      IDEtudiant: map['IDEtudiant'] != null ? map['IDEtudiant'] as int : null,
+      Statut: map['Statut'] != null ? map['Statut'] as String : null,
+    );
+  }
+
+ 
 } 

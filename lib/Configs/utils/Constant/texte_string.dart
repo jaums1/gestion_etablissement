@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 
 class TText{
@@ -94,6 +92,7 @@ static const decoupageScolaire ="Decoupage Scolaire";
 static const classe ="Classe";
 
 static List<String> jours = List.generate(31, (index) => "${index+1}".padLeft(2, '0'));
+static List<String> Annees = List.generate(10, (index) => "${DateTime.now().year-index}");
 
 static const List<String> mois = [
   "Janvier",
@@ -114,7 +113,7 @@ static const List<String> tabs=["Sport",'Furniture',"Electronics","Clothes","Cos
 static final List<Widget> tabsWidget= [const Tab(child: Text("Sport")),const Tab(child: Text('Furniture')),const Tab(child: Text('Electronics')),const Tab(child: Text('Clothes')),const Tab(child: Text('Cosmetics'))];
 static List<String> listPays = ['Algérie','Angola','Bénin','Botswana','Burkina Faso','Burundi','Cabo Verde',
   'Cameroun','République centrafricaine','Tchad','Comores','République du Congo','République démocratique du Congo',
-  'Côte d’Ivoire','Djibouti','Égypte','Guinée équatoriale','Érythrée','Eswatini','Éthiopie','Gabon','Gambie',
+  "Côte d'Ivoire",'Djibouti','Égypte','Guinée équatoriale','Érythrée','Eswatini','Éthiopie','Gabon','Gambie',
   'Ghana','Guinée','Guinée-Bissau','Kenya','Lesotho','Libéria','Libye','Madagascar','Malawi','Mali',
   'Mauritanie','Maurice','Maroc','Mozambique','Namibie','Niger','Nigéria','Rwanda','Sao Tomé-et-Principe','Sénégal',
   'Seychelles','Sierra Leone','Somalie','Afrique du Sud','Soudan','Soudan du Sud','Tanzanie','Togo','Tunisie',
@@ -122,6 +121,7 @@ static List<String> listPays = ['Algérie','Angola','Bénin','Botswana','Burkina
 ];
   static List<String> listTypeEnseignement =["Enseignement Général","Enseignement Technique","Enseignement Professionnelle"];
   static List<String> Sexe =["Homme","Femme"];
+  static List<String> MethodePaiement=["espèces","chèque","Mobile Moneny" ];
   static List<String> nationalites = [
   'Ivoirienne',
   'Béninoise',
@@ -157,4 +157,8 @@ static List<String> listPays = ['Algérie','Angola','Bénin','Botswana','Burkina
   'Indienne',
   'Japonaise',
 ];
+
+static const String annuler = "Annuler";
+static const String enregistrer = "Enregistrer";
+static const String modifier = "Modifier";
 }

@@ -24,7 +24,7 @@ return Padding(
  
   return RichText(text: TextSpan(
     children: [
-    TextSpan(text: "$textSecondaire : ",style: Theme.of(Get.context!).textTheme.bodyMedium!.copyWith(
+    TextSpan(text: "$textSecondaire  :  ",style: Theme.of(Get.context!).textTheme.bodyMedium!.copyWith(
       fontSize: 15, fontFamily: 'Lato',fontWeight: FontWeight.bold,color: colorSecondaire,
       overflow: TextOverflow.ellipsis,
     )),

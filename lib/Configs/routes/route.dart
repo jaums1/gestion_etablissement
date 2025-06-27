@@ -29,6 +29,10 @@ class TRoutes {
   ///// INSCRIPTION
   static const inscription ="/Inscription/";
   static const registerinscription ="/RegisterInscription/";
+  static const detailsinscription ="/DetailsInscription/";
+  
+  ///// VERSEMENT
+  static const registerversement ="/RegisterVersement/";
 
 ///// CLASSE
   static const classe ="/Classes/";

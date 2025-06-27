@@ -1,6 +1,5 @@
 import 'package:ecole/Classe/Model/classe_model.dart';
 import 'package:ecole/Configs/cammon/widgets/formulaire/form.dart';
-import 'package:ecole/Matiere/Controller/validation_matiere.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -78,7 +77,7 @@ class SearchClasseDialog extends StatelessWidget {
                       classeController.DataClasse.value = classe;
                       classeController.isinit.value =false;
                       classeController.isinit.value =true;
-                      Get.back();
+                      Get.back(result: classe);
                     },
                   );
                 },

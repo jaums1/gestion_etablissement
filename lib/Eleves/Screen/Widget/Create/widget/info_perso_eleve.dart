@@ -9,8 +9,7 @@ import 'package:iconsax/iconsax.dart';
 import '../../../../../Configs/cammon/widgets/Coupe Ssection/coupe_section.dart';
 import '../../../../../Configs/utils/Constant/sizes.dart';
 import '../../../../Controller/eleve_function.dart';
-import '../../../../Controller/eleve_validation.dart';
-import 'info_contact_eleve.dart';
+
 
 class TInformationPersoEleve extends StatelessWidget {
   final controller = Get.find<TEleveController>();

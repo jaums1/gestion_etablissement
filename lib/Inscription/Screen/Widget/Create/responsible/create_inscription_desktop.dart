@@ -26,9 +26,10 @@ class TCreateInscriptionDesktopForm extends StatelessWidget {
     return TCreateForm(
       child: Obx(
         (){
+      
           if(controllerEleve.edite.value) null;
           final DataEleve = controllerEleve.DataEleve.value;
-          final DataClasse = controllerClasse.DataClasse.value;
+          
           return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -42,17 +43,18 @@ class TCreateInscriptionDesktopForm extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
+
                   //// CLASSE
                   InfoClasseInscription(controller: controller,),
                   SizedBox(width: TSizes.md,),
                   /// SCOLARITE
-             DataClasse.LibClasse==null? SizedBox(): InfoPaiementInscription(controller: controller,),
+             DataEleve.Nom==null? SizedBox(): InfoPaiementInscription(controller: controller,),
                 ],
               ),
             ),
              ///// BUTTON VALIDER
              SizedBox(height: TSizes.md,),
-          DataClasse.LibClasse==null? SizedBox():SizedBox(child:
+         DataEleve.Nom==null? SizedBox():SizedBox(child:
            TButton.ValidateButton(titre: "Valider",onPressed:(){ 
            final result = controller.variable.keyInscription.currentState!.validate();
             

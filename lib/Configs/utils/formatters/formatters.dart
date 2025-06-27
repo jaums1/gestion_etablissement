@@ -29,8 +29,8 @@ class TFormatters{
     return DateFormat('yyyy-MMM-dd').format(date);
   }
 
-  static String formatCurrency(double amount){
-    return NumberFormat.currency(locale: 'en_US',symbol: '\$').format(amount);
+  static String formatCurrency( montant){
+    return NumberFormat.currency(locale: 'fr_FR',symbol: 'Fcfa',decimalDigits: 0).format(montant);
   }
 
   static String formatPhoneNumber(String phoneNumber){

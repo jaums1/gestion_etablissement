@@ -6,7 +6,6 @@ import 'package:ecole/Configs/cammon/widgets/texts/text_widget.dart';
 import 'package:ecole/Configs/utils/Constant/colors.dart';
 import 'package:ecole/Configs/utils/Emplacement_Texte/text_affiche_enligne.dart';
 import 'package:ecole/Configs/utils/Emplacement_Texte/texte_cheval.dart';
-import 'package:ecole/Configs/utils/Popup/loaders.dart';
 import 'package:ecole/Inscription/Controller/inscription_function.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -24,6 +23,7 @@ class InfoClasseInscription extends StatelessWidget {
   final formulaire =TFormulaire();
   final controllerScolarite = Get.find<TScolariteController>();
   final controllerClasse = Get.find<TClasseController>();
+
    InfoClasseInscription({super.key, required this.controller});
  final TInscriptionController controller;
   @override
@@ -33,8 +33,8 @@ class InfoClasseInscription extends StatelessWidget {
         width: TDeviceUtility.isDesktopScreen(context)? 500:200,
         child: Obx(
           (){ 
-            final DataClasse = controllerClasse.DataClasse.value;
-             
+            var DataClasse = controllerClasse.DataClasse.value;
+             print("CLasse");
             if (controllerClasse.edite.value==false) {
                controller.variable.FraisAnnexe.text = controllerScolarite.DataScolarite.value.FraisAnnexe.toString();
             controller.variable.DroitInscription.text = controllerScolarite.DataScolarite.value.FraisInscription.toString();
@@ -46,7 +46,9 @@ class InfoClasseInscription extends StatelessWidget {
             }
             }
            
-          
+            if (controller.isFraisInscription.value ) null;
+            if (controller.isFraisAnnexe.value ) null;
+           
             return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -55,7 +57,15 @@ class InfoClasseInscription extends StatelessWidget {
               SizedBox(
                 child: TRechercheAddCreate(
                   onPressedAdd:()=>TClassePage().H_PageShowDialogNouveau() ,
-                  onPressedRecherche: ()=>showSearchClasseDialog(isScolarite: true),
+                  onPressedRecherche: ()async{
+                   final result= await  showSearchClasseDialog(isScolarite: true);
+                   if(result !=null){
+                    controllerClasse.DataClasse.value = result;
+                    DataClasse = controllerClasse.DataClasse.value ;
+                  
+                   }
+                 
+                    },
                 ),
               ),
           DataClasse.LibClasse==null ?SizedBox():      SizedBox(height: TSizes.md,),
@@ -88,10 +98,13 @@ class InfoClasseInscription extends StatelessWidget {
                     Divider(thickness: 1,height: 0.1),
 
                     /////// FRAIS INSCRIPTION
-                    InfoScolariteInscription(formulaire: formulaire,text: "Frais Annexe",
-                    textEditingController: controller.variable.FraisAnnexe,controller: controllerClasse,
-                    onChanged:TInscriptionFunction().H_onChangeFraisAnnexe ,checkboxvalue: controller.isFraisAnnexe.value,
-                    ),
+                    Obx(
+                      (){
+                        return InfoScolariteInscription(formulaire: formulaire,text: "Frais Annexe",
+                      textEditingController: controller.variable.FraisAnnexe,controller: controllerClasse,
+                      onChanged:TInscriptionFunction().H_onChangeFraisAnnexe ,checkboxvalue: controller.isFraisAnnexe.value,
+                      );
+                  } ),
 
                     Divider(thickness: 1,height: 0.1,),
 
