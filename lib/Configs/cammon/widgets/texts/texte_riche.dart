@@ -20,12 +20,12 @@ return Padding(
  }
 
  static Widget TexteRicheLigne({required String textPrimaire,required String textSecondaire,
- Color? colorPrimaire=Colors.black,Color? colorSecondaire=Colors.grey}){
+ Color? colorPrimaire=Colors.black,Color? colorSecondaire=Colors.grey,FontWeight? fontWeight=FontWeight.w400}){
  
   return RichText(text: TextSpan(
     children: [
     TextSpan(text: "$textSecondaire  :  ",style: Theme.of(Get.context!).textTheme.bodyMedium!.copyWith(
-      fontSize: 15, fontFamily: 'Lato',fontWeight: FontWeight.bold,color: colorSecondaire,
+      fontSize: 15, fontFamily: 'Lato',fontWeight: fontWeight,color: colorSecondaire,
       overflow: TextOverflow.ellipsis,
     )),
 

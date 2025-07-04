@@ -3,10 +3,12 @@ import 'package:ecole/Configs/utils/formatters/formatters.dart';
 import 'package:get/get.dart';
 
 import '../../Configs/utils/Implements/function_data.dart';
+import '../../Inscription/Controller/inscription_controller.dart';
 import 'eleve_controller.dart';
 
 class TEleveFunction with TFunctionData {
   final controller = Get.find<TEleveController>();
+  final controllerInscription = Get.find<TInscriptionController>();
   void H_OnChangedSexe(param){
    controller.variable.sexe.text = param;
   }
@@ -22,5 +24,7 @@ class TEleveFunction with TFunctionData {
    controller.variable.dateNaissance.value.text = TFormatters.formatDateFr(date).toString();
    controller.variable.dateNaissanceValide.value.text =TFormatters.formatDateAng(date).toString();
    controller.DataEleve.value.DateNaissance = date;
-  }
+  }  
+  
+
 }

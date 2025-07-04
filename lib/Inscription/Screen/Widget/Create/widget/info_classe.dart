@@ -6,119 +6,194 @@ import 'package:ecole/Configs/cammon/widgets/texts/text_widget.dart';
 import 'package:ecole/Configs/utils/Constant/colors.dart';
 import 'package:ecole/Configs/utils/Emplacement_Texte/text_affiche_enligne.dart';
 import 'package:ecole/Configs/utils/Emplacement_Texte/texte_cheval.dart';
-import 'package:ecole/Inscription/Controller/inscription_function.dart';
+import 'package:ecole/Configs/utils/formatters/formatters.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../../Classe/Controller/classe_controller.dart';
 import '../../../../../Configs/cammon/widgets/Recherche_Add/recherche_add_create.dart';
+import '../../../../../Configs/cammon/widgets/buttons/button.dart';
 import '../../../../../Configs/cammon/widgets/containers/rounded_container_create.dart';
 import '../../../../../Configs/utils/Constant/sizes.dart';
 import '../../../../../Configs/utils/Device/devices_utility.dart';
+import '../../../../../Configs/utils/Popup/loaders.dart';
+import '../../../../../Modalite_Paiement/Model/modalite_paiement_model.dart';
 import '../../../../../Scolarite/Controller/scolarite_controller.dart';
 import '../../../../Controller/inscription_controller.dart';
+import '../../../../Controller/inscription_validation.dart';
+import 'info_paiement.dart';
 
 class InfoClasseInscription extends StatelessWidget {
   final combo = TCombo();
   final formulaire =TFormulaire();
+    final validation= TInscriptionValidation();
   final controllerScolarite = Get.find<TScolariteController>();
   final controllerClasse = Get.find<TClasseController>();
-
-   InfoClasseInscription({super.key, required this.controller});
- final TInscriptionController controller;
+final controller = Get.find<TInscriptionController>();
+   InfoClasseInscription({super.key});
   @override
   Widget build(BuildContext context) {
-    return TRoundedContainerCreate(
-      child: SizedBox(
-        width: TDeviceUtility.isDesktopScreen(context)? 500:200,
-        child: Obx(
-          (){ 
-            var DataClasse = controllerClasse.DataClasse.value;
-             print("CLasse");
-            if (controllerClasse.edite.value==false) {
-               controller.variable.FraisAnnexe.text = controllerScolarite.DataScolarite.value.FraisAnnexe.toString();
-            controller.variable.DroitInscription.text = controllerScolarite.DataScolarite.value.FraisInscription.toString();
-            controller.variable.Scolarite.text = controllerScolarite.DataScolarite.value.MontantScolarite.toString();
-            if (controller.variable.FraisAnnexe.text=="null"){
-               controller.variable.FraisAnnexe.clear();
-               controller.variable.DroitInscription.clear();
-               controller.variable.Scolarite.clear();
-            }
-            }
-           
-            if (controller.isFraisInscription.value ) null;
-            if (controller.isFraisAnnexe.value ) null;
-           
-            return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ///// RECHERHE ET AJOUT
-              
-              SizedBox(
-                child: TRechercheAddCreate(
-                  onPressedAdd:()=>TClassePage().H_PageShowDialogNouveau() ,
-                  onPressedRecherche: ()async{
-                   final result= await  showSearchClasseDialog(isScolarite: true);
-                   if(result !=null){
-                    controllerClasse.DataClasse.value = result;
-                    DataClasse = controllerClasse.DataClasse.value ;
-                  
-                   }
+  
+    return Obx(
+      (){
+        if(controllerClasse.DataClasse.value.IDClasse !=null){
+         final data =controllerScolarite.DataScolarite.value.DataTable==null?TModalitePaiementModel():
+         controllerScolarite.DataScolarite.value.DataTable![0];
+         String dateChaine ="${data.JourMois} ${DateTime.now().year}";
+         int? montant = data.Montant;
+          controller.variable.DateProchainVersement.text = TFormatters.formatChaineVersDateFr(dateChaine);
+          controller.DataInscription.value.DateProchainVersement = TFormatters.formatChaineVersDateAng(dateChaine);
+
+          ///// PAIEMENT 
+          controller.variable.MontantVersement.text =montant.toString();
+          controller.DataInscription.value.MontantVersement =montant;
+        }
+
+         var DataClasse = controllerClasse.DataClasse.value;
                  
-                    },
-                ),
+                  if (controllerClasse.edite.value==false) {
+                     controller.variable.FraisAnnexe.text = controllerScolarite.DataScolarite.value.FraisAnnexe.toString();
+                  controller.variable.DroitInscription.text = controllerScolarite.DataScolarite.value.FraisInscription.toString();
+                  controller.variable.Scolarite.text = controllerScolarite.DataScolarite.value.MontantScolarite.toString();
+                  if (controller.variable.FraisAnnexe.text=="null"){
+                     controller.variable.FraisAnnexe.clear();
+                     controller.variable.DroitInscription.clear();
+                     controller.variable.Scolarite.clear();
+                  }
+                  }
+                 
+        return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+         SizedBox(
+          child: Wrap(
+            crossAxisAlignment: WrapCrossAlignment.end,
+            spacing: TSizes.md,
+            runSpacing: TSizes.md,
+            children: [
+              ////// INFORMATION DE LA CLASSE 
+              TRoundedContainerCreate(
+                child: SizedBox(
+                  width: TDeviceUtility.isDesktopScreen(context) ? 500 : 200,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ///// RECHERHE ET AJOUT
+                      SizedBox(
+                        child: TRechercheAddCreate(
+                          isAdd: false,
+                          onPressedAdd:()=>TClassePage().H_PageShowDialogNouveau() ,
+                          onPressedRecherche: ()=> showSearchClasseDialog(isScolarite: true)
+                        ),
+                      ),
+                        
+                      DataClasse.LibClasse==null ?SizedBox(): SizedBox(height: TSizes.md,),
+                        
+                    ////// CLASSE ET NIVEAU
+                      DataClasse.LibClasse==null ?SizedBox() :  TAffichageTextEnChevel(
+                        label: "Classe",
+                        color: TColors.primary,
+                        valeur: DataClasse.LibClasse,
+                        onPressed:()=> TClassePage().H_PageShowDialogModifier(id: DataClasse.IDClasse) ,
+                       ),
+
+                      SizedBox(height: TSizes.xs,),
+                      
+                    //// NIVEAU SCOLAIRE
+                  DataClasse.LibClasse==null ?SizedBox() :  TAffichageTextEnLigne(
+                      label: "Niveau d'etude",
+                      valeur: DataClasse.DataNiveauSerie?.niveauSerie??"",
+                    ),
+                            
+                  SizedBox(height: TSizes.md,),
+                   
+                    // INFORMATION SUR FRAIS INSCRIPTION, FRAIS ANNEXE ET SCOLARITE
+                    DataClasse.LibClasse==null ?SizedBox(): SizedBox(
+                        child: Column(
+                          children: [
+                            /////// FRAIS INSCRIPTION
+                            Obx(
+                              ()=>InfoScolariteInscription(formulaire: formulaire,text: "Frais Inscription",
+                              textEditingController: controller.isFraisInscription.value==true? 
+                              TextEditingController(text:TFormatters.formatCurrency(
+                               int.parse(controller.variable.DroitInscription.text)
+                                ) )
+                              :controller.variable.DroitInscription
+                              ,controller: controllerClasse,
+                              onChanged:(value){
+                                controller.isFraisInscription.value=value!;
+                              },checkboxvalue: controller.isFraisInscription.value,
+                              ),
+                            ),
+                            
+                            Divider(thickness: 1,height: 0.1),
+                            
+                            /////// FRAIS ANNEXE  TInscriptionFunction().H_onChangeFraisAnnexe
+                            Obx(
+                              ()=>InfoScolariteInscription(formulaire: formulaire,text: "Frais Annexe",
+                                textEditingController: controller.isFraisAnnexe.value==true? 
+                              TextEditingController(text:TFormatters.formatCurrency(
+                               int.parse(controller.variable.FraisAnnexe.text)
+                                ) )
+                              :controller.variable.FraisAnnexe
+                                
+                                ,controller: controllerClasse,
+                                onChanged:(value){
+                                  controller.isFraisAnnexe.value =value!;
+                                  }  ,checkboxvalue: controller.isFraisAnnexe.value,
+                                )
+                            ),
+                         
+                            
+                            Divider(thickness: 1,height: 0.1,),
+                            
+                            /////// SCOLARITE
+                            InfoScolariteInscription(formulaire: formulaire,text: "Scolarite",checkbox: false,
+                            textEditingController: controller.variable.Scolarite,controller: controllerClasse,
+                            ),
+                          ],
+                        ),
+                      )
+                        
+                   
+                    ],
+                  ),
+                ) ,
               ),
-          DataClasse.LibClasse==null ?SizedBox():      SizedBox(height: TSizes.md,),
-               ////// CLASSE ET NIVEAU
-        DataClasse.LibClasse==null ?SizedBox() :  TAffichageTextEnChevel(
-                label: "Classe",
-                color: TColors.primary,
-                valeur: DataClasse.LibClasse,
-                onPressed:()=> TClassePage().H_PageShowDialogModifier(id: DataClasse.IDClasse) ,
-               ),
-              SizedBox(height: TSizes.xs,),
-            //// NIVEAU SCOLAIRE
-          DataClasse.LibClasse==null ?SizedBox() :  TAffichageTextEnLigne(
-              label: "Niveau d'etude",
-              valeur: DataClasse.DataNiveauSerie?.niveauSerie??"",
-            ),
+      
+              ////// INFORMATION PAIEMENT
+          DataClasse.IDClasse == null? SizedBox():
+          TRoundedContainerCreate(
+                child:SizedBox(
+                   width: TDeviceUtility.isDesktopScreen(context) ? 500 : 200,
+                   child: InfoPaiementInscription(controller: controller,),
+                ) ,
+                )
+              
+            ],),
+         ),  
+        
+                SizedBox(height: TSizes.md,),
+      ///// BUTTON VALIDER
+                
+         DataClasse.IDClasse==null? SizedBox():SizedBox(child:
+           TButton.ValidateButton(titre: "Valider",onPressed:(){ 
+           final result = controller.variable.keyInscription.currentState!.validate();
+            
+            if (result) {
+              if(controller.isFraisAnnexe.value && controller.isFraisInscription.value){
+                   validation.H_Enregistrer(); 
+              }else{
+                TLoader.errorSnack(title: "CASE A COCHE",message:"Veuillez cocher "
+                "les cases a cocher pour valider le paiement");
+              }
+            }
+            }))
 
-          SizedBox(height: TSizes.md,),
 
-              // INFORMATION SUR FRAIS INSCRIPTION, FRAIS ANNEXE ET SCOLARITE
-       DataClasse.LibClasse==null ?SizedBox(): SizedBox(
-                child: Column(
-                  children: [
-                    /////// FRAIS INSCRIPTION
-                    InfoScolariteInscription(formulaire: formulaire,text: "Frais Inscription",
-                    textEditingController: controller.variable.DroitInscription,controller: controllerClasse,
-                    onChanged:TInscriptionFunction().H_onChangeFraisInscription ,checkboxvalue: controller.isFraisInscription.value,
-                    ),
 
-                    Divider(thickness: 1,height: 0.1),
-
-                    /////// FRAIS INSCRIPTION
-                    Obx(
-                      (){
-                        return InfoScolariteInscription(formulaire: formulaire,text: "Frais Annexe",
-                      textEditingController: controller.variable.FraisAnnexe,controller: controllerClasse,
-                      onChanged:TInscriptionFunction().H_onChangeFraisAnnexe ,checkboxvalue: controller.isFraisAnnexe.value,
-                      );
-                  } ),
-
-                    Divider(thickness: 1,height: 0.1,),
-
-                    /////// SCOLARITE
-                    InfoScolariteInscription(formulaire: formulaire,text: "Scolarite",checkbox: false,
-                    textEditingController: controller.variable.Scolarite,controller: controllerClasse,
-                    ),
-                  ],
-                ),
-              )
-            ],
-          );}
-        ),
-      ),
+        ],
+      );}
     );
   }
 }

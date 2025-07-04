@@ -24,7 +24,9 @@ class TInscriptionVariable {
   final MontantVersement = TextEditingController();
   final DroitInscription = TextEditingController();
   final FraisAnnexe = TextEditingController();
-  final DateInscription = TextEditingController();
+  final DateInscription = TextEditingController().obs;
+  final DateProchainVersement = TextEditingController();
+  final Date = TextEditingController();
   final NbrVersement = TextEditingController();
   final NetAPayer = TextEditingController();
   final ResteAPayer = TextEditingController();
@@ -39,7 +41,7 @@ class TInscriptionVariable {
   MontantVersement.clear();
   DroitInscription.clear();
   FraisAnnexe.clear();
-  DateInscription.clear();
+  DateInscription.value.clear();
   NbrVersement.clear();
   NetAPayer.clear();
   ResteAPayer.clear();

@@ -1,3 +1,4 @@
+import 'package:ecole/Configs/utils/Constant/generer_reference.dart';
 import 'package:get/get.dart';
 import '../../Configs/utils/Dates/showdata.dart';
 import '../../Configs/utils/formatters/formatters.dart';
@@ -15,14 +16,12 @@ class TVersementFunction {
   }
 
   void H_GenererReference() {
-    final now = DateTime.now();
-    final reference = 'Verse-${now.millisecondsSinceEpoch}';
-    controller.variable.Ref.text = reference;
+    controller.variable.Ref.text = TGenerationReference.H_GenererReference(ref: "Vers");
    
   }
 
    void H_OnChangedDateProchainVersement()async{
-   final date= await TShowDate().H_RecupDate();
+   final date= await TShowDate().H_RecupDate(dateLointaine: true);
    controller.variable.DateProchainVersement.text = TFormatters.formatDateFr(date).toString();
    controller.DataVersement.DateProchainVersement = date;
   }

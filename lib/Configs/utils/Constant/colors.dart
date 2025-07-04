@@ -56,4 +56,9 @@ class TColors{
     static const Color lightgrey=Color(0xFFF9F9F9);
     static const Color white=Color(0xFFFFFFFF);
     
+    //// MONTANT
+  static  const Color netAPayerColor = Color(0xFF1E3A8A); // Bleu foncé
+  static  const Color paiementColor = Color(0xFF10B981);  // Vert
+  static const Color resteAPayerColor = Color(0xFFF97316); // Orange
+
 }

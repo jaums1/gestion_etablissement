@@ -1,10 +1,14 @@
+import 'package:ecole/Classe/Controller/classe_filtre.dart';
 import 'package:ecole/Configs/utils/Implements/filtre_data.dart';
 import 'package:get/get.dart';
 
+import '../../Eleves/Controller/eleve_filtre.dart';
 import 'inscription_controller.dart';
 
 class TInscriptionFiltre with TFiltre {
   final controller = Get.find<TInscriptionController>();
+  final filtreEleve = TFiltreEleve();
+  final filtreClasse = TClasseFiltre();
   
   @override
   void H_FiltreElement({String param = ""}) {
@@ -18,8 +22,11 @@ class TInscriptionFiltre with TFiltre {
   @override
   H_FiltreElementParID({int? id}) {
     final index = controller.DataTableInscription.indexWhere((e) => e.IDInscription == id);
-    if (index == -1) return;
-    controller.DataInscription = controller.DataTableFiltreInscription[index];
+    if (index == -1) return false;
+    controller.DataInscription.value = controller.DataTableInscription[index];
+    filtreClasse.H_FiltreElementParID(id:controller.DataInscription.value.IDClasse );
+    filtreEleve.H_FiltreElementParID(id:controller.DataInscription.value.IDEtudiant );
+    return true;
   }
 
   @override

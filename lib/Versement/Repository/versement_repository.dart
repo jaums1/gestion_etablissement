@@ -44,7 +44,8 @@ class TVersementRepository extends GetxController with TRepositoryData<TVersemen
   @override
   Future H_RecupData({String? param}) async {
     try {
-      final data = await THttpHelper.get(TEndpoint.linkVersement);
+      final data = param =="" ? await THttpHelper.get(TEndpoint.linkVersement):
+      await THttpHelper.get("${TEndpoint.linkVersement}/$param") ;
       return data;
     } catch (e) {
       return null;

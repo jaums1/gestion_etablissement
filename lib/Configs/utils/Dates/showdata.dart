@@ -5,12 +5,12 @@ class TShowDate{
 
 
 
-  H_RecupDate() async{
+  H_RecupDate({bool? dateLointaine = false}) async{
 
     final DateTime? picked = await showDatePicker(
       context: Get.context!,
-      firstDate: DateTime(1000),
-      lastDate: DateTime.now(),
+      firstDate:dateLointaine==false? DateTime(1000) :DateTime.now(),
+      lastDate: dateLointaine==false? DateTime.now() :DateTime(9000),
       keyboardType : TextInputType.datetime,
       initialEntryMode:DatePickerEntryMode.calendarOnly,
       helpText : "Selectionner une date",

@@ -1,7 +1,6 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:async';
-import 'dart:convert';
 
+
+import 'package:ecole/Configs/utils/formatters/formatters.dart';
 import 'package:flutter/material.dart';
 
 class TVersementModel {
@@ -40,8 +39,8 @@ class TVersementModel {
       'TypePaiement': TypePaiement,
       'Montant': Montant,
       'ResteAPayer': ResteAPayer,
-      'DateVersement': DateVersement?.millisecondsSinceEpoch,
-      'DateProchainVersement': DateProchainVersement?.millisecondsSinceEpoch,
+      'DateVersement': TFormatters.formatDate(DateVersement) ,
+      'DateProchainVersement':TFormatters.formatDate(DateProchainVersement),
     };
   }
 
@@ -70,10 +69,10 @@ class TVersementModel {
       TypePaiement: map['TypePaiement'] != null ? map['TypePaiement'] as String : null,
       Montant: map['Montant'] != null ? map['Montant'] as int : null,
       ResteAPayer: map['ResteAPayer'] != null ? map['ResteAPayer'] as int : null,
-      DateCreation: map['DateCreation'] != null ? DateTime.fromMillisecondsSinceEpoch(map['DateCreation'] as int) : null,
-      HeureCreation: map['HeureCreation'] ?? TimeOfDay.now(),
-      DateVersement: map['DateVersement'] != null ? DateTime.fromMillisecondsSinceEpoch(map['DateVersement'] as int) : null,
-      DateProchainVersement: map['DateProchainVersement'] != null ? DateTime.fromMillisecondsSinceEpoch(map['DateProchainVersement'] as int) : null,
+      DateCreation: map['DateCreation'] != null ? DateTime.parse(map['DateCreation']) : null,
+      // HeureCreation: map['HeureCreation'] ,
+      DateVersement: map['DateVersement'] != null ? DateTime.parse(map['DateVersement']) : null,
+      DateProchainVersement: map['DateProchainVersement'] != null ? DateTime.parse(map['DateProchainVersement'] ) : null,
     );
   }
 

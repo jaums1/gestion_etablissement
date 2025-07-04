@@ -17,9 +17,10 @@ class TInscriptionValidation with TControllerData {
    
     if (filtre.H_VerificationInscription(id: controllerEleve.DataEleve.value.IDEtudiant) != -1) {
       TLoader.errorSnack(title: "INSCRIPTION", message: "Ce matricule ${controllerEleve.DataEleve.value.Matricule}"
-      "au nom ${controllerEleve.DataEleve.value.Nom} ${controllerEleve.DataEleve.value.Prenoms} est déjà inscrit(e)");
+      " au nom ${controllerEleve.DataEleve.value.Nom} ${controllerEleve.DataEleve.value.Prenoms} est déjà inscrit(e)");
       return;
     }
+    
     final result = await controller.H_Enregistrer();
     if (result) {
       TLoader.successSnack(title: "ENREGISTRER", message: "Vos données ont été enregistrées");

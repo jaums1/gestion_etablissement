@@ -24,7 +24,7 @@ class TInscriptionController extends GetxController with TControllerData {
   final isInitialise = false.obs;
   var isFraisAnnexe = false.obs;
   var isFraisInscription = false.obs;
-  var DataInscription = TInscriptionModel();
+  var DataInscription = TInscriptionModel().obs;
   var DataTableInscription = <TInscriptionModel>[].obs;
   var DataTableFiltreInscription = <TInscriptionModel>[].obs;
 
@@ -35,32 +35,31 @@ class TInscriptionController extends GetxController with TControllerData {
   //////TRAITEMENT
   HLitInscription({String? param = "AFFICHIER"}) {
     if (param == "AFFICHIER") {
-      variable.IDInscription.text    = DataInscription.IDInscription.toString();
-      variable.IDClasse.text         = DataInscription.IDClasse.toString();
-      variable.MontantVersement.text = DataInscription.MontantVersement.toString();
-      variable.DroitInscription.text = DataInscription.DroitInscription.toString();
-      variable.FraisAnnexe.text      = DataInscription.FraisAnnexe.toString();
-      variable.DateInscription.text  = DataInscription.DateInscription.toString();
-      variable.NetAPayer.text        = DataInscription.NetAPayer.toString();
-      variable.ResteAPayer.text      = DataInscription.ResteAPayer.toString();
-      variable.Paiement.text         = DataInscription.Paiement.toString();
-      variable.IDEtudiant.text          = DataInscription.IDEtudiant.toString();
-      variable.Statut.text           = DataInscription.Statut.toString();
+      variable.IDInscription.text    = DataInscription.value.IDInscription.toString();
+      variable.IDClasse.text         = DataInscription.value.IDClasse.toString();
+      variable.MontantVersement.text = DataInscription.value.MontantVersement.toString();
+      variable.DroitInscription.text = DataInscription.value.DroitInscription.toString();
+      variable.FraisAnnexe.text      = DataInscription.value.FraisAnnexe.toString();
+      variable.DateInscription.value.text  = DataInscription.value.DateInscription.toString();
+      variable.NetAPayer.text        = DataInscription.value.NetAPayer.toString();
+      variable.ResteAPayer.text      = DataInscription.value.ResteAPayer.toString();
+      variable.Paiement.text         = DataInscription.value.Paiement.toString();
+      variable.IDEtudiant.text          = DataInscription.value.IDEtudiant.toString();
+      variable.Statut.text           = DataInscription.value.Statut.toString();
     } else {
-      
-      DataInscription.IDClasse        = controllerClasse.DataClasse.value.IDClasse;
-      DataInscription.IDEtablissement = controllerClasse.DataClasse.value.IDEtablissement;
-      DataInscription.MontantVersement= int.tryParse(variable.MontantVersement.text) ?? 0;
-      DataInscription.DroitInscription= int.tryParse(variable.DroitInscription.text) ?? 0;
-      DataInscription.FraisAnnexe     = int.tryParse(variable.FraisAnnexe.text) ?? 0;
-      int sommeAnnexeInscription      = DataInscription.FraisAnnexe!+ DataInscription.DroitInscription!;
+     
+      DataInscription.value.IDClasse        = controllerClasse.DataClasse.value.IDClasse;
+      DataInscription.value.IDEtablissement = controllerClasse.DataClasse.value.IDEtablissement;
+      DataInscription.value.MontantVersement= int.tryParse(variable.MontantVersement.text) ?? 0;
+      DataInscription.value.DroitInscription= int.tryParse(variable.DroitInscription.text) ?? 0;
+      DataInscription.value.FraisAnnexe     = int.tryParse(variable.FraisAnnexe.text) ?? 0;
+      int sommeAnnexeInscription      = DataInscription.value.FraisAnnexe!+ DataInscription.value.DroitInscription!; 
       int scolarite                   = int.parse(variable.Scolarite.text);
-      DataInscription.NetAPayer       = sommeAnnexeInscription+scolarite;
-      
-      DataInscription.ResteAPayer     =  DataInscription.NetAPayer! -DataInscription.MontantVersement!-sommeAnnexeInscription;
-      DataInscription.Paiement        = sommeAnnexeInscription+DataInscription.MontantVersement!;
-      DataInscription.IDEtudiant      = controllerEleve.DataEleve.value.IDEtudiant;
-      DataInscription.Statut          = TStatutCustom.paiement(DataInscription.ResteAPayer);
+      DataInscription.value.NetAPayer       = sommeAnnexeInscription+scolarite;
+      DataInscription.value.ResteAPayer     =  DataInscription.value.NetAPayer! -DataInscription.value.MontantVersement!-sommeAnnexeInscription;
+      DataInscription.value.Paiement        = sommeAnnexeInscription+DataInscription.value.MontantVersement!;
+      DataInscription.value.IDEtudiant      = controllerEleve.DataEleve.value.IDEtudiant;
+      DataInscription.value.Statut          = TStatutCustom.paiement(DataInscription.value.ResteAPayer);
     }
   }
 
@@ -76,13 +75,18 @@ class TInscriptionController extends GetxController with TControllerData {
   H_Enregistrer() async {
     try {
       HLitInscription(param: "ENVOYER");
+     /// COMPARAISON
+      if(DataInscription.value.NetAPayer! < DataInscription.value.Paiement!){
+       TLoader.errorSnack(title: "Erreur",message: "Le montant saisi dépasse le net à payer.");
+        return false;
+      }
 
       ///LOADING
       TShowdialogue().showWidgetLoad(widgets: 
         TAnimationLoaderWidget(text: "enregistrement en cours...", color: Colors.white,
           animation: TImages.docerAnimation, width: 250,));
       ///// ENVOIE DES DONNEES
-      final result = await repositorycontroller.H_EnregistrerData(DataInscription);
+      final result = await repositorycontroller.H_EnregistrerData(DataInscription.value);
       H_RecupeData();
       ///// FERMER LOADING
       Get.back();
@@ -93,7 +97,7 @@ class TInscriptionController extends GetxController with TControllerData {
       }
       return true;
     } catch (e) {
-      TLoader.errorSnack(title: "Erreur", message: "Veuillez vérifier votre connexion source erreur $e");
+      TLoader.errorSnack(title: "Erreur", message: "Veuillez vérifier votre connexion sources erreur $e");
       return false;
     }
   }
@@ -137,7 +141,7 @@ class TInscriptionController extends GetxController with TControllerData {
           animation: TImages.docerAnimation, width: 250,));
 
       ///// ENVOIE DES DONNEES
-      final result = await repositorycontroller.H_ModifierData(DataInscription);
+      final result = await repositorycontroller.H_ModifierData(DataInscription.value);
       ///// FERMER LOADING
       H_RecupeData();
       Get.back();
@@ -156,10 +160,12 @@ class TInscriptionController extends GetxController with TControllerData {
   @override
   void H_RecupeData({String? param}) async {
     try {
+  
       isLoading.value = false;
       DataTableInscription.clear();
       final data = await repositorycontroller.H_RecupData(param: param);
       isLoading.value = true;
+      // print(data);
       if (data is List) {
         //// RECUPERER LA LISTE DES INSCRIPTIONS
         DataTableInscription.value = data.map((datas) => TInscriptionModel.fromMap(datas)).toList();
@@ -180,7 +186,7 @@ class TInscriptionController extends GetxController with TControllerData {
 
   @override
   void H_Initialise() {
-    DataInscription = TInscriptionModel();
+    DataInscription.value = TInscriptionModel();
   }
 
  

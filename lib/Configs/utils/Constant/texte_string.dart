@@ -92,7 +92,7 @@ static const decoupageScolaire ="Decoupage Scolaire";
 static const classe ="Classe";
 
 static List<String> jours = List.generate(31, (index) => "${index+1}".padLeft(2, '0'));
-static List<String> Annees = List.generate(10, (index) => "${DateTime.now().year-index}");
+static List<String> Annees = List.generate(10, (index) => "${DateTime.now().year-index-1} - ${DateTime.now().year-index}");
 
 static const List<String> mois = [
   "Janvier",

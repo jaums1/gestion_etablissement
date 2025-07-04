@@ -1,8 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
+import 'package:ecole/Classe/Model/classe_model.dart';
+import 'package:ecole/Eleves/Model/eleve_model.dart';
 
+import '../../Configs/utils/Constant/generer_reference.dart';
 import '../../Configs/utils/formatters/formatters.dart';
-
 
 class TInscriptionModel {
    int? IDInscription;
@@ -18,12 +19,16 @@ class TInscriptionModel {
    int? ResteAPayer;
    int? Paiement;
    String? Annee;
+   String? TypePaiement;
    String? MoisEnLettre;
    String? MoisAnnee;
    DateTime? DateCreation;
+   DateTime? DateProchainVersement;
    String? HeureCreation;
    int? IDEtudiant;
    String? Statut;
+   TClasseModel? DataClasse;
+   TModelEleve? DataEleve;
 
   TInscriptionModel({
     this.IDInscription,
@@ -45,6 +50,10 @@ class TInscriptionModel {
     this.HeureCreation,
     this.IDEtudiant,
     this.Statut,
+    this.TypePaiement,
+    this.DataClasse,
+    this.DataEleve,
+    this.DateProchainVersement,
   });
 
 
@@ -58,11 +67,14 @@ class TInscriptionModel {
       'DroitInscription': DroitInscription,
       'FraisAnnexe': FraisAnnexe,
       'DateInscription': TFormatters.formatDate(DateInscription),
+      'DateProchainVersement': TFormatters.formatDate(DateProchainVersement),
       'NbrVersement': NbrVersement,
       'NetAPayer': NetAPayer,
       'ResteAPayer': ResteAPayer,
       'Paiement': Paiement,
       'IDEtudiant': IDEtudiant,
+      'TypePaiement': TypePaiement,
+      'RefVersement':TGenerationReference.H_GenererReference(ref:"Vers" ),
       
     };
   }
@@ -77,6 +89,7 @@ class TInscriptionModel {
       DroitInscription: map['DroitInscription'] != null ? map['DroitInscription'] as int : null,
       FraisAnnexe: map['FraisAnnexe'] != null ? map['FraisAnnexe'] as int : null,
       DateInscription: map['DateInscription'] != null ? DateTime.parse(map['DateInscription']) : null,
+      DateProchainVersement: map['DateProchainVersement'] != null ? DateTime.parse(map['DateProchainVersement']) : null,
       NbrVersement: map['NbrVersement'] != null ? map['NbrVersement'] as int : null,
       NetAPayer: map['NetAPayer'] != null ? map['NetAPayer'] as int : null,
       ResteAPayer: map['ResteAPayer'] != null ? map['ResteAPayer'] as int : null,
@@ -88,8 +101,12 @@ class TInscriptionModel {
       HeureCreation: map['HeureCreation'] != null ? map['HeureCreation'] as String : null,
       IDEtudiant: map['IDEtudiant'] != null ? map['IDEtudiant'] as int : null,
       Statut: map['Statut'] != null ? map['Statut'] as String : null,
+      DataClasse: map['DataClasse'] != null ? TClasseModel.fromMap(map['DataClasse']) : null,
+      DataEleve: map['DataEtudiant'] != null ? TModelEleve.fromMap(map['DataEtudiant'])  : null,
     );
   }
 
  
+  
+  
 } 

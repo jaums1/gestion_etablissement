@@ -6,6 +6,20 @@ class TFormatters{
     date ??= DateTime.now();
     // return DateFormat('dd-MMM-yyyy').format(date);
     return DateFormat('yyyyMMdd').format(date);
+  }
+
+    static String formatChaineVersDateFr(dateChaine){
+      //// CONVERTIR DATE CHAINE EN DATE  
+       DateTime  date = DateFormat("dd MMMM yyyy","fr_FR").parse(dateChaine.toString().toLowerCase());
+    // return DateFormat('dd-MMM-yyyy').format(date);
+    return  formatDateFr(date);         //DateFormat('yyyyMMdd').format(date);
+  } 
+  
+  static DateTime formatChaineVersDateAng(dateChaine){
+      //// CONVERTIR DATE CHAINE EN DATE  
+       DateTime  date = DateFormat("dd MMMM yyyy","fr_FR").parse(dateChaine.toString().toLowerCase());
+    // return DateFormat('dd-MMM-yyyy').format(date);
+    return  formatDateAng(date);         //DateFormat('yyyyMMdd').format(date);
   } 
 
   static String formatDateFr(DateTime? date){
@@ -30,6 +44,7 @@ class TFormatters{
   }
 
   static String formatCurrency( montant){
+    montant= montant??0;
     return NumberFormat.currency(locale: 'fr_FR',symbol: 'Fcfa',decimalDigits: 0).format(montant);
   }
 

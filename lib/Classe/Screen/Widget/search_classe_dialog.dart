@@ -1,5 +1,6 @@
 import 'package:ecole/Classe/Model/classe_model.dart';
 import 'package:ecole/Configs/cammon/widgets/formulaire/form.dart';
+import 'package:ecole/Configs/utils/Popup/loaders.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -20,15 +21,8 @@ class SearchClasseDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-      bool? isRecherche=true;
-    // var filteredClasses=<TClasseModel>[];
-    var DataTableClasse=<TClasseModel>[];
-        classeController.DataTableFiltreClasse.value=classeController.DataTableClasse;
-    var listeScolarite=controllerScolrite.DataTableScolarite.map((e) =>e.IDNiveauSerie).toList();
-      if (isScolarite==true) {
-                  DataTableClasse =   classeController.DataTableFiltreClasse.map((e) => e)
-                        .where((data) => listeScolarite.contains(data.IDNiveauSerie)).toList();      
-            }
+  classeController.DataTableFiltreClasse.value=classeController.DataTableClasse;
+
     return AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       backgroundColor: Colors.white,
@@ -40,23 +34,11 @@ class SearchClasseDialog extends StatelessWidget {
             hintText: 'Nom ou Code de la classe',
             label: 'Rechercher',
             iconPrefix: Iconsax.search_normal,
-            onChanged: (value) => isScolarite==true ?filtre.H_FiltreElementParIDNiveauSerie(param: value,
-            DataTableClasse: DataTableClasse,length:DataTableClasse.length)
-              : filtre.H_FiltreElement(param: value),
+            onChanged: (value) => filtre.H_FiltreElement(param: value),
           ),
           const SizedBox(height: 20),
           Obx(() {
          List<TClasseModel> filteredClasses= classeController.DataTableFiltreClasse;
-           if(classeController.DataTableFiltreClasse.isEmpty) null;
-            // filteredClasses = classeController.DataTableFiltreClasse;
-            
-             if (isScolarite == false) filteredClasses = classeController.DataTableFiltreClasse;
-             if (isScolarite == true){
-               isRecherche == true?filteredClasses =  DataTableClasse:null;
-               isRecherche = false;
-             }
-
-
 
             return SizedBox(
               height: 300,
@@ -72,6 +54,18 @@ class SearchClasseDialog extends StatelessWidget {
                     title: Text(classe.LibClasse.toString()),
                     subtitle: Text('Niveau étude: ${classe.DataNiveauSerie!.niveauSerie.toString()}'),
                     onTap: () {
+                       if( classeController.DataClasse.value.IDClasse==classe.IDClasse ){
+                        Get.back();
+                        return;
+                      } 
+                    /////// RECHERCHE
+                 final index=   controllerScolrite.DataTableScolarite.indexWhere((element) => element.IDNiveauSerie==classe.IDNiveauSerie ,);
+                    
+                    if(index==-1){
+                      TLoader.warningSnack(title: "SCOLARITE",message: "Vous n'avez pas encore definir de scolarite" 
+                     " pour ${classe.DataNiveauSerie!.niveauSerie}");
+                      return;
+                    }
                       TClasseFiltre().H_SelectClasseNiveauSerieParID(param: classe.LibClasse);
                       
                       classeController.DataClasse.value = classe;

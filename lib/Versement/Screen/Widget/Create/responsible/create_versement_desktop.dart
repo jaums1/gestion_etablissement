@@ -8,7 +8,7 @@ import '../widget/form_versement.dart';
 
 
 class TCreateVersementDesktopScreen extends StatelessWidget {
-  const TCreateVersementDesktopScreen({super.key,this.show = true});
+  const TCreateVersementDesktopScreen({super.key,this.show = false});
  final bool? show;
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class TCreateVersementDesktopScreen extends StatelessWidget {
               SizedBox(height: TSizes.spaceBtwItems,),
             SizedBox(
               width: 350,
-              child: FormVersement(argument: argument,)),
+              child: FormVersement(argument: argument,show: show,)),
           ],
         ),
       ),

@@ -1,16 +1,59 @@
 import 'package:get/get.dart';
+import '../../Configs/routes/route.dart';
+import '../../Configs/utils/Implements/controller_data.dart';
+import '../../Configs/utils/Popup/loaders.dart';
+import '../../Configs/utils/Popup/showdialogue.dart';
 import 'versement_controller.dart';
 
-class TVersementValidation {
+class TVersementValidation with TControllerData  {
   final controller = Get.find<TVersementController>();
+ 
+ 
+  @override
+  H_Enregistrer() async {
 
-  bool H_VerificationChamps() {
-    if (controller.variable.IDInscription.text.isEmpty) return false;
-    if (controller.variable.IDAnneeScolaire.text.isEmpty) return false;
-    if (controller.variable.TypePaiement.text.isEmpty) return false;
-    if (controller.variable.Montant.text.isEmpty) return false;
-    if (controller.variable.DateVersement.text.isEmpty) return false;
-    if (controller.variable.DateProchainVersement.text.isEmpty) return false;
-    return true;
+    final result = await controller.H_Enregistrer();
+    if (result) {
+      TLoader.successSnack(title: "ENREGISTRER", message: "Vos données ont été enregistrées");
+      Get.offNamed(TRoutes.inscription);
+    }
   }
+
+  @override
+  H_Modifier() async {
+    final result = await controller.H_Modifier();
+    if (result) {
+      TLoader.successSnack(title: "MODIFIER", message: "Vos données ont été modifiées");
+      Get.offNamed(TRoutes.inscription);
+    }
+  }
+
+  @override
+  H_EnregistrerShowDialog() async {
+
+    final result = await controller.H_Enregistrer();
+    if (result) {
+      TLoader.successSnack(title: "ENREGISTRER", message: "Vos données ont été enregistrées");
+      Get.offNamed(TRoutes.inscription);
+    }
+  }
+
+  @override
+  H_ModifierShowDialog() async {
+    final result = await controller.H_Modifier();
+    if (result) {
+      TLoader.successSnack(title: "MODIFIER", message: "Vos données ont été modifiées");
+      Get.offNamed(TRoutes.inscription);
+    }
+  }
+
+  @override
+  H_Supprimer({int? id, String? param}) {
+    TShowdialogue().showQuestion(
+      titre: "Suppression",
+      message: "Voulez-vous vraiment supprimer ce paiement?",
+      onPressedValide: () => controller.H_Supprimer(id: id),
+    );
+  }
+
 } 

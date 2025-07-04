@@ -22,9 +22,11 @@ class TImageUploader extends StatelessWidget {
       this.bottom=0,
       this.rigth,
       this.left=0,
-      this.onIconButtonPressed
+      this.onIconButtonPressed,
+      this.editePhoto=true,
       });
   final bool? circular;
+  final bool? editePhoto;
   final String? image;
   final ImageType imageType;
   final double width;
@@ -54,12 +56,12 @@ class TImageUploader extends StatelessWidget {
           backgroundColor: TColors.primaryBackground,
           image: image.toString()
           ),
-          Positioned(
+        editePhoto!?  Positioned(
             top: top,
             bottom: bottom,
             left: left,
             right: rigth,
-            child: TCircularIcon(icon: icon,onPressed: onIconButtonPressed,) )
+            child: TCircularIcon(icon: icon,onPressed: onIconButtonPressed,) ):SizedBox()
       ],
     );
   }

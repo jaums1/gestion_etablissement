@@ -13,6 +13,8 @@ class TVersementVariable {
   final DateVersement = TextEditingController();
   final DateProchainVersement = TextEditingController();
   final MontantAnterieur = TextEditingController();
+   final keyVersement   = GlobalKey<FormState>();
+
 
   void clear() {
     IDVersement.clear();

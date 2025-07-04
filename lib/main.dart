@@ -1,6 +1,7 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:window_manager/window_manager.dart';
 import 'Configs/Blinding/general_blinding.dart';
 import 'Configs/routes/app_route.dart';
@@ -9,9 +10,12 @@ import 'Configs/utils/Constant/texte_string.dart';
 import 'Configs/utils/Device/devices_utility.dart';
 import 'Configs/utils/theme/theme.dart';
 import 'package:flutter_acrylic/flutter_acrylic.dart' as acrylic;
+import 'package:intl/date_symbol_data_local.dart';
 void main() async{
-
+  
   WidgetsFlutterBinding.ensureInitialized();
+ await initializeDateFormatting('fr_FR',null);
+  Intl.defaultLocale='fr_FR';
   await windowManager.ensureInitialized();  
   await acrylic.Window.initialize();
   await acrylic.Window.setEffect(
