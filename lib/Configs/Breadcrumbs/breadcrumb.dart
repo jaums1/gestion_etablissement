@@ -8,9 +8,9 @@ final String? titre;
   @override
   Widget build(BuildContext context) {
     return Row(
+      spacing: 10,
       children: [
        IconButton(onPressed: ()=> Get.offNamed(route!), icon: Icon(Icons.arrow_back)),
-       SizedBox(width: 10,),
        Expanded(child: Text(titre!,style: Theme.of(context).textTheme.headlineSmall,maxLines: 1,overflow: TextOverflow.ellipsis,)),
       ],
     );

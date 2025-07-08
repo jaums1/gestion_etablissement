@@ -1,29 +1,28 @@
 import 'package:ecole/Configs/cammon/widgets/Data_table/table_action_icon_button.dart';
 import 'package:ecole/Configs/cammon/widgets/containers/rounded_container_create.dart';
-import 'package:ecole/Configs/cammon/widgets/formulaire/form.dart';
 import 'package:ecole/Configs/cammon/widgets/texts/text_widget.dart';
 import 'package:ecole/Configs/cammon/widgets/texts/texte_riche.dart';
 import 'package:ecole/Configs/utils/Constant/colors.dart';
 import 'package:ecole/Configs/utils/Constant/enums.dart';
 import 'package:ecole/Configs/utils/Constant/image_string.dart';
+import 'package:ecole/Configs/utils/Statut/statut.dart';
 import 'package:ecole/Configs/utils/formatters/formatters.dart';
 import 'package:ecole/Eleves/Model/eleve_model.dart';
 import 'package:ecole/Versement/Controller/versement_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../../Classe/Controller/classe_controller.dart';
 import '../../../../../Configs/Breadcrumbs/breadcrumb.dart';
 import '../../../../../Configs/cammon/widgets/Bilan_Montant/bilan_montant.dart';
 import '../../../../../Configs/cammon/widgets/Create_form/create_form.dart';
 import '../../../../../Configs/cammon/widgets/buttons/button.dart';
-import '../../../../../Configs/cammon/widgets/combo/combo.dart';
 import '../../../../../Configs/cammon/widgets/images/image_uploader.dart';
 import '../../../../../Configs/routes/route.dart';
 import '../../../../../Configs/utils/Constant/sizes.dart';
 
-import '../../../../../Configs/utils/Constant/texte_string.dart';
 import '../../../../../Configs/utils/Device/devices_utility.dart';
 import '../../../../../Eleves/Controller/eleve_controller.dart';
 import '../../../../../Versement/Controller/versement_controller.dart';
@@ -33,227 +32,274 @@ import '../../../../Controller/inscription_controller.dart';
 
 
 class TDetailsInscriptionDesktopView extends StatelessWidget {
-
   final controllerClasse = Get.find<TClasseController>();
   final controllerEleve = Get.find<TEleveController>();
   final controllerVersement = Get.find<TVersementController>();
-   TDetailsInscriptionDesktopView({super.key});
+  final controller = Get.find<TInscriptionController>();
+  TDetailsInscriptionDesktopView({super.key});
 
   @override
   Widget build(BuildContext context) {
-      final controller = Get.find<TInscriptionController>();
+    final DataClasse = controller.DataInscription.value.DataClasse ??
+        controllerClasse.DataClasse.value;
+    final DataEleve = controller.DataInscription.value.DataEleve ??
+        controllerEleve.DataEleve.value;
 
-    final DataClasse = controller.DataInscription.value.DataClasse??controllerClasse.DataClasse.value;
-    final DataInscription = controller.DataInscription.value;
-    final DataEleve = controller.DataInscription.value.DataEleve??controllerEleve.DataEleve.value;
-
-    final combo = TCombo();
-    final formulaire = TFormulaire();
     final page = TVersementPage();
-    controllerVersement.H_RecupeData(param: DataInscription.IDInscription.toString());
-    
+
+    controllerVersement.DataTableVersement.clear();
+    controllerVersement.H_RecupeData(
+        param: controller.DataInscription.value.IDInscription.toString());
+
     return TCreateForm(
-      child:  Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-             ///// HEADER
-              TRetourHeader(titre:"Details d'inscription",route: TRoutes.inscription,),
-              SizedBox(height: TSizes.spaceBtwItems,),
+        child: Column(
+      spacing: TSizes.md,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ///// HEADER
+        TRetourHeader(
+          titre: "Details d'inscription",
+          route: TRoutes.inscription,
+        ),
+        SizedBox(
+          height: TSizes.spaceBtwItems,
+        ),
 
-              //// Combo Selection Annee Scolaire
-              TRoundedContainerCreate(
-                padding: EdgeInsets.symmetric(horizontal: TSizes.md,vertical:TSizes.xs ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(
-                      width: 300,
-                      child:  combo.comboTextChevale(
-                     valeur: controller.variable.DateInscription.value.text,     
-                    hintText: "Annee Scolaire",
-                    sections:TText.Annees,
-                    label: "Annee Scolaire",onChanged:(value){}),
-                    ),
-                    
-                    SizedBox(width: 10,),
-                    SizedBox(
-                      child: Row(
-                        spacing: TSizes.md,
-                        children: [
-                         TBilanMontant(montant: DataInscription.Paiement,titre: "Montant Versé",
-                         color: TColors.paiementColor,
-                         ),
-                         TBilanMontant(montant: DataInscription.ResteAPayer,titre: "Reste à payer",
-                         color: TColors.resteAPayerColor,),
-                         TBilanMontant(montant: DataInscription.NetAPayer,titre: "Net à payer",
-                         color: TColors.netAPayerColor,),
-                        ],
-                      ),
-                    )
-                    
-                  ],
-                ),
-              ),
-             
-             SizedBox(height: TSizes.md,),
-              //// INFORMATION ELEVE
-              TRoundedContainerCreate(
-                child: AffichageDataEleve(DataEleve: DataEleve,)
-              ),
-
-              SizedBox(height: TSizes.md,),
-              
-              //// INFORMATION INSCRIPTION ET VERSEMENT
-             SizedBox(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(child: Column(
-                    spacing: 10,
-                    children: [
-                     TRoundedContainerCreate(
-                      child: Row(
-                        children: [
-                          ///// RECHERCHE
-        Expanded(
-          flex: TDeviceUtility.isDesktopScreen(context)?  2: 1,
-          child:formulaire.textFormField(hintText:"Recherche...",iconPrefix: Iconsax.search_normal,
-          isPadding: true,onChanged:(value){} 
-           ) ), 
-            /// BUTTON()
-            
-           Expanded(
-          flex: TDeviceUtility.isDesktopScreen(context)? 1 : 1,
-          child:Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+        //// Combo Selection Annee Scolaire
+        TRoundedContainerCreate(
+          // padding:EdgeInsets.symmetric(horizontal: TSizes.md, vertical: TSizes.xs),
+          child: Row(
+            spacing: 10,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              TButton.iconButton(text: "Ajouter",icon: Iconsax.add,size: TSizes.md,
-           onPressed:()=>page.H_PageShowDialogNouveau(id: DataInscription.IDInscription) ),
-            ],
-          )),],),),
-                  Obx(
-                        (){
+              SizedBox(),
+              ////// BILAN DES MONTANT
+              SizedBox(
+                child: Obx(() {
+                  if (controllerVersement.DataTableVersement.isEmpty) null;
 
-                          return Column(
-                               spacing: 10,
-                               children: controllerVersement.DataTableFiltreVersement.map(
-                               (element) => CardreVersement(controller: element,) ,).toList(),
-                               );
-                        }
+                  return Row(
+                    spacing: TSizes.md,
+                    children: [
+                      TBilanMontant(
+                        montant: controller.DataInscription.value.Paiement,
+                        titre: "Montant Versé",
+                        color: TColors.paiementColor,
+                      ),
+                      TBilanMontant(
+                        montant: controller.DataInscription.value.ResteAPayer,
+                        titre: "Reste à payer",
+                        color: TColors.resteAPayerColor,
+                      ),
+                      TBilanMontant(
+                        montant: controller.DataInscription.value.NetAPayer,
+                        titre: "Net à payer",
+                        color: TColors.netAPayerColor,
                       ),
                     ],
-                  )),
-                     SizedBox(width: TSizes.md,),
-                  //// INFORMATION INSCRIPTION ET CLASSE
-                 
-                   Expanded(
-                   
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                     children: [
-                     /////// INFORMATION STATUT PAIEMENT
-                        SizedBox(
-                         width: double.infinity,
-                        child: TRoundedContainerCreate (
-                          child: Wrap(
-                             spacing: 20,
-                            runSpacing: 10,
-                            children: [
-                                
-                                 TexteRicheCustom.TexteRicheLigne(
-                                 textPrimaire: DataInscription.Statut.toString(),colorPrimaire: TColors.error,
-                               textSecondaire: "Statut"),
+                  );
+                }),
+              )
+            ],
+          ),
+        ),
 
-                                 TexteRicheCustom.TexteRicheLigne(
-                                 textPrimaire: TFormatters.formatDateFr(DataInscription.DateProchainVersement),colorPrimaire: TColors.error,
-                               textSecondaire: "Date de Prochaine Paiement"),
-                            ],
-                          ) ,)
-                       ),
-                       
-                          SizedBox(height: TSizes.md,),
+        //// INFORMATION ELEVE
+        TRoundedContainerCreate(
+            child: AffichageDataEleve(
+          DataEleve: DataEleve,
+        )),
 
-                      ///// INFORMATION DE CLASSE 
-                       SizedBox(
-                         width: double.infinity,
-                         child: TRoundedContainerCreate(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                             //// INFORMATION CLASSE
-                             TexteRicheCustom.TexteRiches(
-                              textPrimaire: DataClasse.LibClasse.toString(),colorPrimaire: TColors.primary,
-                               textSecondaire: "Classe"),
-                           
-                         
-                               SizedBox(height: TSizes.sm,),
-                               
-                               //// INFORMATION DETAILS INSCRIPTION
-                               SizedBox(
-                                child: Wrap(
-                                  spacing: 20,
-                                  runSpacing: 5,
-                                  children: [
-                                    TexteRicheCustom.TexteRicheLigne(
-                                 textPrimaire:DataClasse.DataNiveauSerie!.niveau.toString(),
-                               textSecondaire: "Niveau"),
-                               
-                                TexteRicheCustom.TexteRicheLigne(
-                                 textPrimaire: TFormatters.formatDateFr(DataInscription.DateInscription),
-                               textSecondaire: "Inscrit le"),
-                             
-                                TexteRicheCustom.TexteRicheLigne(
-                                 textPrimaire: "2024 - 2025",colorPrimaire: Colors.red,
-                               textSecondaire: "Annee Scolaire"),
-                         
-                         
-                                  ],
-                                ),
-                               ),
-                              
-                            ],
+        //// INFORMATION INSCRIPTION ET VERSEMENT
+        SizedBox(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                  child: Column(
+                spacing: 10,
+                children: [
+                  TRoundedContainerCreate(
+                    child: Row(
+                      children: [
+                        
+
+                        /// BUTTON()
+
+                        Expanded(
+                            flex:
+                                TDeviceUtility.isDesktopScreen(context) ? 1 : 1,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                TButton.iconButton(
+                                    text: "Ajouter",
+                                    icon: Iconsax.add,
+                                    size: TSizes.md,
+                                    onPressed: () =>
+                                        page.H_PageShowDialogNouveau(
+                                            id: controller.DataInscription.value
+                                                .IDInscription)),
+                              ],
+                            )),
+                      ],
+                    ),
+                  ),
+                  Obx(() {
+                  
+                    controllerVersement.H_MiseAjour();
+                    return  controllerVersement.DataTableVersement.isEmpty ?
+                    Shimmer.fromColors(
+                       baseColor: TColors.buttonPrimary,
+                       highlightColor: TColors.darkGrey,
+                      child: Column(
+                        spacing: 10,
+                        children:
+                            controllerVersement.DataTableFiltreVersement.map(
+                          (element) =>
+                           CardreVersement(
+                            controller: element,
                           ),
-                         ),
-                       ),
+                        
+                          
+                           
+                        ).toList(),
+                      ),
+                    ):  Column(
+                        spacing: 10,
+                        children:controllerVersement.DataTableFiltreVersement.map(
+                          (element) =>
+                           CardreVersement(
+                            controller: element,
+                          ),
+                             
+                        ).toList(),
+                      );
+                  }),
+                ],
+              )),
+              SizedBox(
+                width: TSizes.md,
+              ),
+              //// INFORMATION INSCRIPTION ET CLASSE
 
-                       SizedBox(height: TSizes.md,),
-                      /////// INFORMATION INSCRIPTION
-                      SizedBox(
-                          width: double.infinity,
-                        child: TRoundedContainerCreate(
-                          child: Wrap(
+              Expanded(
+                  child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  /////// INFORMATION STATUT PAIEMENT
+                  SizedBox(
+                      width: double.infinity,
+                      child: TRoundedContainerCreate(
+                        child: Obx(
+                          (){
+                            if(controllerVersement.DataTableVersement.isEmpty)null;
+                            return Wrap(
                             spacing: 20,
                             runSpacing: 10,
                             children: [
-                               TexteRicheCustom.TexteRicheLigne(
-                                 textPrimaire: TFormatters.formatCurrency(DataInscription.FraisAnnexe),
-                               textSecondaire: "Frais Annexe"),
-                               
-                               TexteRicheCustom.TexteRicheLigne(
-                                 textPrimaire: TFormatters.formatCurrency(DataInscription.DroitInscription),
-                               textSecondaire: "Droit Inscription"),
-                               
-                                 TexteRicheCustom.TexteRicheLigne(
-                                 textPrimaire: TFormatters.formatCurrency(
-                                  DataInscription.NetAPayer!-DataInscription.DroitInscription!-DataInscription.FraisAnnexe!),
-                               textSecondaire: "Scolarite"),
-
-
-
+                              TexteRicheCustom.TexteRicheLigne(
+                                  textPrimaire: TStatutCustom.paiement(controller.DataInscription.value.ResteAPayer) ,
+                                  colorPrimaire:controller.DataInscription.value.Statut!.toLowerCase() == "solde"?TColors.paiementColor: TColors.error,
+                                  textSecondaire: "Statut"),
+                              TexteRicheCustom.TexteRicheLigne(
+                                  textPrimaire: TFormatters.formatDateFr(
+                                      controller.DataInscription.value
+                                          .DateProchainVersement),
+                                  colorPrimaire: TColors.error,
+                                  textSecondaire: "Date de Prochaine Paiement"),
                             ],
-                          )
-                          ),
-                      ),
-                     ],
-                                       )),
-                ],
-              ),
-             )
-          
-          ],
-        )
+                          );
+                        }),
+                      )),
 
-    );
+                  SizedBox(
+                    height: TSizes.md,
+                  ),
+
+                  ///// INFORMATION DE CLASSE
+                  SizedBox(
+                    width: double.infinity,
+                    child: TRoundedContainerCreate(
+                      child: Obx(
+                        () => Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            //// INFORMATION CLASSE
+                            TexteRicheCustom.TexteRiches(
+                                textPrimaire: DataClasse.LibClasse.toString(),
+                                colorPrimaire: TColors.primary,
+                                textSecondaire: "Classe"),
+
+                            SizedBox(
+                              height: TSizes.sm,
+                            ),
+
+                            //// INFORMATION DETAILS INSCRIPTION
+                            SizedBox(
+                              child: Wrap(
+                                spacing: 20,
+                                runSpacing: 5,
+                                children: [
+                                  TexteRicheCustom.TexteRicheLigne(
+                                      textPrimaire: DataClasse
+                                          .DataNiveauSerie!.niveau
+                                          .toString(),
+                                      textSecondaire: "Niveau"),
+                                  TexteRicheCustom.TexteRicheLigne(
+                                      textPrimaire: TFormatters.formatDateFr(
+                                          controller.DataInscription.value
+                                              .DateInscription),
+                                      textSecondaire: "Inscrit le"),
+                                  TexteRicheCustom.TexteRicheLigne(
+                                      textPrimaire: "2024 - 2025",
+                                      colorPrimaire: Colors.red,
+                                      textSecondaire: "Annee Scolaire"),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(
+                    height: TSizes.md,
+                  ),
+                  /////// INFORMATION INSCRIPTION
+                  SizedBox(
+                    width: double.infinity,
+                    child: TRoundedContainerCreate(
+                        child: Wrap(
+                      spacing: 20,
+                      runSpacing: 10,
+                      children: [
+                        TexteRicheCustom.TexteRicheLigne(
+                            textPrimaire: TFormatters.formatCurrency(
+                                controller.DataInscription.value.FraisAnnexe),
+                            textSecondaire: "Frais Annexe"),
+                        TexteRicheCustom.TexteRicheLigne(
+                            textPrimaire: TFormatters.formatCurrency(controller
+                                .DataInscription.value.DroitInscription),
+                            textSecondaire: "Droit Inscription"),
+                        TexteRicheCustom.TexteRicheLigne(
+                            textPrimaire: TFormatters.formatCurrency(controller
+                                    .DataInscription.value.NetAPayer! -
+                                controller
+                                    .DataInscription.value.DroitInscription! -
+                                controller.DataInscription.value.FraisAnnexe!),
+                            textSecondaire: "Scolarite"),
+                      ],
+                    )),
+                  ),
+                ],
+              )),
+            ],
+          ),
+        )
+      ],
+    ));
   }
 }
 
@@ -266,6 +312,7 @@ class CardreVersement extends StatelessWidget {
   
   Widget build(BuildContext context) {
     final validation = TVersementValidation();
+    final page = TVersementPage();
     return TRoundedContainerCreate(
       padding: EdgeInsets.symmetric(horizontal:  TSizes.md,vertical: TSizes.xs) ,
       child: Column(
@@ -276,7 +323,8 @@ class CardreVersement extends StatelessWidget {
           children: [
             SizedBox(child: TTableActionIconButtons(iconSize: 22,
             onDeletePressed: ()=>validation.H_Supprimer(id: controller.IDVersement),
-            onEditPressed: ()=> TVersementPage().H_PageShowDialogModifier(),)),
+            onEditPressed: (){           
+               page.H_PageShowDialogModifier(id:controller.IDVersement );},)),
           ],
         ),
        
@@ -335,7 +383,7 @@ class AffichageDataEleve extends StatelessWidget {
               children: [
                 TexteRicheCustom.TexteRiches(
                     textPrimaire:
-                        DataEleve!.NomComplet.toString().toUpperCase(),
+                        DataEleve.NomComplet.toString().toUpperCase(),
                     textSecondaire: "Nom Prénoms"),
                 SizedBox(
                   height: TSizes.sm,

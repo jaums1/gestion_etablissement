@@ -50,7 +50,7 @@ class TFormulaire {
   formulaireTextCheval({ String ?label,bool isPassword=false,IconData? iconOpen,IconData? iconOff,IconData? iconPrefix,IconData? iconSuffix,
   VoidCallback? onPressedIcon,bool? isphone=false,bool? readOnly=false,bool? isint=true,bool? isMonetaire=false,
    TextEditingController? textEditingController,TextInputType? textInputType = TextInputType.text,bool? isVerification =false,
-   bool? isIconSuffix=false,bool? isVerifiePass =false,bool? isVerifieEmail=false,Function(dynamic)? onChanged
+   bool? isIconSuffix=false,bool? isVerifiePass =false,bool? isVerifieEmail=false,Function(dynamic)? onChanged,bool? isfocus=true
   }){
   return Padding(
     padding:isphone==true?EdgeInsets.zero :const EdgeInsets.only(bottom: TSizes.sm+3),
@@ -72,7 +72,7 @@ class TFormulaire {
         Text(label!,style: Theme.of(Get.context!).textTheme.bodyMedium,maxLines: 1,overflow: TextOverflow.ellipsis,),
         TextFormField(
           onChanged:onChanged ,
-          focusNode: FocusNode(),
+          focusNode:isfocus==false?null: FocusNode(),
           
           readOnly: readOnly!,
          keyboardType: textInputType ==TextInputType.number?TextInputType.numberWithOptions(decimal:isint==true?false:true):textInputType,

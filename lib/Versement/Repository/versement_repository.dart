@@ -9,7 +9,7 @@ class TVersementRepository extends GetxController with TRepositoryData<TVersemen
 
   ///// ENREGISTRER
   @override
-  Future<bool?> H_EnregistrerData(TVersementModel Model) async {
+   H_EnregistrerData(TVersementModel Model) async {
     try {
       await THttpHelper.post(TEndpoint.linkVersement, Model.toMap());
       return true;
@@ -20,10 +20,11 @@ class TVersementRepository extends GetxController with TRepositoryData<TVersemen
 
   ///// MODIFIER
   @override
-  Future<bool?> H_ModifierData(TVersementModel Model) async {
+ Future H_ModifierData(TVersementModel Model) async {
+   
     try {
-      await THttpHelper.patch(TEndpoint.linkVersement, Model.toMap());
-      return true;
+     final data = await THttpHelper.patch(TEndpoint.linkVersement, Model.toMap());
+      return data;
     } catch (e) {
       return false;
     }
@@ -31,9 +32,9 @@ class TVersementRepository extends GetxController with TRepositoryData<TVersemen
 
   /////RECUPERATION DES DATAS
   @override
-  Future<bool?> H_SupprimerData(int? Id) async {
+   H_SupprimerData(int? Id) async {
     try {
-      await THttpHelper.delete("${TEndpoint.linkVersement}/$Id");
+    await THttpHelper.delete("${TEndpoint.linkVersement}/$Id");
       return true;
     } catch (e) {
       return false;

@@ -4,7 +4,7 @@ import '../../../utils/Constant/sizes.dart';
 import 'rounded_container.dart';
 
 class TRoundedContainerCreate extends StatelessWidget {
-  const TRoundedContainerCreate({super.key, this.child,this.padding=const EdgeInsets.all(TSizes.md)});
+  const TRoundedContainerCreate({super.key, this.child,this.padding=const EdgeInsets.symmetric(horizontal:TSizes.md,vertical: TSizes.sm ),});
  final Widget? child;
  final EdgeInsetsGeometry? padding;
   @override

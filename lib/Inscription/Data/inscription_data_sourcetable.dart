@@ -1,5 +1,7 @@
 import 'package:data_table_2/data_table_2.dart';
+import 'package:ecole/Configs/utils/Constant/colors.dart';
 import 'package:ecole/Configs/utils/Statut/statut.dart';
+import 'package:ecole/Configs/utils/formatters/formatters.dart';
 import 'package:ecole/Inscription/Controller/inscription_page.dart';
 import 'package:ecole/Versement/Controller/versement_page.dart';
 import 'package:flutter/material.dart';
@@ -22,9 +24,17 @@ class TInscriptionSourceData extends DataTableSource {
     final data = controller.DataTableFiltreInscription[index];
     
 
-    return DataRow2(cells: [
-      DataCell(Text("${index + 1}", style: Theme.of(Get.context!).textTheme.bodyMedium)),
+    return DataRow2(
+      onTap: (){},
+      cells: [
+      DataCell(Text("${index + 1}", textAlign: TextAlign.center, style: Theme.of(Get.context!).textTheme.bodyMedium)),
       
+      DataCell(Text(TFormatters.formatDateFr(data.DateInscription),
+          textAlign: TextAlign.center,
+          style: Theme.of(Get.context!).textTheme.bodyMedium,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 1)),    
+          
       DataCell(Text(data.DataEleve!.Matricule??"",
           style: Theme.of(Get.context!).textTheme.bodyMedium,
           overflow: TextOverflow.ellipsis,
@@ -39,15 +49,33 @@ class TInscriptionSourceData extends DataTableSource {
           // textAlign: TextAlign.center,
           style: Theme.of(Get.context!).textTheme.bodyMedium)),
 
-        DataCell(Text("${data.Paiement} Fcfa",
+      DataCell(SizedBox(
+        height: 30,
+        width: 30,
+        child: CircleAvatar(
+          backgroundColor: TColors.resteAPayerColor,
+          foregroundColor: Colors.white,
+          child: Text(data.NbrVersement.toString(),
+              textAlign: TextAlign.center,
+              style: Theme.of(Get.context!).textTheme.bodyMedium!.copyWith(
+                color: Colors.white
+              )),
+        ),
+      )),
+
+        DataCell(Text(TFormatters.formatDateFr(data.DateProchainVersement),
+          textAlign: TextAlign.center,
+          style: Theme.of(Get.context!).textTheme.bodyMedium)),
+          
+        DataCell(Text(TFormatters.formatCurrency(data.Paiement),
           textAlign: TextAlign.center,
           style: Theme.of(Get.context!).textTheme.bodyMedium)),
 
-        DataCell(Text("${data.ResteAPayer} Fcfa",
+        DataCell(Text(TFormatters.formatCurrency(data.ResteAPayer),
           textAlign: TextAlign.center,
           style: Theme.of(Get.context!).textTheme.bodyMedium)),
 
-        DataCell(Text("${data.NetAPayer} Fcfa",
+        DataCell(Text(TFormatters.formatCurrency(data.NetAPayer),
           textAlign: TextAlign.center,
           style: Theme.of(Get.context!).textTheme.bodyMedium)),
     

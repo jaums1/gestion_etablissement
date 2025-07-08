@@ -29,7 +29,7 @@ class TInscriptionDataTable extends StatelessWidget {
 
          // Affichage des données
           return TPaginatedDataTable(
-          minWidth: 700,
+          minWidth: 1500,
            columns: controller.variable.columns,
            source: TInscriptionSourceData(),
                 );

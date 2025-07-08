@@ -39,6 +39,7 @@ class THttpHelper {
        headers: {'Content-Type':'application/json'},
        body: json.encode(data)    
         );
+        
         return _handleResponse(response);
   } 
   ///// Helper method to make PATCH request
@@ -52,7 +53,10 @@ class THttpHelper {
   
   ///// Helper method to make DELETE request
   static Future<Map<String,dynamic>> delete(String endpoint)async{
-      final response=await  http.delete(Uri.parse('$_baseUrl/$endpoint'), );
+      final response=await  http.delete(Uri.parse('$_baseUrl/$endpoint'),
+       headers: {
+      'content-type':'application/json',
+     } );
         return _handleResponse(response);
   }
 

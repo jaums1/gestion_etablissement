@@ -161,4 +161,7 @@ static List<String> listPays = ['Algérie','Angola','Bénin','Botswana','Burkina
 static const String annuler = "Annuler";
 static const String enregistrer = "Enregistrer";
 static const String modifier = "Modifier";
+
+/////// TITRE FORMULAIRE
+static const String eleve ="Elève";
 }

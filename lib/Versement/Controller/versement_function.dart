@@ -8,7 +8,7 @@ class TVersementFunction {
   final controller = Get.find<TVersementController>();
 
   void H_CalculerResteAPayer() {
-    final montant = int.tryParse(controller.variable.Montant.text) ?? 0;
+    final montant = int.tryParse(controller.variable.Montant.value.text) ?? 0;
     // Ici, il faudrait récupérer le montant total à payer (exemple fictif)
     final montantTotal = 10000; // À remplacer par la vraie logique
     final reste = montantTotal - montant;
@@ -23,13 +23,13 @@ class TVersementFunction {
    void H_OnChangedDateProchainVersement()async{
    final date= await TShowDate().H_RecupDate(dateLointaine: true);
    controller.variable.DateProchainVersement.text = TFormatters.formatDateFr(date).toString();
-   controller.DataVersement.DateProchainVersement = date;
+   controller.DataVersement.value.DateProchainVersement = date;
   }
 
    void H_OnChangedDateVersement()async{
    final date= await TShowDate().H_RecupDate();
    controller.variable.DateVersement.text = TFormatters.formatDateFr(date).toString();
-   controller.DataVersement.DateVersement = date;
+   controller.DataVersement.value.DateVersement = date;
   }
 
   void H_OnChangedMethodePaiement(value){

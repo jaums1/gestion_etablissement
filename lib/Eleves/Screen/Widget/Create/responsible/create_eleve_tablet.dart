@@ -1,62 +1,87 @@
+import 'package:ecole/Configs/cammon/widgets/Create_form/create_form.dart';
 import 'package:ecole/Configs/utils/Constant/colors.dart';
 import 'package:flutter/material.dart';
-
-import '../../../../../Configs/Breadcrumbs/breadcrumb.dart';
+import 'package:get/get.dart';
+import '../../../../../Configs/cammon/widgets/containers/rounded_container_create.dart';
 import '../../../../../Configs/routes/route.dart';
-import '../../../../../Configs/utils/Constant/enums.dart';
 import '../../../../../Configs/utils/Constant/sizes.dart';
-import '../widget/left_create_eleve.dart';
-import '../widget/right_create_eleve.dart';
+import '../../../../../Configs/utils/Constant/texte_string.dart';
+import '../../../../Controller/eleve_controller.dart';
+import '../widget/btn_eleve_validation.dart';
+import '../widget/info_parent_eleve.dart';
+import '../widget/info_perso_eleve.dart';
+import '../widget/info_regime_statut_eleve.dart';
+import '../widget/photo_eleve.dart';
+
+
 
 class TCreateEleveTabletScreen extends StatelessWidget {
-  const TCreateEleveTabletScreen({super.key,this.argument=TRoutes.eleve, this.action});
-final String? argument;
- final String? action;
+   
+     final controller = Get.find<TEleveController>();
+   TCreateEleveTabletScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
+     final double width =400;
     return  Scaffold(
       backgroundColor: TColors.softGrey,
-      body: SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(TSizes.defaultSpace),
-        child: Column(
+      body: TCreateForm(
+        titre: TText.eleve,
+         route: TRoutes.inscription,
+        child:Column(
+        spacing: TSizes.md,
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ///// HEADER
-            TRetourHeader(titre:
-            action == TraitementAction.nouveau.name?
-             "Enregistrement Elève":"Modification Elève",route: argument,),
-            SizedBox(height: TSizes.spaceBtwItems,),
-          
-            SizedBox(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  //// GAUCHE DATA ELEVE
-                  Expanded(
-                    flex: 5,
-                    // width: MediaQuery.of(context).size.width*0.55,
-                    child: Padding(
-                      padding: const EdgeInsets.only(right:  10.0),
-                      child: TLeftCreateEleve(),
-                    )),
-
-                  //// DROITE PHOTO ELEVE
-                  Expanded(
-                    // width: MediaQuery.of(context).size.width*0.15,
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width*0.15,
-                          child: TRightCreatePhotoEleve()),
-                      ],
-                    )),
-                ],
-              ),
+        children: [
+          SizedBox(
+            child: Row(
+              spacing: TSizes.md,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+    
+              //////// INFORMATION ELEVE
+               Expanded(
+                 child: SizedBox(
+                  width: width,
+                  child: TRoundedContainerCreate(child: TInformationPersoEleve()),
+                 ),
+               ),
+               
+               ///// PHOTO ET AUTRE
+               Expanded(
+                 child: SizedBox(
+                   width: width,
+                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    spacing: TSizes.sm,
+                    children: [
+                    //// PHOTO ELEVE 
+                    InfoPhotoEleve(),
+                     
+                    /////// REGIME ET STATUT
+                    TRoundedContainerCreate(child: TInformationRegimeEleve(),),
+                     
+                    ///////// INFORMATION PARENT
+                    TRoundedContainerCreate(child: TInformationParentEleve(),),
+                    ],
+                   ),
+                 ),
+               ),
+              
+              ],
             ),
-          ],
-        ),
-      )),
+          ),
+        
+          //// VALIDATION
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: width/2,
+                child: BtnEleveValidation(controller: controller,)),
+            ],
+          ),
+        ],
+      ))
     );
   }
 }

@@ -37,96 +37,101 @@ class FormVersement extends StatelessWidget {
     final combo = TCombo();
     if(show!) controllerInscription.DataInscription = inscriptionController!.DataInscription;
     
-    //    controllerInscription.DataTableInscription.value = inscriptionController!.DataTableInscription ;
-    //    controllerInscription.DataTableFiltreInscription.value = inscriptionController!.DataTableInscription ;
-    //    controllerInscription.DataInscription = inscriptionController!.DataInscription ;
-    // }
+     controller.variable.solde = controllerInscription.DataInscription.value.ResteAPayer??0;
+     controller.variable.PaiementAnterieur =  controller.variable.Montant.value.text==""?0 :int.parse(controller.variable.Montant.value.text) ;
     return  TRoundedContainerCreate(
          child: Form(
            key: controller.variable.keyVersement,
-           child: Column(
-            children: [
-              ////// AFFICHAGEMONTANT
-              Align(
-                alignment: Alignment.centerRight,
-                child: SizedBox(
-                  child: Column(
-                    // crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      TTextCustom.title(text:TFormatters.formatCurrency(controllerInscription.DataInscription.value.ResteAPayer),
-                      color: TColors.primary
-                       ),
-                        TTextCustom.subtitle(text: "Reste à payer",color: Colors.grey)
-                    ],
-                  ),
-                ),
-              ),
-              
-              //  SizedBox(height: TSizes.md,),
-              //  Align(
-              //    alignment: Alignment.centerLeft,
-              //    child: TexteRicheCustom.TexteRicheLigne(textPrimaire: controller.variable.Ref.text,
-              //     textSecondaire: "Ref ",colorPrimaire: Colors.deepOrange),
-              //  ),
-                SizedBox(height: TSizes.sm,),
-              ////// PAIEMENT
-               formulaire.formulaireTextCheval(label: "Montant Payer",iconPrefix: Iconsax.money,
-                isVerification: true,textEditingController:controller.variable.Montant,
-                textInputType: TextInputType.number,isMonetaire: false,
-                ),
-               
-               ///// MODALITE DE PAIEMENT
-               combo.comboTextChevale(
-                 valeur: controller.variable.TypePaiement.text,     
-                hintText: "Méthode de Paiement",
-                sections:TText.MethodePaiement,
-               label: "Méthode de Paiement",onChanged:TVersementFunction().H_OnChangedMethodePaiement ),
-               
-               
-                 ////// PAIEMENT ANTERIEUR
-            controllerInscription.variable.MontantVersement.text.isEmpty ? SizedBox():
-               formulaire.formulaireTextCheval(label: "Montant Payer",iconPrefix: Iconsax.money_change,
-                isVerification: true,textEditingController:controllerInscription.variable.MontantVersement,
-                textInputType: TextInputType.number,readOnly: true
-                ),
-                SizedBox(
-                  child: Row(
-                    children: [
-                      Expanded(child: formulaire.formulaireTextCheval(label: "Date Versement",
-                isVerification: true,textEditingController:controller.variable.DateVersement,
-                isIconSuffix:true,iconOpen:Iconsax.calendar,onPressedIcon: ()=> functions.H_OnChangedDateVersement()
-               
-                ),),
-                SizedBox(width: TSizes.md,),
-                      Expanded(child: formulaire.formulaireTextCheval(label: "Prochain Versement",
-                isVerification: true,textEditingController:controller.variable.DateProchainVersement,
-                iconOpen:Iconsax.calendar,isIconSuffix:true,onPressedIcon: ()=> functions.H_OnChangedDateProchainVersement()
-                ),),
-                    ],
-                  ),
-                ),
+           child: Obx(
+             (){
 
+              if(controller.variable.text.value=="")null;
+
+              if(controller.variable.Montant.value.text==""){
+                 controller.variable.restePayer = controller.variable.PaiementAnterieur!  + controller.variable.solde! ;
+              }else{
+               controller.variable.restePayer = controller.variable.PaiementAnterieur!  + controller.variable.solde! - int.parse(controller.variable.Montant.value.text); 
+              }
              
-                 SizedBox(height: TSizes.md,),
-                //// BUTTON DE VALIDATION
-            Align(
-              alignment: Alignment.center,
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: ElevatedButton(onPressed: (){
-              
-               final keyClasse  = controller.variable.keyVersement.currentState!.validate();
-                if (keyClasse) {
-               /////// VALIDATION NORMAL
-              if(show==false)  argument == TraitementAction.nouveau.name?validate.H_Enregistrer():validate.H_Modifier();
-               //// VALIDATION PASSANT PAR SHOW DIALOG
-              if(show==true)  argument == TraitementAction.nouveau.name?validate.H_EnregistrerShowDialog():validate.H_ModifierShowDialog();
-               }}, child: Text("Valider"))
-               )
-               ) ,
-               SizedBox(height: TSizes.md,)
-              
-              ],)
+
+              return Column(
+              children: [
+                ////// AFFICHAGEMONTANT
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: SizedBox(
+                    child: Column(
+                      // crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        TTextCustom.title(text:TFormatters.formatCurrency(controller.variable.restePayer),
+                        color: TColors.primary
+                         ),
+                          TTextCustom.subtitle(text: "Reste à payer",color: Colors.grey)
+                      ],
+                    ),
+                  ),
+                ),
+                
+                  SizedBox(height: TSizes.sm,),
+                ////// PAIEMENT
+                 formulaire.formulaireTextCheval(label: "Montant Payer",iconPrefix: Iconsax.money,
+                  isVerification: true,textEditingController:controller.variable.Montant.value,
+                  textInputType: TextInputType.number,isMonetaire: false,
+                
+                  ),
+                 
+                 ///// MODALITE DE PAIEMENT
+                 combo.comboTextChevale(
+                   valeur: controller.variable.TypePaiement.text,     
+                  hintText: "Méthode de Paiement",
+                  sections:TText.MethodePaiement,
+                 label: "Méthode de Paiement",onChanged:TVersementFunction().H_OnChangedMethodePaiement ),
+                 
+                   ////// PAIEMENT ANTERIEUR
+              controllerInscription.variable.MontantVersement.text.isEmpty ? SizedBox():
+                 formulaire.formulaireTextCheval(label: "Montant Payer",iconPrefix: Iconsax.money_change,
+                  isVerification: true,textEditingController:controllerInscription.variable.MontantVersement,
+                  textInputType: TextInputType.number,readOnly: true
+                  ),
+                  SizedBox(
+                    child: Row(
+                      children: [
+                        Expanded(child: formulaire.formulaireTextCheval(label: "Date Versement",
+                  isVerification: true,textEditingController:controller.variable.DateVersement,
+                  isIconSuffix:true,iconOpen:Iconsax.calendar,onPressedIcon: ()=> functions.H_OnChangedDateVersement()
+                 
+                  ),),
+                  SizedBox(width: TSizes.md,),
+                        Expanded(child: formulaire.formulaireTextCheval(label: "Prochain Versement",
+                  isVerification: true,textEditingController:controller.variable.DateProchainVersement,
+                  iconOpen:Iconsax.calendar,isIconSuffix:true,onPressedIcon: ()=> functions.H_OnChangedDateProchainVersement()
+                  ),),
+                      ],
+                    ),
+                  ),
+             
+               
+                   SizedBox(height: TSizes.md,),
+                  //// BUTTON DE VALIDATION
+              Align(
+                alignment: Alignment.center,
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: ElevatedButton(onPressed: (){
+                
+                 final keyClasse  = controller.variable.keyVersement.currentState!.validate();
+                  if (keyClasse) {
+                 /////// VALIDATION NORMAL
+                if(show==false)  argument == TraitementAction.nouveau.name?validate.H_Enregistrer():validate.H_Modifier();
+                 //// VALIDATION PASSANT PAR SHOW DIALOG
+                if(show==true)  argument == TraitementAction.nouveau.name?validate.H_EnregistrerShowDialog(id:controllerInscription.DataInscription.value.IDInscription ):validate.H_ModifierShowDialog();
+                 }}, child: Text("Valider"))
+                 )
+                 ) ,
+                 SizedBox(height: TSizes.md,)
+                
+                ],);
+              })
               ),
     );
   }

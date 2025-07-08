@@ -1,11 +1,21 @@
 import 'package:get/get.dart';
-import '../Model/versement_model.dart';
+import '../../Configs/utils/Implements/filtre_data.dart';
 import 'versement_controller.dart';
 
-class TVersementFiltre {
+class TVersementFiltre with TFiltre {
   final controller = Get.find<TVersementController>();
 
-  void H_FiltreElement({String param = ""}) {
+ @override
+  H_FiltreElementParID({int? id}) {
+    final index = controller.DataTableVersement.indexWhere((e) => e.IDVersement==id);
+    if(index ==-1)return;
+    controller.DataVersement.value = controller.DataTableVersement[index];
+  }
+
+
+
+@override
+ H_FiltreElement({String param = ""}) {
     if (param.isEmpty) {
       controller.DataTableFiltreVersement.value = controller.DataTableVersement;
       return;

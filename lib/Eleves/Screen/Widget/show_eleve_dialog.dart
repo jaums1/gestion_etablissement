@@ -3,14 +3,13 @@ import 'package:ecole/Configs/cammon/widgets/containers/rounded_container_create
 import 'package:ecole/Eleves/Controller/eleve_validation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../../Configs/utils/Constant/enums.dart';
 import '../../../Configs/utils/Constant/sizes.dart';
 import '../../Controller/eleve_controller.dart';
 import 'Create/widget/info_parent_eleve.dart';
 import 'Create/widget/info_perso_eleve.dart';
 import 'Create/widget/info_regime_statut_eleve.dart';
-import 'Create/widget/right_create_eleve.dart';
+import 'Create/widget/photo_eleve.dart';
 
 class ShowEleveDialog extends StatelessWidget {
    final controller = Get.find<TEleveController>();
@@ -24,24 +23,24 @@ class ShowEleveDialog extends StatelessWidget {
       width: 900,
       child: SingleChildScrollView(
         child: Column(
+          spacing: TSizes.sm,
           children: [
             SizedBox(
               child: Row(
+                spacing:  TSizes.sm,
                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
                     child:  TRoundedContainerCreate(child: TInformationPersoEleve()),
                   ),
-                   SizedBox(width: TSizes.sm,),
+                
                   Expanded(
                     child:
                      Column(
                        crossAxisAlignment: CrossAxisAlignment.start,
                        children: [
-                         TRightCreatePhotoEleve(),
-                         SizedBox(height: TSizes.sm,),
+                         InfoPhotoEleve(),
                          TRoundedContainerCreate(child: TInformationRegimeEleve()),
-                         SizedBox(height: TSizes.sm,),
                          TRoundedContainerCreate(child: TInformationParentEleve()),
                        ],
                      )),

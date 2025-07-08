@@ -14,7 +14,9 @@ class EleveSourceData extends DataTableSource {
   @override
   DataRow? getRow(int index) {
      final dataEleve = controller.DataTableFiltreEleve[index];
-    return DataRow2(cells: [
+    return DataRow2(
+      onTap: (){},
+      cells: [
         DataCell(Text("${index+1}",style: Theme.of(Get.context!).textTheme.bodyMedium,)),
 
         DataCell(Text(dataEleve.Matricule.toString(),style: Theme.of(Get.context!).textTheme.bodyMedium,
