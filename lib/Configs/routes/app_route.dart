@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import '../../Classe/Screen/Widget/Create/classe_create_principal.dart';
 import '../../Classe/Screen/Widget/view/classe_screen_principale.dart';
 import '../../Cycle/Screen/cycle_principal.dart';
-import '../../Decoupage_Scolaire/Screen/decoupage.dart';
 import '../../Eleves/Screen/Widget/Create/create_eleve_principal.dart';
 import '../../Eleves/Screen/eleve_principale.dart';
 import '../../Employe/Screen/employe_principale.dart';
@@ -31,13 +30,12 @@ class TAppRoute {
     GetPage(name: TRoutes.login, page: ()=>const  TLoginScreen()),
     GetPage(name: TRoutes.codeEtablissement, page: ()=>  const TCodeEtablissementScreen()),
     GetPage(name: TRoutes.register, page: ()=>const TRegisterScreen()),
-    GetPage(name: TRoutes.menu, page: ()=>const TMenuPrincipalScreen()),
+    GetPage(name: TRoutes.menu, page: ()=> TMenuPrincipalScreen(),fullscreenDialog: true),
     GetPage(name: TRoutes.niveauScolaire, page: ()=>const TNiveauScolaireScreen()),
-    GetPage(name: TRoutes.matiere, page: ()=>const TMatiereScolaireScreen()),
+    GetPage(name: TRoutes.matiere, page: ()=> TMatiereScolaireScreen()),
     GetPage(name: TRoutes.cycle, page: ()=>const TCyclePrincipalScreen()),
     GetPage(name: TRoutes.serieScolaire, page: ()=>const TSerieScolaireScreen()),
     GetPage(name: TRoutes.etablissement, page: ()=>const TEtablissementScolaireScreen()),
-    GetPage(name: TRoutes.decoupageScolaire, page: ()=>const TDecoupageScolaireScreen()),
     GetPage(name: TRoutes.configuration, page: ()=>const TConfigurationScreen()),
     GetPage(name: TRoutes.eleve, page: ()=>const TElevePrincipaleScreen()),
     GetPage(name: TRoutes.registereleve, page: ()=>const TCreateElevePrincipaleScreen()),
@@ -60,8 +58,8 @@ class TAppRoute {
     GetPage(name: TRoutes.detailsinscription, page: ()=>const TDetailsInscriptionPrincipal()),
 
     //// VERSEMENT
-
-    GetPage(name: TRoutes.registerversement, page: ()=>const TCreateVersementPrincipaleScreen()),
+    GetPage(name: TRoutes.registerversement, page: ()=>const TCreateVersementPrincipaleScreen()), 
+  
   ]; 
 }
 

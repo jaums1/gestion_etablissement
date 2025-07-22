@@ -8,18 +8,18 @@ class TCoefficientNiveauSerie {
 
   void H_RecupeData(){
      controller.dataNiveauSerie = TNiveauSerieModel();
-     controller.isSelectNiveauSerie.value = controller.controllerNiveauSerie.dataTableNiveauSerie.where(
-        (e)=> e.typeEnseignement == controller.controllerCycle.datacyleModel.cycleScolaire
+     controller.isSelectNiveauSerie.value = controller.controllerNiveauSerie.DataTableNiveauSerie.where(
+        (e)=> e.typeEnseignement == controller.controllerCycle.DatacyleModel.cycleScolaire
         ).map((e)=> e.niveauSerie.toString()).toList();
   }
 
 
   void H_onSelectData({String? param}){
-   int index = controller.controllerNiveauSerie.dataTableNiveauSerie.indexWhere(
+   int index = controller.controllerNiveauSerie.DataTableNiveauSerie.indexWhere(
      (e)=> e.niveauSerie == param
    );
   if(index ==-1) return;
-  controller.dataNiveauSerie = controller.controllerNiveauSerie.dataTableNiveauSerie[index];
+  controller.dataNiveauSerie = controller.controllerNiveauSerie.DataTableNiveauSerie[index];
   }
 }
 

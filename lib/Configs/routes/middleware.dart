@@ -1,14 +1,16 @@
 
+import 'package:ecole/Login/Controller/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class TMiddleware extends GetMiddleware {
+import 'route.dart';
+
+class TAuthMiddleware extends GetMiddleware {
     
+   
   @override
   RouteSettings? redirect(String? route) {
-    return null;
-  
-      
-    // return AuthentificationRepository.instance.isAuthenticated == true? null : const RouteSettings(name: TRoutes.login);
+   
+   return TUserController.instance.DataUser.value.idUtilisateur == 0? null : const RouteSettings(name: TRoutes.menu);
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class TText{
 ////// FONTS
@@ -8,25 +9,52 @@ static const String submit="Submit";
 static const String appName="Ecole Plus";
 static const String tContinue="Continue";
 
+///// BOUTON ET MESSAGE DE BOUTON
+static  String annuler = "Annuler".tr;
+static  String enregistrer = "Enregistrer".tr;
+static  String modifier = "Modifier".tr;
+static  String supprimer= "Supprimer".tr;
+static  String suppression= "Suppression".tr;
+static  String messageEnregistrer = "Vos données ont été enregistrées".tr;
+static  String messageModifier = "Vos données ont été modifiée".tr;
+static  String messageSupprimer = "Voulez-vous vraiment supprimer cette ligne ?".tr;
 
-  static const String onBoardingTitle1="Choos your product";
-  static const String onBoardingTitle2="Select Payment Method";
-  static const String onBoardingTitle3="Delivrer at your door step";
+///// MESSAGE DE CHARGEMENT
+static  String messageEnregistrerChargement = "Enregistrement encours...".tr;
+static  String messageModifierChargement = "Modification encours...".tr;
+static  String messageSuppressionChargement = "Suppression encours...".tr;
+static  String messageAnnulationChargement = "Annulation encours...".tr;
 
- static const String onBoardingSubTitle1="Welcome to a World of limitless choices - Your perfect Product Awaits! ";
-  static const String onBoardingSubTitle2="For Seamless Transactions, choose your Payment Path - Your Convenience, Our Priority! ";
-  static const String onBoardingSubTitle3="From Our Doorstep to Yours - Swift, Secure, and Contratless Delivery ";
-  
-  static const String homeAppBarTitle="Good day for shopping";
-  static const String homeAppBarubTitle="Taimoor , Sikander";
-
+///// MESSAGE D'ERREUR
+static  String messageErreur = "Veuillez verifier votre connexion internet".tr;
+static  String erreur = "Erreur".tr;
 ///// AUTHENTIFICATION FORM TEXT
 static const String firstName="Nom";
 static const String lastName="Prenoms";
 static const String email="E-mail";
 static const String password="Password";
 static const String confirpassword="Confirme Password";
-static const String newPassword="New Password";
+
+ ////MATIERE
+static  String libMatiere="Matière".tr;
+static  String codeMatiere="Code Matière".tr;
+static  String matiereMessage="Veuillez entrer votre matière".tr;
+static  String matiereExitseMessage="La matière existe déjà".tr;
+
+////// COEFFICIENT
+static  String libCoefficient="Coefficient".tr;
+static  String coefficientMessage="Veuillez entrer un coefficient superieur à zéro".tr;
+
+
+//// LOGIN   
+static  String seSouvenir="Se souvenir de moi".tr;
+static  String votrecode="Avez vous votre code?".tr;
+static  String connexion="Connexion".tr;
+static  String loginTitle="Content de vous revoir".tr;
+static  String loginSubTitle="Utilisez vos identifiants pour vous connecter à votre logiciel.".tr;
+
+
+
 static const String userName="Utilisateur";
 static const String phoneNo="Phone Number";
 static const String rememberMe="Remember Me";
@@ -42,11 +70,38 @@ static const String verificationCode="Verification Code";
 static const String resendEmail="Resend Email";
 static const String resendEmailIn="Resend Email In";
 
+///// FORMULAIRE
+static String registerTitle ="Créez votre compte".tr;
+static String registerSuperTitle ="Créez un compte Superviseur";
+static String registerSubTitle ="Lancez-vous dans l'aventure avec Ecole Plus en créant votre compte.".tr;
+static String phone1 ="Téléphone 1".tr;
+static String phone2 ="Téléphone 2".tr;
+static String phone ="Téléphone".tr;
+static String codeEtatblissement ="Code Etablissement".tr;
+static String etatblissement ="Etablissement".tr;
+static String ville = "Ville".tr;
+static String pays = "Pays".tr;
+static String adresse = "Adresse".tr;
+static String situationGeo = "Situation Géographique".tr;
+static String coordonnee = "Coordonnée".tr;
+static String information = "Information".tr;
+static String validation = "Validation".tr;
+static String niveauScolaire = "Niveau scolaire".tr;
+static String seleclniveauScolaire = "Selectionner votre niveau scolaire".tr;
+static String recherche = "Recherche".tr;
+
+static const siteWeb = "Site Web";
+
+static const typeEtablissement = "Type Etablissement";
+
+//////// TITRE DES FENETRES
+ static const configuration ="Configuration";
+ static const enregistrement ="Enregistrement";
+ static const modification ="Modification";
 
 ////// AUTHENTIFICATION HEADING TEXTE
 
-static const String loginTitle="Content de vous revoir";
-static const String loginSubTitle="Utilisez vos identifiants pour vous connecter à votre logiciel.";
+
 static const String signUpTitle="let's create your account";
 static const String forgetPasswordTitle="Forget Password";
 static const String forgetPasswordSubTitle="Don't worry sometimes people can forget too, enter your email and we will send your a password reset link";
@@ -65,31 +120,18 @@ static const String searchInStore="Search in store";
 //////CODE ETABLISSEMENT
 static const codeEtatblissementTitle ="Code Etablissement";
 static const codeEtatblissementSubTitle ="Utilisez le code que vous avez reçu enfin de créer votre compte.";
-static const codeEtatblissement ="Code Etablissement";
-static const etatblissement ="Etablissement";
-static const ville = "Ville";
-static const pays = "Pays";
-static const adresse = "Adresse";
-static const directeur = "Directeur";
-static const phoneDirecteur = "Téléphone";
-static const siteWeb = "Site Web";
-// static const email = TextEditingController();
-static const typeEtablissement = "Type Etablissement";
+
 //////REGISTER
-static const registerTitle ="Créez votre compte";
-static const registerSuperTitle ="Créez un compte Superviseur";
-static const registerSubTitle ="Lancez-vous dans l'aventure avec Ecole Plus en créant votre compte.";
 
 ////// CONFIGURATION
-static const niveauScolaire ="Niveau Scolaire";
-static const niveauSerie ="Niveau Serie";
-static const serieScolaire ="Serie Scolaire";
-static const matiere ="Liste des Matières";
-static const matiereCoef ="Liste des Matières Coeficientes";
-static const modalitePaiement ="Modalite de Paiement";
-static const cycle ="Cycle Scolaire";
-static const decoupageScolaire ="Decoupage Scolaire";
-static const classe ="Classe";
+static String niveauSerie ="Niveau Serie".tr;
+static String serieScolaire ="Serie Scolaire".tr;
+static String matiere ="Liste des Matières".tr;
+static String matiereCoef ="Liste des Matières Coeficientes".tr;
+static String modalitePaiement ="Modalite de Paiement".tr;
+static String cycle ="Cycle Scolaire".tr;
+static String decoupageScolaire ="Decoupage Scolaire".tr;
+static String classe ="Classe".tr;
 
 static List<String> jours = List.generate(31, (index) => "${index+1}".padLeft(2, '0'));
 static List<String> Annees = List.generate(10, (index) => "${DateTime.now().year-index-1} - ${DateTime.now().year-index}");
@@ -158,9 +200,6 @@ static List<String> listPays = ['Algérie','Angola','Bénin','Botswana','Burkina
   'Japonaise',
 ];
 
-static const String annuler = "Annuler";
-static const String enregistrer = "Enregistrer";
-static const String modifier = "Modifier";
 
 /////// TITRE FORMULAIRE
 static const String eleve ="Elève";

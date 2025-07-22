@@ -20,8 +20,8 @@ String? text,double? padding=15.0,VoidCallback? onPressed,bool? isPrincipal=true
              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))
               ),
             child:TDeviceUtility.isMobileScreen(Get.context!)?Tooltip(
-              message: text,
-              child:Text(text!,maxLines: 1,overflow: TextOverflow.ellipsis,) ,
+              message: text!.tr,
+              child:Text(text,maxLines: 1,overflow: TextOverflow.ellipsis,) ,
             ): Text(text!,maxLines: 1,overflow: TextOverflow.ellipsis,)),
     );
   }

@@ -1,6 +1,8 @@
 // import 'package:ecole_plus/Configs/utils/Constant/enums.dart';
 
-class UserModel {
+import 'package:ecole/Employe/Model/employe_model.dart';
+
+class TUserModel {
 
   final int? idUtilisateur;
   int? idEmploye;
@@ -9,18 +11,19 @@ class UserModel {
   String? motDePasse;
   String? statut;
   String? role;
+  TEmployeModel? dataEmploye;
 
 
-  UserModel({this.idUtilisateur,this.idEmploye,
+  TUserModel({this.idUtilisateur,this.idEmploye,
   this.idEtablissement,this.user,this.motDePasse,
-  this.statut,this.role ="user"
+  this.statut,this.role,this.dataEmploye
   });
 
 
 
 ///// RECUPERATION
-  factory UserModel.fromMap(Map<String,dynamic> data){
-    return UserModel(
+  factory TUserModel.fromMap(Map<String,dynamic> data){
+    return TUserModel(
       idUtilisateur: data.containsKey("ID_Utilisateur")?data["ID_Utilisateur"]??'':'',
       idEmploye: data.containsKey("ID_Employe")?data["ID_Employe"]??'':'',
       idEtablissement: data.containsKey("ID_Etablissement")?data["ID_Etablissement"]??'':'',
@@ -28,6 +31,7 @@ class UserModel {
       motDePasse: data.containsKey("Password")?data["Password"]??'':'',
       statut: data.containsKey("Satut")?data["Satut"]??'':'',
       role: data.containsKey("Role")?data["Role"]??'':'',
+      dataEmploye: data.containsKey("DataEmploye")? TEmployeModel.fromMap(data["DataEmploye"]):null
       // dateCreation: data.containsKey("DateCreation")?data["DateCreation"]??'':'',
     );
   }

@@ -3,7 +3,7 @@ import 'package:ecole/Configs/cammon/widgets/formulaire/form.dart';
 import 'package:ecole/Configs/utils/Constant/enums.dart';
 import 'package:ecole/Matiere%20coef/Controller/flitre_coefficient.dart';
 import 'package:ecole/Matiere%20coef/Controller/matierecoef_controller.dart';
-import 'package:ecole/Matiere%20coef/Controller/page_matierecoef_controller.dart';
+import 'package:ecole/Matiere%20coef/Controller/page_coefficient.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../Configs/cammon/widgets/buttons/button.dart';
@@ -29,7 +29,8 @@ class TCadreHeaderEleve extends StatelessWidget {
              child: SizedBox(
               width: 400,
                child: formulaire.textFormField(label: "Recherche",isPadding: true,
-               onChanged:(value)=> controllerFiltre.H_FiltreCoefficient(param: value)
+               onChanged:(value)=> print(value)
+              //  controllerFiltre.H_FiltreCoefficient(param: value)
                ),
              ),
            ),

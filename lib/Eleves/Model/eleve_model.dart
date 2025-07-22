@@ -1,6 +1,7 @@
 
 
 import '../../Configs/utils/formatters/formatters.dart';
+import '../../Configs/utils/model_file/model_file.dart';
 
 class TModelEleve {
   int? IDEtudiant;
@@ -21,7 +22,7 @@ class TModelEleve {
   String? PrenomsParent;
   String? ContactParent1;
   String? ContactParent2;
-
+  TUploadFileModel? filePhoto; 
    TModelEleve({
     this.IDEtudiant,
     this.Matricule,

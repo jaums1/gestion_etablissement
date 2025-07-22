@@ -1,40 +1,53 @@
 import 'package:get/get.dart';
 
+import '../../Configs/utils/Constant/api_constants.dart';
 import '../../Configs/utils/Implements/controller_data.dart';
 import '../../Configs/utils/Popup/loaders.dart';
+import '../../Configs/utils/dio/dio_client.dart';
+import '../../Configs/utils/endpoint/endpoint.dart';
 import '../Model/typedecoupage_model.dart';
-import '../Repository/typedecoupage_repository.dart';
 
 class TTypeDecoupageController extends GetxController with TControllerData {
   static TTypeDecoupageController get instance => Get.find();
-
+  final  isLoading = false.obs;
    var selectRadio ="".obs;
-   var dataTableTypeDecoupage= <TTypeDecoupageModel>[].obs;
-   var dataTypeDecoupageModel = TTypeDecoupageModel();
+   var DataTableTypeDecoupage= <TTypeDecoupageModel>[].obs;
+   var DataTypeDecoupageModel = TTypeDecoupageModel();
    ///// LES INSTANCES
-    final repositorycontroller = Get.put(TTypeDecoupageScolaireRepository());
+    final _client = TDioHelper(baseUrl: TApi.httpLien);
+
     ///////// TRAITEMENT /////////////
       
    void HLitTypeDecoupage(){
-    dataTypeDecoupageModel.libTypeDecoupage = selectRadio.value;
+    DataTypeDecoupageModel.libTypeDecoupage = selectRadio.value;
    }
 
 @override
   void onInit() {
-   H_RecupeData();
     super.onInit();
+    H_RecupeData();
   }
 
 ////// RECUPERATION
  @override
-  void H_RecupeData()async {
-    H_Initialise();
-    if (dataTableTypeDecoupage.isNotEmpty) return;
-    final data=await repositorycontroller.H_RecupData();
-    if(data==false) return;
-    if (data is List) {
-      dataTableTypeDecoupage.value = data.map((datas)=>TTypeDecoupageModel.fromMap(datas)).toList();
-      dataTableTypeDecoupage.map((datas){ datas.etat ==true?  selectRadio.value=datas.libTypeDecoupage! :"";}).toList(); 
+  H_RecupeData()async {
+       try {
+        isLoading.value =false;
+  ///// ENVOIE DES DONNEES
+  final reponse =await _client.getList<TTypeDecoupageModel>(TEndpoint.linkTypeDecoupageScolaire,
+                                             fromJson: (data) =>TTypeDecoupageModel.fromMap(data));
+    ////// VERIFICATION 
+    if(reponse.success){
+      
+      DataTableTypeDecoupage.value = reponse.data!;
+      DataTypeDecoupageModel = DataTableTypeDecoupage.firstWhere((e)=> e.etat==true,orElse: () =>TTypeDecoupageModel() ,);
+      selectRadio.value = DataTableTypeDecoupage.firstWhere((e)=> e.etat==true
+      ,orElse: () =>TTypeDecoupageModel()).libTypeDecoupage.toString();
+         isLoading.value =true;
+    }
+    } catch (e) {
+      isLoading.value =true;
+      TLoader.errorSnack(title: "Erreur",message: "Veuillez vérifier votre connexion source erreur $e");
     }
   }
   
@@ -43,14 +56,16 @@ class TTypeDecoupageController extends GetxController with TControllerData {
   H_Modifier() async{
     try {
      HLitTypeDecoupage();
-
-     final data = await repositorycontroller.H_ModifierData(dataTypeDecoupageModel);
-      if (data==false){ 
-        TLoader.errorSnack(title: "ERREUR",message:"Veuillez bien vérifier votre connexion internet"); 
-        return;}
-        final index = onIndexData(dataTypeDecoupageModel.libTypeDecoupage);
-        if(index==-1) return;
-         dataTableTypeDecoupage[index].etat=dataTypeDecoupageModel.etat;
+    
+     final reponse =await _client.patch<TTypeDecoupageModel>(TEndpoint.linkTypeDecoupageScolaire,
+  data: DataTypeDecoupageModel.toMap(),fromJson: (data) =>TTypeDecoupageModel.fromMap(data));
+    ////// VERIFICATION 
+    if(reponse.success){
+      DataTypeDecoupageModel =reponse.data!;
+      H_RecupeModif(id:DataTypeDecoupageModel.iDTypeDecoupage);
+    }else{
+      TLoader.errorSnack(title: "Erreur",message: "Veuillez vérifier votre connexion internet");
+    }
     } catch (e) {
       TLoader.errorSnack(title: "ERREUR",message:"Veuillez bien vérifier votre connexion internet");
     }
@@ -72,12 +87,19 @@ void onSelectRadio(value){
   selectRadio.value =value;
  final index = onIndexData(value);
  if(index==-1) return;
- dataTypeDecoupageModel= dataTableTypeDecoupage[index];
+ DataTypeDecoupageModel= DataTableTypeDecoupage[index];
 
 }
 
 onIndexData(value){
-  return dataTableTypeDecoupage.indexWhere((e)=> e.libTypeDecoupage ==value );
+  return DataTableTypeDecoupage.indexWhere((e)=> e.libTypeDecoupage ==value );
 }
+
+@override
+  H_RecupeModif({int? id, String? param}) {
+    int index = DataTableTypeDecoupage.indexWhere((e)=>e.iDTypeDecoupage==id);
+    if(index==-1) return ;
+    DataTableTypeDecoupage[index].copyWith(Data: DataTypeDecoupageModel); 
+  }
 
 }

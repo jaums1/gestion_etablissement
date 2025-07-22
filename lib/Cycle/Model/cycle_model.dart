@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 class TCycleModel {
   int? iDCycleScolaire;
   String? cycleScolaire;
@@ -29,4 +30,12 @@ class TCycleModel {
   };
 }
   
+
+  TCycleModel copyWith({TCycleModel? data}) {
+    return TCycleModel(
+      iDCycleScolaire: data!.iDCycleScolaire,    // iDCycleScolaire ?? this.iDCycleScolaire,
+      cycleScolaire: data.cycleScolaire,      // ?? this.cycleScolaire,
+      sousTitre: data.sousTitre               //?? this.sousTitre,
+    );
+  }
 }

@@ -11,8 +11,8 @@ class TScolariteFunction with TFunctionData {
 
 
  void H_OnchangeNiveauSerie(){
-    print(controllerNS.dataTableSelectNiveauSerie.length);
-   controller.variable.DataTableNiveauSerie.value = controllerNS.dataTableSelectNiveauSerie.map(
+    print(controllerNS.DataTableSelectNiveauSerie.length);
+   controller.variable.DataTableNiveauSerie.value = controllerNS.DataTableSelectNiveauSerie.map(
     (e)=>e).toList();
      print(controller.variable.DataTableNiveauSerie.length);
    
@@ -21,7 +21,7 @@ class TScolariteFunction with TFunctionData {
   
 void H_OnchangeSupprime(param){
   controller.variable.DataTableNiveauSerie.remove(param);
-  controllerNS.dataTableSelectNiveauSerie.remove(param);
+  controllerNS.DataTableSelectNiveauSerie.remove(param);
 
   }
 

@@ -6,9 +6,9 @@ class TRecuperationDataNiveuSerie {
   //// RECUPERATION NIVEAU
    H_RecupeDataNiveauParID({int? id}){
 
-   final index = controller.dataTableNiveauSerie.indexWhere((e)=> e.iDNiveauSerie==id); 
+   final index = controller.DataTableNiveauSerie.indexWhere((e)=> e.iDNiveauSerie==id); 
   if(index ==-1) return false;
-    final data = controller.dataTableNiveauSerie[index];
+    final data = controller.DataTableNiveauSerie[index];
    return data;
      
   }
@@ -16,9 +16,9 @@ class TRecuperationDataNiveuSerie {
   
    H_RecupeDataNiveauParNiveauSerie({String? param}){
   
-   final index = controller.dataTableNiveauSerie.indexWhere((e)=> e.niveauSerie!.toLowerCase()==param!.toLowerCase()); 
+   final index = controller.DataTableNiveauSerie.indexWhere((e)=> e.niveauSerie!.toLowerCase()==param!.toLowerCase()); 
   if(index ==-1) return false;
-    final data = controller.dataTableNiveauSerie[index];
+    final data = controller.DataTableNiveauSerie[index];
    return data;
    
   }

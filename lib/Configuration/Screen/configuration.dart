@@ -1,5 +1,6 @@
 
 import 'package:ecole/Configs/cammon/widgets/win/move_window.dart';
+import 'package:ecole/Configs/utils/Constant/texte_string.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../Configs/cammon/widgets/ShowDialog/header_show.dart';
@@ -14,9 +15,10 @@ class TConfigurationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
   
-    TWindow().changeDimensionFenetre(largeur:900,hauteur:  525);
-   
-    
+    // TWindow().changeDimensionFenetre(largeur:1000,hauteur:  700);
+    TWindow().changeDimensionFenetre(largeur:950,hauteur:  600);
+
+  
     return TMoveWindows(
       child: Scaffold(
         backgroundColor: Colors.transparent,
@@ -30,9 +32,12 @@ class TConfigurationScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Column(
+                spacing: 30,
                 children: [
-                THeaderShowDialog(tilte: "Configuration",),
-                TBodyConfigurationScreen(),
+                Flexible(child: THeaderShowDialog(tilte:TText.configuration.tr  ,)),
+                Flexible(
+                  flex: 5,
+                  child: TBodyConfigurationScreen()),
                     
                 ],
               )),

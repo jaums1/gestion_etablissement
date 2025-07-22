@@ -6,7 +6,7 @@ import 'package:ecole/Serie/Controller/serie_controller.dart';
 import 'package:get/get.dart';
 import '../../Cycle/Controller/cycle_controller.dart';
 import '../../Cycle/Screen/cycle.dart';
-import '../../Decoupage_Scolaire/Screen/decoupage.dart';
+import '../../Type_Decoupage_Scolaire/Screen/Widget/decoupage.dart';
 import '../../Etablissement/Controller/etablissement_controller.dart';
 import '../../Etablissement/Screen/etablissement.dart';
 import '../../Matiere coef/matierecoef_principal.dart';
@@ -57,35 +57,35 @@ void nextStep(indice) async {
  
   switch (indice){
      //// ETABLISSEMENT
-    case 0 :  if(controlleEtablissement.H_ValiderConfig()==false) return;
+    case 0 :  if(await controlleEtablissement.H_ValiderConfig()==false) return;
     break;
     /// TYPE DECOUPAGE SCOLAIRE
-    case 1 : if(controlleTypeDecoupage.H_ValiderConfig()==false){ 
+    case 1 : if(await controlleTypeDecoupage.H_ValiderConfig()==false){ 
     TLoader.errorSnack(title: "DECOUPAGE SCOLAIRE",message: "Veuillez sélectionner votre decoupage scolaire");
      return;}  
     break;
      /// CYCLE SCOLAIRE
-    case 2 : if(controlleCyle.H_ValiderConfig()==false){ 
+    case 2 : if(await controlleCyle.H_ValiderConfig()==false){ 
     TLoader.errorSnack(title: "CYCLE SCOLAIRE",message: "Veuillez sélectionner votre cycle scolaire");
      return;} 
     break;
      /// NIVEAU SCOLAIRE
-     case 3 : if(controlleNiveauScolaire.H_ValiderConfig()==false){ 
+     case 3 : if(await controlleNiveauScolaire.H_ValiderConfig()==false){ 
     TLoader.errorSnack(title: "NIVEAU SCOLAIRE",message: "Veuillez sélectionner votre niveau scolaire");
      return;} 
      break;  
      /// SERIE SCOLAIRE
-     case 4 : if(controlleSerie.H_ValiderConfig()==false){ 
+     case 4 : if(await controlleSerie.H_ValiderConfig()==false){ 
     TLoader.errorSnack(title: "SERIE",message: "Veuillez sélectionner votre serie");
      return;} 
      break; 
       /// NIVEAU SERIE
-     case 5 : if(controlleNiveauSerie.H_ValiderConfig()==false){ 
+     case 5 : if(await controlleNiveauSerie.H_ValiderConfig()==false){ 
     TLoader.errorSnack(title: "NIVEAU SERIE",message: "Veuillez affecter votre niveau serie ou achever l'action");
      return;} 
      break;
    /// MATIERE
-     case 6 : if(controlleMatiere.H_ValiderConfig()==false){ 
+     case 6 : if(await controlleMatiere.H_ValiderConfig()==false){ 
     TLoader.errorSnack(title: "MATIERE",message: "Veuillez sélectionner votre matière ou achever l'action");
      return;} 
      break;

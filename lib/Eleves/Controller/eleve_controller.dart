@@ -67,11 +67,7 @@ class TEleveController extends GetxController with TControllerData{
     }
   }
  
- @override
-  void onInit() {
-     H_RecupeData();
-    super.onInit();
-  }
+
 ///// ENREGISTREMENT 
 @override
  H_Enregistrer() async{
@@ -156,7 +152,7 @@ class TEleveController extends GetxController with TControllerData{
   }
 
 @override
-  void H_RecupeData({String? param}) async {
+   H_RecupeData({String? param}) async {
   try {
     isLoading.value =false;
     

@@ -32,7 +32,7 @@ class TClasseDesktopScreen extends StatelessWidget {
                   TTableHeader(buttonText: "J'enregistre une classe",onChanged:(value){
                     TClasseFiltre().H_FiltreElement(param: value);} ,onPressed: ()=>TClassePage().H_PageNouveau(),),
                   SizedBox(height: TSizes.spaceBtwItems,),
-                 
+                     
                   SizedBox(
                     height: MediaQuery.of(context).size.height*0.68,
                     child: TClasseDataTable())

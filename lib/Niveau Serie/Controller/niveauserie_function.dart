@@ -9,11 +9,11 @@ class TNiveauSerieFunction with TFunctionData {
   final controller = Get.find<TNiveauSerieController>();
  
   H_SelectNiveauSerie(TNiveauSerieModel? param){
-   final index = controller.dataTableSelectNiveauSerie.indexWhere(
+   final index = controller.DataTableSelectNiveauSerie.indexWhere(
     (e)=> e==param
    );
-   index==-1?controller.dataTableSelectNiveauSerie.add(param!)
-   :controller.dataTableSelectNiveauSerie.removeAt(index);
+   index==-1?controller.DataTableSelectNiveauSerie.add(param!)
+   :controller.DataTableSelectNiveauSerie.removeAt(index);
   
   }
   

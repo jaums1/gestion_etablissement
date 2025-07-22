@@ -9,7 +9,7 @@ class TDataSourceMatiere extends DataTableSource {
   final controller = Get.find<TMatiereController>();
   @override
   DataRow? getRow(int index) {
-  final data =controller.dataTableMatiere[index];
+  final data =controller.DataTableMatiere[index];
     return DataRow2(
       onTap: (){},
       selected: true,
@@ -26,7 +26,7 @@ class TDataSourceMatiere extends DataTableSource {
   bool get isRowCountApproximate => false;
 
   @override
-  int get rowCount =>controller.dataTableMatiere.length;
+  int get rowCount =>controller.DataTableMatiere.length;
 
   @override
   

@@ -1,9 +1,15 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:ecole/Configs/utils/Constant/enums.dart';
-import 'package:ecole/Niveau%20Serie/Controller/page_niveau_serie_model.dart';
 import 'package:ecole/Niveau%20Serie/Screen/ShowDialog/dialogue_niveau_serie.dart';
 import 'package:ecole/Niveau_Scolaire/Controller/niveauscolaire_controller.dart';
 
+import '../../Configs/utils/Constant/api_constants.dart';
+import '../../Configs/utils/Constant/image_string.dart';
+import '../../Configs/utils/Constant/texte_string.dart';
+import '../../Configs/utils/Popup/animation_loader.dart';
+import '../../Configs/utils/Popup/showdialogue.dart';
+import '../../Configs/utils/dio/dio_client.dart';
+import '../../Configs/utils/endpoint/endpoint.dart';
 import '../../Cycle/Controller/cycle_controller.dart';
 import '../../Etablissement/Controller/etablissement_controller.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +20,7 @@ import '../../Niveau_Scolaire/Model/niveauscolaire_model.dart';
 import '../../Serie/Controller/serie_controller.dart';
 import '../../Serie/Model/serie_model.dart';
 import '../Model/niveau_serie_model.dart';
-import '../Repository/niveau_serie_repository.dart';
+
 
 
 
@@ -22,69 +28,86 @@ class TNiveauSerieController extends GetxController with TControllerData{
    static TNiveauSerieController get instance => Get.find();
 
   ///// DECLARATION DE VARIABLE 
-   var dataTableNiveauSerie= <TNiveauSerieModel>[].obs;
-   var dataTableFiltreNiveauSerie= <TNiveauSerieModel>[].obs;
-   var dataTableSelectNiveauSerie= <TNiveauSerieModel>[].obs;
-   var dataTableSerie= <TSerieModel>[].obs;
+  String params="";
+  String action="";
+  final isLoading = false.obs;
+   var DataTableNiveauSerie= <TNiveauSerieModel>[].obs;
+   var DataTableFiltreNiveauSerie= <TNiveauSerieModel>[].obs;
+   var DataTableSelectNiveauSerie= <TNiveauSerieModel>[].obs;
+   var DataTableSerie= <TSerieModel>[];
    final Etat =true.obs;
-     String action="";
-    var isSelectSerie=<String>[].obs;
-      List<DataColumn> columns = [
-     DataColumn2(label: Text("N°"),fixedWidth: 30,headingRowAlignment: MainAxisAlignment.center),
-     DataColumn2(label: Text("Select",maxLines: 1,overflow: TextOverflow.ellipsis,),fixedWidth: 70,headingRowAlignment: MainAxisAlignment.center),
-     DataColumn2(label: Text("Niveau Serie"),size: ColumnSize.L),
-     DataColumn2(label: Text("Actions"),fixedWidth: 100,headingRowAlignment: MainAxisAlignment.center),         
-  ];
+
+    var isSelectNiveauSerie=<String>[].obs;
+    var isSelectNiveauSerieTable=<String>[].obs;
+  
 
 
    ///// LES INSTANCES
-    var dataSerieModel = TSerieModel();
-    var dataNiveauModel = TNiveauModel();
-    var dataNiveauSerieModel = TNiveauSerieModel();
+    var DataNiveauSerie = TNiveauSerieModel();
+    final _client = TDioHelper(baseUrl: TApi.httpLien);
 
-    final repositorycontroller = Get.put(TSerieNiveauRepository());
+
+    
     final controlleEtablissement= Get.find<TEtablissementController>();
+    // final controllerPage= Get.put(TPageNiveauSerieController());
     final controllerSerie= Get.find<TSerieController>();
     final controllerNiveau= Get.find<TNiveauScolaireController>();
     final controllerCycle = Get.find<TCycleController>();
-    final controllerPage = Get.find<TPageNiveauSerieController>();
+      List<DataColumn> columns = [
+     DataColumn2(label: Text("N°"),fixedWidth: 50,headingRowAlignment: MainAxisAlignment.center),
+     DataColumn2(label: Text("Niveau Serie"),size: ColumnSize.L),
+  //  if() DataColumn2(label:  Text("Actions"),fixedWidth: 100,headingRowAlignment: MainAxisAlignment.center),         
+  ];
+    // final controllerPage = TPageNiveauSerieController();
+  
 
      final libSerie =TextEditingController();
      final serie =TextEditingController();
     ///////// TRAITEMENT
   
-   void HLitSerieScolaire({String? param="AFFICHAGE"}){
+  
+  void H_Clear(){
+      libSerie.clear();
+      serie.clear();
+    }
+
+  void HLitSerieScolaire({String? param="AFFICHAGE"}){
     if(param=="AFFICHAGE"){
-    libSerie.text =  dataSerieModel.libSerie.toString()==""?"":dataSerieModel.libSerie.toString() ;
-    serie.text    =  dataSerieModel.serie.toString()==""?"":dataSerieModel.serie.toString();
+   
     
     }else{
-      dataNiveauSerieModel.typeEnseignement    = controllerCycle.datacyleModel.cycleScolaire;
-      dataNiveauSerieModel.iDSerie             = dataSerieModel.iDSerie;
-      dataNiveauSerieModel.serie               = dataSerieModel.serie;
-      dataNiveauSerieModel.iDNiveauScolaire    = dataNiveauModel.iDNiveauScolaire;
-      dataNiveauSerieModel.niveau              = dataNiveauModel.niveau;
-      dataNiveauSerieModel.niveauSerie         = "${dataNiveauModel.niveau} ${dataSerieModel.serie}";
+      DataNiveauSerie.typeEnseignement    = controllerCycle.DatacyleModel.cycleScolaire;
+      DataNiveauSerie.iDSerie             = controllerSerie.DataSerie.iDSerie;
+      DataNiveauSerie.serie               = controllerSerie.DataSerie.serie;
+      DataNiveauSerie.iDNiveauScolaire    = controllerNiveau.DataNiveau.iDNiveauScolaire;
+      DataNiveauSerie.niveau              = controllerNiveau.DataNiveau.niveau;
+      DataNiveauSerie.niveauSerie         = "${DataNiveauSerie.niveau} ${DataNiveauSerie.serie}";
       
     }
    
    }
 
 
-@override
-  void onInit() {
-   H_RecupeData();
-    super.onInit();
-  }
-
 ////// RECUPERATION
  @override
-  void H_RecupeData({String? param="Secondaire"})async {
-      dataTableNiveauSerie.clear();
-      isSelectSerie.clear();
-      final data=await repositorycontroller.H_RecupData(param: param);
-      if (data is List) dataTableNiveauSerie.value = data.map((datas)=>TNiveauSerieModel.fromMap(datas)).toList();       
-      dataTableFiltreNiveauSerie.value = dataTableNiveauSerie;
+  H_RecupeData({String? param})async {
+   try {
+    isLoading.value =false;
+  
+  ///// ENVOIE DES DONNEES
+  final reponse =await _client.getList<TNiveauSerieModel>("${TEndpoint.linkNiveauSerie}/${controllerCycle.selectRadio.value}",
+                                             fromJson: (data) =>TNiveauSerieModel.fromMap(data));
+    ////// VERIFICATION 
+    if(reponse.success){
+      isLoading.value =true;
+      DataTableNiveauSerie.value = reponse.data!;
+       DataTableFiltreNiveauSerie.value =reponse.data!;
+      DataTableSelectNiveauSerie.value = DataTableNiveauSerie.where((e) => e.Etat==true).map((e) => e).toList();
+      isSelectNiveauSerieTable.value =DataTableSelectNiveauSerie.map((e) => e.niveauSerie!).toList();
+    }
+    } catch (e) {
+      TLoader.errorSnack(title: "Erreur",message: "Veuillez vérifier votre connexion source erreur $e");
+    }   
       
   }
   
@@ -92,33 +115,55 @@ class TNiveauSerieController extends GetxController with TControllerData{
 @override
   H_Enregistrer() async{
    try {
-     HLitSerieScolaire(param: "ENVOYER");
-     final data =await  repositorycontroller.H_EnregistrerData(dataNiveauSerieModel);
-      if (data==false){ 
-        TLoader.errorSnack(title: "ERREUR",message:"Veuillez bien vérifier votre connexion internet"); 
-        return;}
-    action ==TraitementAction.nouveau.name?TLoader.successSnack(title: "NIVEAU SERIE",message:"Vos données ont bien été enregistrée"):
-    TLoader.successSnack(title: "NIVEAU SERIE",message:"Vos données ont bien été modifiée"); 
-     controllerPage.previousPage();
+       HLitSerieScolaire(param: "ENVOYER");
+       TShowdialogue().showWidgetLoad(
+        widgets: TAnimationLoaderWidget(text:TText.messageEnregistrerChargement.tr,animation: TImages.docerAnimation, width: 150,));
+    
+       final reponse =await _client.post<TNiveauSerieModel>(TEndpoint.linkNiveauSerie,
+                        data: DataNiveauSerie.toMap(),fromJson: (data) =>TNiveauSerieModel.fromMap(data));
+    ////// VERIFICATION 
+    if(reponse.success){
+      DataNiveauSerie =reponse.data!;
+       H_RecupeData();
+         Get.back();
+       return true;
+    }else{
+      Get.back();
+      
+      TLoader.errorSnack(title: TText.erreur,message: TText.messageErreur);
+       return false;
+    }
     } catch (e) {
-      TLoader.errorSnack(title: "ERREUR",message:"Veuillez bien vérifier votre connexion internet");
+      TLoader.errorSnack(title: TText.erreur,message: "${TText.messageErreur} $e");
     }
   }
 
   ////// MODIFIER
   @override
   H_Modifier() async{
+    
     try {
-     HLitSerieScolaire(param: "ENVOYER");
-
-     final data = await repositorycontroller.H_ModifierData(dataNiveauSerieModel);
-      if (data==false){ 
-        TLoader.errorSnack(title: "ERREUR",message:"Veuillez bien vérifier votre connexion internet"); 
-        return;}
-    } catch (e) {
-     TLoader.errorSnack(title: "ERREUR",
-       message:"Veuillez bien vérifier votre connexion internet source d'erreur :$e");
+       HLitSerieScolaire(param: "ENVOYER");
+       TShowdialogue().showWidgetLoad(
+        widgets: TAnimationLoaderWidget(text:TText.messageModifierChargement.tr,animation: TImages.docerAnimation, width: 200,));
+    
+       final reponse =await _client.patch<TNiveauSerieModel>(TEndpoint.linkNiveauSerie,
+                        data: DataNiveauSerie.toMap(),fromJson: (data) =>TNiveauSerieModel.fromMap(data));
+    ////// VERIFICATION 
+    if(reponse.success){
+      DataNiveauSerie =reponse.data!;
+       H_RecupeData();
+         Get.back();
+       return true;
+    }else{
+      Get.back();
+      TLoader.errorSnack(title: TText.erreur,message: TText.messageErreur);
+       return false;
     }
+    } catch (e) {
+      TLoader.errorSnack(title: TText.erreur,message: "${TText.messageErreur} $e");
+    }
+
   }
 
 ///// SUPPRIMER
@@ -126,40 +171,55 @@ class TNiveauSerieController extends GetxController with TControllerData{
   H_Supprimer({int? id, String? param}) async{
   
     try {
-        final data =await repositorycontroller.H_SupprimerData(id);
-         Get.back();
-      data ==true?TLoader.successSnack(title: "SUPPRIMER",
-       message:"Supprimer avec succès") :TLoader.errorSnack(title: "ERREUR",
-       message:"Veuillez bien vérifier votre connexion internet");
+       TShowdialogue().showWidgetLoad(
+        widgets: TAnimationLoaderWidget(text:TText.messageSuppressionChargement.tr,animation: TImages.docerAnimation, width: 200,));
 
-       data==true? H_RecupeData(param:controllerCycle.datacyleModel.cycleScolaire)
-       :"";
-    } catch (e) {
-       TLoader.errorSnack(title: "ERREUR",
-       message:"Veuillez bien vérifier votre connexion internet source d'erreur :$e");
+       final reponse =await _client.delete("${TEndpoint.linkNiveauSerie}/$id",);
+    ////// VERIFICATION 
+    if(reponse.success){
+        Get.back();
+       H_RecupeData();
+       
+       return true;
+    }else{
+      Get.back();
+      TLoader.errorSnack(title: TText.erreur,message: TText.messageErreur);
+       return false;
     }
- 
-
+    } catch (e) {
+      TLoader.errorSnack(title: TText.erreur,message: "${TText.messageErreur} $e");
+    }
   }
  ///// INITIALISATION
 @override
   void H_Initialise() {
-    isSelectSerie.clear();
-    dataNiveauSerieModel.dataTable.clear();
-    final dataInit = TNiveauModel();
-      dataNiveauModel = dataInit;
-    final datainit =TNiveauSerieModel();
-    dataNiveauSerieModel = datainit;
+    DataTableSerie.clear();
+     H_Clear();
+    controllerNiveau.DataNiveau = TNiveauModel(); 
+    isSelectNiveauSerie.clear();
+    DataNiveauSerie = TNiveauSerieModel();
+  }
+
+  @override
+  void H_RecupeModif({int? id, String? param}) {
+     isSelectNiveauSerie.clear();
+     DataTableSerie.clear();
+    DataNiveauSerie = TNiveauSerieModel();
+    DataNiveauSerie = DataTableNiveauSerie.firstWhere((e) =>e.iDNiveauSerie==id, orElse: () => TNiveauSerieModel(),);
+    DataNiveauSerie.niveau !=""? isSelectNiveauSerie.add(DataNiveauSerie.serie!):"";
+    controllerNiveau.H_RecupeModif(id: DataNiveauSerie.iDNiveauScolaire);
   }
 
  //// VALIDATION CONFIGURATION
   @override
-  H_ValiderConfig() {
-    
-    if (dataTableNiveauSerie.isEmpty || controllerPage.currentPage.value==1 )return false;
+  H_ValiderConfig() async{
+    if (isSelectNiveauSerieTable.isEmpty)return false;
+     DataNiveauSerie.DataTableNiveauSerie = isSelectNiveauSerieTable;
+    await H_Modifier();
       return true;
       
     }
+
 
  //// AUTRE PROCEDURE
 void onSelectRadio(value){
@@ -170,36 +230,46 @@ void onSelectRadio(value){
 }
 
 void onSelectCheckBox(value){
+  if(action ==TraitementAction.modifier.name) isSelectNiveauSerie.clear() ;
 
-  if (dataNiveauModel.niveau==null) {
-    TLoader.errorSnack(title: "NIVEAU SCOLAIRE",message: "Veuillez sélectionner votre niveau d'étude");
-    return;
-  }
-  bool isverification =isSelectSerie.contains(value);
-   isverification == true ?isSelectSerie.remove(value):isSelectSerie.add(value);
-  if(isverification){
- final index =  dataNiveauSerieModel.dataTable.indexWhere((e)=> value=="Néant"?e.serie =="":e.serie==value );
- dataNiveauSerieModel.dataTable.removeAt(index);
-  } else{
-    int index = controllerSerie.onIndexData(value=="Néant"?"":value);
-    if(index==-1) return;
-     dataSerieModel = controllerSerie.dataTableSerie[index];
-     dataNiveauSerieModel.dataTable.add(dataSerieModel);
-  } 
+
+  bool isverification = isSelectNiveauSerie.contains(value);
+       isverification ? isSelectNiveauSerie.remove(value): isSelectNiveauSerie.add(value); 
+
+    if(isverification){
+     DataTableSerie.removeWhere((e)=>e.serie ==""?e.libSerie==value:e.serie==value);
+    }else{  
+    DataTableSerie.add(
+      controllerSerie.DataTableSerie.firstWhere((e)=>e.serie==""?e.libSerie==value : e.serie==value,orElse: () => TSerieModel(),)
+    );
+    }
+
+    DataNiveauSerie.DataTable=DataTableSerie.map((e)=> e).toList();
+}
+
+void onSelectCheckBoxTable({String? niveauSerie}){
+
+     bool isVerifie = isSelectNiveauSerieTable.contains(niveauSerie);
+               isVerifie == true ?isSelectNiveauSerieTable.remove(niveauSerie):isSelectNiveauSerieTable.add(niveauSerie!);
+}
+
+void onSelectCheckBoxAll(value){
+  isSelectNiveauSerieTable.clear();
+    if(value){
+     isSelectNiveauSerieTable.value = DataTableNiveauSerie.map((e)=> e.niveauSerie!).toList();
+    }
 }
 
 void onSelectCombo(value){
- 
-  final index = controllerNiveau.onIndexData(value);
-   if(index ==-1) return;
-   dataNiveauModel = controllerNiveau.dataTableNiveauEtude[index];
+  controllerNiveau.DataNiveau = controllerNiveau.DataTableNiveauEtude.firstWhere((e)=>e.niveau==value,
+  orElse: () => TNiveauModel(),);
 }
 
 onIndexData(value){
-  final index = dataTableNiveauSerie.indexWhere((e)=> e.iDNiveauSerie==value );
+  final index = DataTableNiveauSerie.indexWhere((e)=> e.iDNiveauSerie==value );
    if(index ==-1) return;
-  dataNiveauSerieModel = dataTableNiveauSerie[index];
-  return dataNiveauSerieModel;
+  DataNiveauSerie = DataTableNiveauSerie[index];
+  return DataNiveauSerie;
 }
 
 void showNiveauSerieDialog() async {
@@ -207,7 +277,7 @@ void showNiveauSerieDialog() async {
    TDialogueNiveauSerie(),
   );
   if (result != null) {
-    isSelectSerie.value = result;
+    isSelectNiveauSerie.value = result;
   }
 }
 

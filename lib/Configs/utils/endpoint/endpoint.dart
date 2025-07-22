@@ -1,7 +1,7 @@
 class TEndpoint {
   
   ///// LOGIN
-  static const registerLogin = "user";
+  static const linkUser = "user";
 
   /////// ETABLISSEMENT
  static const linkEtablissement = "Etablissement";
@@ -33,6 +33,9 @@ class TEndpoint {
  
  /////// CLASSE
  static const linkClasse = "Classe";
+ 
+  /////// CODE PROJET
+ static const linkCodeProjet = "CodeProjet";
   
  /////// MODALITE PAIEMENT
  static const linkScolarite = "Scolarite";

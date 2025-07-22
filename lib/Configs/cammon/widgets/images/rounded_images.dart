@@ -22,7 +22,7 @@ class TRoundeImages extends StatelessWidget {
     this.applyImageRaduis = true,
     this.border,
     this.backgroundColor = TColors.light,
-    this.fit = BoxFit.contain,
+    this.fit = BoxFit.cover,
     this.padding =TSizes.sm,
     this.imageType = ImageType.asset,
     this.onPressed,
@@ -111,8 +111,8 @@ Widget _buildMemoryImage(){
 }
 
 Widget _buildFileImage(){
-  if (file !=null) {
-    return Image(image: FileImage(file!),fit: fit,color: overlayColor,);
+  if (image !="") {
+    return Image(image: FileImage(File(image)),fit: fit,color: overlayColor,);
   }else{
     return Container();
   }

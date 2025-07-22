@@ -43,8 +43,7 @@ String?hintText="Selectionner un pays"}){
           Text(label,style: Theme.of(Get.context!).textTheme.bodyMedium,),
           DropdownButtonFormField(
               isExpanded: true,
-             value:valeur=="" || valeur==null || 
-             !sections.contains(valeur)    ?null:valeur,
+             value:valeur=="" || valeur==null?null:sections.contains(valeur)?valeur:null,
             decoration: InputDecoration(
               hintText: hintText,
               isDense: true,

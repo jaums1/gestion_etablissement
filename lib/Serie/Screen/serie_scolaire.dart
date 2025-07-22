@@ -1,4 +1,5 @@
 
+import 'package:ecole/Configs/cammon/widgets/containers/rounded_container_create.dart';
 import 'package:flutter/material.dart';
 
 import '../../Configs/cammon/widgets/TitrePage/titlepage.dart';
@@ -17,17 +18,23 @@ class TSerieScolaireScreen extends StatelessWidget {
          ///// TITRE DU CARDER
          TTitlePage(tilte:TText.serieScolaire,),
          Expanded(
-           child: Padding(padding: const EdgeInsets.only(left: TSizes.sm,right: TSizes.sm),
-            child: SingleChildScrollView(
-              child:Column(
-                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TCardreHeaderSerie(),
-                ],
-              )
-              
-             
-            ),
+           child: SizedBox(
+            width: double.infinity,
+             child: Padding(padding: const EdgeInsets.only(left: TSizes.sm,right: TSizes.sm),
+              child: SingleChildScrollView(
+                child:Column(
+                   crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TRoundedContainerCreate(
+                      child:  TCardreHeaderSerie(),
+                    )
+                   
+                  ],
+                )
+                
+               
+              ),
+             ),
            ),
          ),
       ],

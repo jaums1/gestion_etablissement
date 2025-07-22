@@ -5,16 +5,15 @@ import '../../../../../Configs/cammon/widgets/Data_table/paginated_data_table.da
 import '../../../../../Configs/utils/Constant/image_string.dart';
 import '../../../../../Configs/utils/Popup/animation_loader.dart';
 import '../../../../Controller/classe_controller.dart';
-import '../../../../Data/employe_data_sourcetable.dart';
+import '../../../../Data/classe_data_sourcetable.dart';
 
 class TClasseDataTable extends StatelessWidget {
-  const TClasseDataTable({super.key});
+  final controller = Get.find<TClasseController>();
+   TClasseDataTable({super.key});
+   
  
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<TClasseController>();
-  
-    controller.H_RecupeData();
     return  Obx(
       (){ 
         

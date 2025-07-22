@@ -1,5 +1,3 @@
-import '../../Configs/utils/Constant/image_string.dart';
-import '../../Configs/utils/formatters/formatters.dart';
 
 class TEtablissementModel {
 final int? idEtablissement;	
@@ -12,6 +10,7 @@ String? pays;
 String? email;					        
 String? adresse;			        
 String? telephone;			      
+String? Telephone2;			      
 String? siteWeb;				       
 DateTime? dateCreation;			   
 String? logo;				          
@@ -24,7 +23,7 @@ DateTime? dateFin;
   TEtablissementModel({this.idEtablissement,this.nom,this.codeEtatblissement,this.typeEtablissement,
   this.ville,this.pays,this.email,this.adresse,this.telephone,this.siteWeb,this.dateCreation,
   this.logo,this.nomDirecteur,this.etatActivation,this.dateDebut,this.statutActivation,this.dateFin,
-  this.typeEnseignement
+  this.typeEnseignement,this.Telephone2
   });
 
 
@@ -47,6 +46,7 @@ DateTime? dateFin;
       nomDirecteur: data.containsKey("NomDirecteur")?data["NomDirecteur"]:"",
       statutActivation: data.containsKey("StatutActivation")?data["StatutActivation"]:"",
       etatActivation: data.containsKey("EtatActivation")?data["EtatActivation"]:true,
+      Telephone2: data.containsKey("Telephone2")?data["Telephone2"]:"",
     );
   }
 
@@ -65,13 +65,11 @@ DateTime? dateFin;
     "Telephone": telephone,
     "Email": email,
     "SiteWeb": siteWeb,
-    "DateCreation":TFormatters.formatDate(DateTime.now()),
+    "Telephone2": Telephone2,
     "Logo": logo,
     "NomDirecteur": nomDirecteur,
     "StatutActivation": statutActivation,
     "EtatActivation": etatActivation??true,
-    "DateDebut": TFormatters.formatDate(DateTime.now()),
-    "DateFin": TFormatters.formatDate(DateTime.now()),
   };
 }
 }

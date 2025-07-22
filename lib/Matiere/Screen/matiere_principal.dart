@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
-import '../Controller/page_matiere_controller.dart';
+import 'matiere.dart';
 
 
 
@@ -10,7 +8,6 @@ class TMatierePrincipalScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-     final controller = Get.find<TPageMatiereController>();
-    return Obx(() => controller.pageTable[controller.currentPage.value]);
+    return TMatiereScolaireScreen();
   }
 }

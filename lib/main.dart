@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'Configs/Blinding/general_blinding.dart';
+import 'Configs/Translations/translations.dart';
 import 'Configs/routes/app_route.dart';
 import 'Configs/routes/route.dart';
 import 'Configs/utils/Constant/texte_string.dart';
@@ -41,6 +42,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      translations: MyTranslations(),
+      locale: const Locale('fr'),
+      fallbackLocale: const Locale('en'),
        localizationsDelegates:  [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,

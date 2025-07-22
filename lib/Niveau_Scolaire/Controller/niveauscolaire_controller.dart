@@ -1,18 +1,22 @@
 import 'package:ecole/Configs/utils/Implements/controller_data.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import '../../Configs/utils/Constant/api_constants.dart';
 import '../../Configs/utils/Popup/loaders.dart';
+import '../../Configs/utils/dio/dio_client.dart';
+import '../../Configs/utils/endpoint/endpoint.dart';
 import '../../Cycle/Controller/cycle_controller.dart';
 import '../Model/niveauscolaire_model.dart';
-import '../Repository/niveauscolaire_repository.dart';
+
 
 
 class TNiveauScolaireController extends GetxController with TControllerData{
    static TNiveauScolaireController get instance => Get.find();
 
   ///// DECLARATION DE VARIABLE 
-   var dataTableNiveauEtude= <TNiveauModel>[].obs;
+   var DataTableNiveauEtude= <TNiveauModel>[].obs;
+   var DataNiveau = TNiveauModel();
+
    final idNiveau =0.obs;
    final params ="".obs;
   final isSelectTitreNiveau = <String>[].obs;
@@ -23,21 +27,21 @@ class TNiveauScolaireController extends GetxController with TControllerData{
   final idCycle = TextEditingController();
 
    ///// LES INSTANCES
-    var dataNiveauModel = TNiveauModel();
-    final repositorycontroller = Get.put(TNiveauScolaireRepository());
-    final controlleCyle= Get.find<TCycleController>();
+    final _client = TDioHelper(baseUrl: TApi.httpLien);
+    final controlle= Get.find<TCycleController>();
 
     ///////// TRAITEMENT
      
-   void HLitNiveauScolaire({String? param="AFFICHAGE"}){
+   HLitNiveauScolaire({String? param="AFFICHAGE"}){
     if(param=="AFFICHAGE"){
-    idCycle.text =   dataNiveauModel.iDCycleScolaire.toString() ;
-    niveau.text =  dataNiveauModel.niveau.toString()==""?"":dataNiveauModel.niveau.toString();
-    typeNiveau.text = dataNiveauModel.typeNiveau.toString() == ""?"":dataNiveauModel.typeNiveau.toString();
+    idCycle.text =   DataNiveau.iDCycleScolaire.toString() ;
+    niveau.text =  DataNiveau.niveau.toString()==""?"":DataNiveau.niveau.toString();
+    typeNiveau.text = DataNiveau.typeNiveau.toString() == ""?"":DataNiveau.typeNiveau.toString();
     }else{
-      dataNiveauModel.iDCycleScolaire=idCycle.text==""?controlleCyle.datacyleModel.iDCycleScolaire :idCycle.text as int ;
-      dataNiveauModel.niveau=niveau.text;
-      dataNiveauModel.typeNiveau=typeNiveau.text;
+     
+      DataNiveau.iDCycleScolaire=controlle.DatacyleModel.iDCycleScolaire ;
+      DataNiveau.niveau=niveau.text;
+      DataNiveau.typeNiveau=typeNiveau.text;
     }
    
    }
@@ -50,71 +54,81 @@ class TNiveauScolaireController extends GetxController with TControllerData{
 
 ////// RECUPERATION
  @override
-  void H_RecupeData({String? param})async {
-  if(params.value.toLowerCase() == param.toString().toLowerCase()) return;
-      params.value = param.toString();
-      dataTableNiveauEtude.clear();
-      isSelectNiveau.clear();
-      final data=await repositorycontroller.H_RecupData(param: param);
-      if (data is List) dataTableNiveauEtude.value = data.map((datas)=>TNiveauModel.fromMap(datas)).toList();
-    dataTableNiveauEtude.map((datas){ 
-     datas.etat ==true?isSelectNiveau.add(datas.niveau!) :"";
-      isSelectNiveau.length == dataTableNiveauEtude.length? isSelectTitreNiveau.add(datas.typeNiveau!):"";
-     }).toList(); 
+  H_RecupeData({String? param})async {
 
-    
-    
-         
+  
+   try {
+    if( params.value.toLowerCase() == controlle.selectRadio.value.toLowerCase()) return;
+     DataTableNiveauEtude.clear();
+      isSelectNiveau.clear();
+
+  ///// ENVOIE DES DONNEES
+  final reponse =await _client.getList<TNiveauModel>("${TEndpoint.linkNiveauScolaire}/${controlle.selectRadio.value}",
+                                             fromJson: (data) =>TNiveauModel.fromMap(data));
+    ////// VERIFICATION 
+    if(reponse.success){
+      DataTableNiveauEtude.value = reponse.data!;
+      isSelectNiveau.value = DataTableNiveauEtude.where((e)=> e.etat==true).map((e)=> e.niveau??"").toList();
+      isSelectNiveau.length == DataTableNiveauEtude.length? isSelectTitreNiveau.add(controlle.selectRadio.value):"";
+      params.value = controlle.selectRadio.value;
+    }
+    } catch (e) {
+      TLoader.errorSnack(title: "Erreur",message: "Veuillez vérifier votre connexion source erreur $e");
+    }         
 
   }
   
 //// ENREGISTRER
 @override
   H_Enregistrer() async{
+
    try {
-     HLitNiveauScolaire(param: "ENVOYER");
-     final data = await repositorycontroller.H_EnregistrerData(dataNiveauModel);
-      if (data==false){ 
-        TLoader.errorSnack(title: "ERREUR",message:"Veuillez bien vérifier votre connexion internetS12"); 
-        return;}
-        dataNiveauModel = TNiveauModel.fromMap(data);
-        if(dataNiveauModel.typeNiveau==""){
-           final index = onIndexData(dataNiveauModel.niveau);
-           if(index==-1) return;
-           dataTableNiveauEtude[index].etat = true;
-        return;
-        }
-        dataTableNiveauEtude.add(dataNiveauModel);
+       HLitNiveauScolaire(param: "ENVOYER");
+    
+       final reponse =await _client.post<TNiveauModel>(TEndpoint.linkTypeDecoupageScolaire,
+                        data: DataNiveau.toMap(),fromJson: (data) =>TNiveauModel.fromMap(data));
+    ////// VERIFICATION 
+    if(reponse.success){
+      DataNiveau =reponse.data!;
+       H_RecupeData();
+    }else{
+      TLoader.errorSnack(title: "Erreur",message: "Veuillez vérifier votre connexion internet");
+    }
     } catch (e) {
       TLoader.errorSnack(title: "ERREUR",message:"Veuillez bien vérifier votre connexion internet");
     }
+  
   }
 
   ////// MODIFIER
   @override
   H_Modifier() async{
+   
     try {
-     HLitNiveauScolaire(param: "ENVOYER");
-
-     final data = await repositorycontroller.H_ModifierData(dataNiveauModel);
-      if (data==false){ 
-        TLoader.errorSnack(title: "ERREUR",message:"Veuillez bien vérifier votre connexion internet"); 
-        return;}
-        final index = onIndexData(dataNiveauModel.niveau);
-        if(index==-1) return;
-         dataTableNiveauEtude[index]=dataNiveauModel;
-    } catch (e) {
-     TLoader.errorSnack(title: "ERREUR",
-       message:"Veuillez bien vérifier votre connexion internet source d'erreur :$e");
+       HLitNiveauScolaire(param: "ENVOYER");
+    
+     final reponse =await _client.patch<TNiveauModel>(TEndpoint.linkNiveauScolaire,
+  data: DataNiveau.toMap(),fromJson: (data) =>TNiveauModel.fromMap(data));
+    ////// VERIFICATION 
+    if(reponse.success){
+      DataNiveau =reponse.data!;
+      H_RecupeModif(id:DataNiveau.iDNiveauScolaire);
+    }else{
+      TLoader.errorSnack(title: "Erreur",message: "Veuillez vérifier votre connexion internet");
     }
+    } catch (e) {
+      TLoader.errorSnack(title: "ERREUR",message:"Veuillez bien vérifier votre connexion internet");
+    }
+
   }
+
 
 ///// SUPPRIMER
 @override
   H_Supprimer({int? id, String? param}) async{
     try {
-        final data =await repositorycontroller.H_SupprimerData(id);
-      data ==true?TLoader.successSnack(title: "SUPPRIMER",
+      final reponse = await _client.delete("${TEndpoint.linkNiveauScolaire}/$id");
+      reponse.success ==true?TLoader.successSnack(title: "SUPPRIMER",
        message:"Supprimer avec succès") :TLoader.errorSnack(title: "ERREUR",
        message:"Veuillez bien vérifier votre connexion internet");
     } catch (e) {
@@ -125,13 +139,17 @@ class TNiveauScolaireController extends GetxController with TControllerData{
 
   }
  ///// INITIALISATION
-
+ @override
+  void H_RecupeModif({int? id, String? param}) {
+    DataNiveau = DataTableNiveauEtude.firstWhere((e)=> e.iDNiveauScolaire==id   ,
+    orElse: () => TNiveauModel(),); 
+  }
 
  //// VALIDATION CONFIGURATION
   @override
   H_ValiderConfig() {
     if (isSelectNiveau.isEmpty)return false;
-    H_Modifier();
+      H_Modifier();
       return true;
     }
 
@@ -145,38 +163,38 @@ void onSelectRadio(value){
 }
 
 onIndexData(value){
-  return dataTableNiveauEtude.indexWhere((e)=> e.niveau ==value );
+  return DataTableNiveauEtude.indexWhere((e)=> e.niveau ==value );
 }
 
-onSelectCheckBox({String? libNiveau="",String? titreNiveau=""}){
-    bool? isverification=true; 
-     isverification= dataTableNiveauEtude.length == isSelectNiveau.length;
 
-     libNiveau !=""? isSelectNiveau.contains(libNiveau) == true ?isSelectNiveau.remove(libNiveau)
-                     :isSelectNiveau.add(libNiveau!):"";
+onSelectAllChecBox(){
+ if(isSelectTitreNiveau.isEmpty){
+    isSelectNiveau.value = DataTableNiveauEtude.map((e)=> e.niveau??"").toList();
+ isSelectNiveau.value = isSelectNiveau.toSet().toList();
+ isSelectTitreNiveau.add(controlle.selectRadio.value);
+ DataNiveau.niveauData=isSelectNiveau;
+ } else{
+   isSelectNiveau.clear(); 
+   isSelectTitreNiveau.clear(); 
+ }
 
-    if(libNiveau ==""){
-      if(isverification){
-        for (var element in dataTableNiveauEtude) {
-        isSelectNiveau.contains(element.niveau) == false ?"":isSelectNiveau.remove(element.niveau); 
-      }}
-      else{
-            for (var element in dataTableNiveauEtude) {
-          isSelectNiveau.contains(element.niveau) == true ?"":isSelectNiveau.add(element.niveau!); 
-            }
-        }
-    }
-       
-   isverification= dataTableNiveauEtude.length == isSelectNiveau.length;
-    isverification ==true?isSelectTitreNiveau.add(titreNiveau!):
-     isSelectTitreNiveau.contains(titreNiveau) == true ?isSelectTitreNiveau.remove(titreNiveau!) :"";   
-     dataNiveauModel.niveauData = isSelectNiveau;
-     dataNiveauModel.iDNiveauScolaire = 1;
-     H_Enregistrer();
-    }
-  
+}
 
+
+
+onSelectCheckBox({String? libNiveau=""}){
+   libNiveau !=""? isSelectNiveau.contains(libNiveau) == true ?isSelectNiveau.remove(libNiveau)
+                     :isSelectNiveau.add(libNiveau.toString()):"";
+   
+    bool? isverification= DataTableNiveauEtude.length == isSelectNiveau.length;
+     
+     isverification? isSelectTitreNiveau.add(controlle.selectRadio.value):isSelectTitreNiveau.clear();
     
+     DataNiveau.niveauData=isSelectNiveau;
+
+ }
+
+
  }
 
 

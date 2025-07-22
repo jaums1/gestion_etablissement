@@ -1,14 +1,13 @@
 
 
+import 'package:ecole/Configs/cammon/widgets/containers/rounded_container_create.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../../Configs/cammon/widgets/TitrePage/titlepage.dart';
-import '../../Configs/cammon/widgets/cardre_images/cardre_images.dart';
-import '../../Configs/utils/Constant/colors.dart';
 import '../../Configs/utils/Constant/sizes.dart';
 import '../../Configs/utils/Constant/texte_string.dart';
-import 'Widget/info_complementaireetab.dart';
 import 'Widget/info_etatblissement.dart';
-import 'Widget/info_fondateur.dart';
+import 'Widget/info_cordonnee.dart';
 import 'Widget/situtgeo_etablissement.dart';
 
 
@@ -17,69 +16,39 @@ class TEtablissementScolaireScreen extends StatelessWidget {
   final bool? isPass;
   @override
   Widget build(BuildContext context) {
-    // final controller     = Get.put(TEtablissementController());
     return SafeArea(
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-         TTitlePage(tilte: TText.etatblissement,),
+         TTitlePage(tilte: TText.etatblissement.tr,),
+        
+
          Expanded(
            child: Padding(
               padding: const EdgeInsets.only(left: TSizes.sm,right: TSizes.sm),
              child: SingleChildScrollView(
                child: Column(
+                spacing: 10,
                 crossAxisAlignment: CrossAxisAlignment.start,
                  children: [
-                   Row(
-                    children: [
-                      Expanded(
-                        flex: 4,
-                        child: Container(
-                          // height: 100,
-                          decoration: BoxDecoration(color: Colors.white,),
-                          child: TInforEtablissement(),
-                        ),
-                      ), 
-                      SizedBox(width: TSizes.sm,),
-                       Expanded(
-                        flex: 2,
-                        child: Container(
-                          height: 190,
-                          decoration: BoxDecoration(color: Colors.white,),
-                          child: Center(child: TCardreImage()),
-                        ),
-                      ),
-                    ],
+                   
+                   TRoundedContainerCreate(
+                      // padding : const EdgeInsets.symmetric(horizontal: TSizes.lg, vertical: TSizes.sm),
+                    child: TInforEtablissement(),
                    ),
-                   TSituationGeographiqueEtablissement(),
-                   TInfoFondateur(),
-                   TInfoComplementaireEtab(),
-                 ////// BOUTON
-             isPass == true? Padding(
-                   padding: const EdgeInsets.only(bottom: TSizes.md),
-                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      SizedBox(
-                        width: 140,
-                        child: ElevatedButton(onPressed: (){},
-                         child: Text("Valider")),
-                      ),
-                      SizedBox(width: 10,), 
-                      SizedBox(
-                        width: 140,
-                        child: ElevatedButton(onPressed: (){},
-                         style:ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          foregroundColor: TColors.buttonPrimary
-                         ) ,
-                         child: Text("Ferme",style: TextStyle(color: TColors.buttonPrimary),),),
-                      ),
-                      
-                      
-                    ],
+                 
+                  TRoundedContainerCreate(
+                      // padding : const EdgeInsets.symmetric(horizontal: TSizes.lg, vertical: TSizes.sm),
+                    child: TInfoCordonnee(),
+                   ),  
+                   
+                   TRoundedContainerCreate(
+                      // padding : const EdgeInsets.symmetric(horizontal: TSizes.lg, vertical: TSizes.sm),
+                    child: TSituationGeographiqueEtablissement(),
                    ),
-                 ):SizedBox(),
+
+                   SizedBox()
+
                 
                  ],
                ),

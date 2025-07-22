@@ -1,11 +1,13 @@
 import 'package:ecole/Configs/utils/Implements/controller_data.dart';
 import 'package:ecole/Etablissement/Controller/etablissement_controller.dart';
 import 'package:ecole/Serie/Model/serie_model.dart';
-import 'package:ecole/Serie/Repository/serie_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../Configs/utils/Constant/api_constants.dart';
 import '../../Configs/utils/Popup/loaders.dart';
+import '../../Configs/utils/dio/dio_client.dart';
+import '../../Configs/utils/endpoint/endpoint.dart';
 
 
 
@@ -13,28 +15,29 @@ class TSerieController extends GetxController with TControllerData{
    static TSerieController get instance => Get.find();
 
   ///// DECLARATION DE VARIABLE 
-   var dataTableSerie= <TSerieModel>[].obs;
+   var DataTableSerie= <TSerieModel>[].obs;
    final params ="".obs;
   final isSelectTitreSerie = <String>[].obs;
   final isSelectSerie = <String>[].obs;
    ///// LES INSTANCES
-    var dataSerieModel = TSerieModel();
-    final repositorycontroller = Get.put(TSerieRepository());
+    var DataSerie = TSerieModel();
     final controlleEtablissement= Get.find<TEtablissementController>();
      
      final libSerie =TextEditingController();
      final serie =TextEditingController();
+
+     final _client = TDioHelper(baseUrl: TApi.httpLien);
     ///////// TRAITEMENT
   
    void HLitSerieScolaire({String? param="AFFICHAGE"}){
     if(param=="AFFICHAGE"){
-    libSerie.text =  dataSerieModel.libSerie.toString()==""?"":dataSerieModel.libSerie.toString() ;
-    serie.text    =  dataSerieModel.serie.toString()==""?"":dataSerieModel.serie.toString();
+    libSerie.text =  DataSerie.libSerie.toString()==""?"":DataSerie.libSerie.toString() ;
+    serie.text    =  DataSerie.serie.toString()==""?"":DataSerie.serie.toString();
     
     }else{
-      dataSerieModel.typeEnseignement = controlleEtablissement.dataEtablissementModel.value.typeEnseignement ;
-      dataSerieModel.libSerie         = libSerie.text;
-      dataSerieModel.serie            = serie.text;
+      DataSerie.typeEnseignement = controlleEtablissement.dataEtablissementModel.value.typeEnseignement ;
+      DataSerie.libSerie         = libSerie.text;
+      DataSerie.serie            = serie.text;
 
       
     }
@@ -50,41 +53,44 @@ class TSerieController extends GetxController with TControllerData{
 
 ////// RECUPERATION
  @override
-  void H_RecupeData({String? param})async {
-  if(params.value.toLowerCase() == param.toString().toLowerCase()) return;
-      params.value = param.toString();
-      dataTableSerie.clear();
+ H_RecupeData({String? param})async {
+   try {
+    if( params.value.toLowerCase() == controlleEtablissement.selectTypeEnseignement.value.toLowerCase()) return;
+    
+     DataTableSerie.clear();
       isSelectSerie.clear();
-      final data=await repositorycontroller.H_RecupData(param: param);
-      if (data is List) dataTableSerie.value = data.map((datas)=>TSerieModel.fromMap(datas)).toList();
-    dataTableSerie.map((datas){ 
-     datas.etat ==true?isSelectSerie.add(datas.serie==""?datas.libSerie!:datas.serie!) :"";
-      isSelectSerie.length == dataTableSerie.length? isSelectTitreSerie.add(datas.typeEnseignement!):"";
-     }).toList(); 
 
-    
-    
-         
-
+  ///// ENVOIE DES DONNEES
+  final reponse =await _client.getList<TSerieModel>("${TEndpoint.linkSerie}/${controlleEtablissement.selectTypeEnseignement.value}",
+                                             fromJson: (data) =>TSerieModel.fromMap(data));
+    ////// VERIFICATION 
+    if(reponse.success){
+      DataTableSerie.value = reponse.data!;
+      isSelectSerie.value = DataTableSerie.where((e)=> e.etat==true).map((e)=> e.serie==""?e.libSerie!:e.serie!).toList();
+      isSelectSerie.length == DataTableSerie.length? isSelectTitreSerie.add(controlleEtablissement.selectTypeEnseignement.value):"";
+      params.value = controlleEtablissement.selectTypeEnseignement.value;
+    }
+    } catch (e) {
+      TLoader.errorSnack(title: "Erreur",message: "Veuillez vérifier votre connexion source erreur $e");
+    }  
+  
   }
   
 //// ENREGISTRER
 @override
   H_Enregistrer() async{
    try {
-     HLitSerieScolaire(param: "ENVOYER");
-     final data = await repositorycontroller.H_EnregistrerData(dataSerieModel);
-      if (data==false){ 
-        TLoader.errorSnack(title: "ERREUR",message:"Veuillez bien vérifier votre connexion internet"); 
-        return;}
-        dataSerieModel = TSerieModel.fromMap(data);
-        if(dataSerieModel.libSerie==""){
-           final index = onIndexData(dataSerieModel.serie);
-           if(index==-1) return;
-           dataTableSerie[index].etat = true;
-        return;
-        }
-        dataTableSerie.add(dataSerieModel);
+       HLitSerieScolaire(param: "ENVOYER");
+    
+       final reponse =await _client.post<TSerieModel>(TEndpoint.linkSerie,
+                        data: DataSerie.toMap(),fromJson: (data) =>TSerieModel.fromMap(data));
+    ////// VERIFICATION 
+    if(reponse.success){
+      DataSerie =reponse.data!;
+       H_RecupeData();
+    }else{
+      TLoader.errorSnack(title: "Erreur",message: "Veuillez vérifier votre connexion internet");
+    }
     } catch (e) {
       TLoader.errorSnack(title: "ERREUR",message:"Veuillez bien vérifier votre connexion internet");
     }
@@ -93,46 +99,58 @@ class TSerieController extends GetxController with TControllerData{
   ////// MODIFIER
   @override
   H_Modifier() async{
-    try {
-     HLitSerieScolaire(param: "ENVOYER");
-
-     final data = await repositorycontroller.H_ModifierData(dataSerieModel);
-      if (data==false){ 
-        TLoader.errorSnack(title: "ERREUR",message:"Veuillez bien vérifier votre connexion internet"); 
-        return;}
-        final index = onIndexData(dataSerieModel.serie);
-        if(index==-1) return;
-         dataTableSerie[index]=dataSerieModel;
-    } catch (e) {
-     TLoader.errorSnack(title: "ERREUR",
-       message:"Veuillez bien vérifier votre connexion internet source d'erreur :$e");
+  
+   try {
+       HLitSerieScolaire(param: "ENVOYER");
+    
+       final reponse =await _client.patch<TSerieModel>(TEndpoint.linkSerie,
+                        data: DataSerie.toMap(),fromJson: (data) =>TSerieModel.fromMap(data));
+    ////// VERIFICATION 
+    if(reponse.success){
+      DataSerie =reponse.data!;
+       H_RecupeData();
+    }else{
+      TLoader.errorSnack(title: "Erreur",message: "Veuillez vérifier votre connexion internet");
     }
+    } catch (e) {
+      TLoader.errorSnack(title: "ERREUR",message:"Veuillez bien vérifier votre connexion internet");
+    }
+
   }
 
 ///// SUPPRIMER
 @override
   H_Supprimer({int? id, String? param}) async{
-    try {
-        final data =await repositorycontroller.H_SupprimerData(id);
-      data ==true?TLoader.successSnack(title: "SUPPRIMER",
+  try {
+       final reponse =await _client.delete("${TEndpoint.linkSerie}/$id");
+    ////// VERIFICATION 
+      if(reponse.success) H_RecupeData();
+      reponse.success ==true?TLoader.successSnack(title: "SUPPRIMER",
        message:"Supprimer avec succès") :TLoader.errorSnack(title: "ERREUR",
        message:"Veuillez bien vérifier votre connexion internet");
     } catch (e) {
-       TLoader.errorSnack(title: "ERREUR",
-       message:"Veuillez bien vérifier votre connexion internet source d'erreur :$e");
+      TLoader.errorSnack(title: "ERREUR",message:"Veuillez bien vérifier votre connexion internet");
     }
- 
-
   }
  ///// INITIALISATION
 
 
+
+
+
+
  //// VALIDATION CONFIGURATION
   @override
-  H_ValiderConfig() {
+  H_ValiderConfig() async {
     if (isSelectSerie.isEmpty)return false;
+     DataSerie.dataSerie=isSelectSerie;
+    await  H_Modifier();
+      print("JAUMS");
       return true;
     }
+
+
+
 
  //// AUTRE PROCEDURE
 void onSelectRadio(value){
@@ -143,34 +161,39 @@ void onSelectRadio(value){
 }
 
 onIndexData(value){
-  return dataTableSerie.indexWhere((e)=> e.serie ==value );
+  return DataTableSerie.indexWhere((e)=> e.serie ==value );
 }
 
-onSelectCheckBox({String? lib="",String? titre=""}){
-    bool? isverification=true; 
-     isverification= dataTableSerie.length == isSelectSerie.length;
 
+
+
+
+onSelectAllChecBox(){
+ if(isSelectTitreSerie.isEmpty){
+    isSelectSerie.value = DataTableSerie.map((e)=> e.serie==""?e.libSerie!:e.serie!).toList();
+ isSelectSerie.value = isSelectSerie.toSet().toList();
+ isSelectTitreSerie.add(controlleEtablissement.selectTypeEnseignement.value);
+ } else{
+   isSelectSerie.clear(); 
+   isSelectTitreSerie.clear(); 
+   DataSerie.dataSerie!.clear();
+ }
+
+}
+
+
+onSelectCheckBox({String? lib=""}){
+   
      lib !=""? isSelectSerie.contains(lib) == true ?isSelectSerie.remove(lib)
                      :isSelectSerie.add(lib!):"";
+  
+     bool isverification= DataTableSerie.length == isSelectSerie.length;
+    
+     
+     isverification? isSelectTitreSerie.add(controlleEtablissement.selectTypeEnseignement.value):isSelectTitreSerie.clear();
+    
+    
 
-    if(lib ==""){
-      if(isverification){
-        for (var element in dataTableSerie) {
-        isSelectSerie.contains(element.serie==""?element.libSerie:element.serie) == false ?"":isSelectSerie.remove(element.serie==""?element.libSerie:element.serie); 
-      }}
-      else{
-            for (var element in dataTableSerie) {
-          isSelectSerie.contains(element.serie==""?element.libSerie:element.serie) == true ?"":isSelectSerie.add(element.serie ==""?element.libSerie.toString():element.serie.toString()); 
-            }
-        }
-    }
-       
-   isverification= dataTableSerie.length == isSelectSerie.length;
-    isverification ==true?isSelectTitreSerie.add(titre!):
-     isSelectTitreSerie.contains(titre) == true ?isSelectTitreSerie.remove(titre!) :"";   
-     dataSerieModel.dataSerie = isSelectSerie;
-    //  dataSerieModel.iDNiveauScolaire = 1;
-     H_Enregistrer();
     }
   
 

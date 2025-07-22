@@ -5,7 +5,7 @@ import '../Constant/sizes.dart';
 
 class TStatutCustom {
   
- Widget H_CardreCouleur({Color? color,String? titre}){
+ static Widget H_CardreCouleur({Color? color,String? titre}){
   return Container(
           padding: EdgeInsets.symmetric(horizontal: TSizes.md,vertical: 4),
           decoration: BoxDecoration(

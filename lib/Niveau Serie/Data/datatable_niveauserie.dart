@@ -22,11 +22,11 @@ class TDataTableNiveauSerie extends StatelessWidget {
       (){
         int i=0;
        return TDataTable(
-            onPageChanged: (value){},
+            // onPageChanged: (value){},
             columns: controller.columns.map((column)=> column).toList(),
-            rows: controller.dataTableFiltreNiveauSerie.map((data)
+            rows: controller.DataTableFiltreNiveauSerie.map((data)
             {
-              final verif = controller.dataTableSelectNiveauSerie.contains(data);
+              final verif = controller.DataTableSelectNiveauSerie.contains(data);
               final select = controllerS.DataTableScolarite.indexWhere(
                 (e)=> e.DataNiveauSerie!.iDNiveauSerie==data.iDNiveauSerie
                 );
@@ -36,15 +36,18 @@ class TDataTableNiveauSerie extends StatelessWidget {
               return  DataRow2(
                 // selected: select==-1?false:true,
                 onTap: (){},
-                onSelectChanged: (value){},
+                // onSelectChanged: (value){},
               cells: [
-               DataCell(Text("${i}",textAlign: TextAlign.center,),),
-               DataCell(Align(
-                child: IgnorePointer(ignoring: select==-1?false:true,
-                 child: Checkbox(value: verif, onChanged: (value){
-                  functions.H_SelectNiveauSerie(data);
-                 }))),),
+               DataCell(Text("$i",textAlign: TextAlign.center,),),
+
+              //  DataCell(Align(
+              //   child: IgnorePointer(ignoring: select==-1?false:true,
+              //    child: Checkbox(value: verif, onChanged: (value){
+              //     functions.H_SelectNiveauSerie(data);
+              //    }))),),
+
                DataCell(Text(data.niveauSerie!,maxLines: 1,overflow: TextOverflow.ellipsis,)),
+
                  DataCell(Align(
                   child:TTableActionIconButtons(
                     iconSize: 20,

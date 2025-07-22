@@ -22,7 +22,7 @@ H_Supprimer({int? id,String? param}) {
    throw UnimplementedError();
  }
 H_ValiderConfig(){}
- void H_RecupeData(){}
+ H_RecupeData(){throw UnimplementedError();}
 
  void H_Initialise(){}
 

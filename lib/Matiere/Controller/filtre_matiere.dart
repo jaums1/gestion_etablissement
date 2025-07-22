@@ -7,7 +7,7 @@ class TFiltreMatiere with TFiltre {
     
   @override
   void H_FiltreElement({String param = ""}) {
-   controller.dataTableFiltreMatiere.value = controller.dataTableMatiere.where(
+   controller.DataTableFiltreMatiere.value = controller.DataTableMatiere.where(
     (e)=> e.matiere!.toLowerCase().contains(param.toLowerCase())
     ).toList();
   }

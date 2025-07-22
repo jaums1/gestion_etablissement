@@ -4,7 +4,10 @@ import '../Constant/colors.dart';
 import '../Constant/sizes.dart';
 
 class TAnimationLoaderWidget extends StatelessWidget {
-  const TAnimationLoaderWidget({super.key, this.text="Vide", this.style, this.animation, this.showAction, this.actionText, this.onActionPressed, this.width, this.height, this.color});
+  const TAnimationLoaderWidget({super.key, this.text="Vide", this.style, this.animation,
+   this.showAction, this.actionText, 
+   this.onActionPressed, this.width,
+    this.height, this.color= Colors.white});
   final String? text;
   final TextStyle? style;
   final String? animation;
@@ -20,7 +23,6 @@ class TAnimationLoaderWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
         Lottie.asset(animation!,width: width,height: height??MediaQuery.of(context).size.height*0.6),
-        const SizedBox(height: TSizes.spaceBtwItems,),
         Text(text!,style: style??Theme.of(context).textTheme.headlineSmall!.apply(
           color: color??TColors.darkGrey
         ),

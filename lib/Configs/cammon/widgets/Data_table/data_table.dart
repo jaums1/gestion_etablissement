@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../../../utils/Constant/colors.dart';
+import '../../../utils/Constant/image_string.dart';
 import '../../../utils/Constant/sizes.dart';
+import '../../../utils/Popup/animation_loader.dart';
 
 class TDataTable extends StatelessWidget {
   const TDataTable({super.key,
@@ -69,7 +71,7 @@ class TDataTable extends StatelessWidget {
            headingRowDecoration: BoxDecoration(
            borderRadius: BorderRadius.only(topLeft: Radius.circular(TSizes.borderRaduisMd),
            topRight: Radius.circular(TSizes.borderRaduisMd),)),
-           empty:Text("Vide")    ,//TAnimationLoaderWidget(animation: TImages.docerAnimation,height: 150,width: 150,),
+           empty:TAnimationLoaderWidget(animation: TImages.videAnimation,height: 150,width: 150,),
            sortArrowBuilder: (ascending, sorted) {
               if (sorted) {
             return Icon(ascending ? Iconsax.arrow_up_3 : Iconsax.arrow_down,size: TSizes.iconSm,);

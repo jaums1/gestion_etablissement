@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../Configs/cammon/widgets/TitrePage/titlepage.dart';
+import '../../../Configs/cammon/widgets/containers/rounded_container_create.dart';
 import '../../../Configs/utils/Constant/sizes.dart';
 
 class TCadreConfiguration extends StatelessWidget {
@@ -24,7 +25,7 @@ class TCadreConfiguration extends StatelessWidget {
             TTitlePage(tilte:titre,),
             Padding(
               padding: const EdgeInsets.only(right:TSizes.md ),
-              child: childRight??null,
+              child: childRight??SizedBox(),
             )
           ],
         ),
@@ -32,12 +33,7 @@ class TCadreConfiguration extends StatelessWidget {
          Expanded(
            child: Padding(padding: const EdgeInsets.only(left: TSizes.sm,right: TSizes.sm),
             child: SingleChildScrollView(
-              child:Container(
-                decoration: BoxDecoration(
-                  color: Colors.white
-                ),
-                child: child,
-              )),
+              child:TRoundedContainerCreate(child: child)),
            ),
          ),
       

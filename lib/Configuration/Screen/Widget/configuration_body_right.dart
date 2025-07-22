@@ -15,11 +15,12 @@ class TConfigurationBodyRight extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(right:  15.0),
       child: Obx(()=> Column(
+        spacing: 20,
           children: [
-            Expanded(flex: 7 ,
+            Expanded(flex: 9 ,
             child: Container(
           decoration: BoxDecoration(
-            color: TColors.lightgrey,
+            color: TColors.primaryBackground,
             borderRadius: TBorderRaduis.borderRadius
           ),
         child:   controller.listeConfig[controller.index.value].route )
@@ -30,6 +31,8 @@ class TConfigurationBodyRight extends StatelessWidget {
             padding: const EdgeInsets.only( right: 12),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
+              // crossAxisAlignment: CrossAxisAlignment.end,
+           
               children: [
               if(controller.index.value==0) 
                Flexible(

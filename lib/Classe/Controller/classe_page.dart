@@ -13,15 +13,16 @@ class TClassePage with TPageData{
    @override
   H_PageNouveau() {
    controller.H_Initialise();
+   controller.variable.H_Initialise();
    Get.offNamed(TRoutes.registerclasse,arguments:TraitementAction.nouveau.name );
   }
 
   @override
   H_PageModifier({int? id}) {
-   
     controller.H_RecupeModif(id: id);
    Get.offNamed(TRoutes.registerclasse,arguments:TraitementAction.modifier.name);
   }
+  
   @override
   H_PageDetail({int? id}) {
      controller.H_RecupeModif(id: id);

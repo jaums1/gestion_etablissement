@@ -12,11 +12,14 @@ class TNiveauSerieModel {
  int? iDEtablissement;
  int? iDSerie;
  int? iDNiveauScolaire;
- List<TSerieModel> dataTable=[];
+ bool? Etat;
+ List<TSerieModel>? DataTable=[];
+ List<String>? DataTableNiveauSerie=[];
  
 
 TNiveauSerieModel({this.iDNiveauSerie,this.niveau,this.niveauSerie,this.iDEtablissement,
-this.iDNiveauScolaire,this.iDSerie,this.serie,this.typeEnseignement, 
+this.iDNiveauScolaire,this.iDSerie,this.serie,this.typeEnseignement,this.DataTable,this.Etat,
+this.DataTableNiveauSerie 
 });
   
 ///// RECUPERATION
@@ -28,6 +31,7 @@ this.iDNiveauScolaire,this.iDSerie,this.serie,this.typeEnseignement,
      iDEtablissement: data.containsKey("IDEtablissement")?data["IDEtablissement"]:"",
      niveau: data.containsKey("Niveau")?data["Niveau"]:"",
      serie: data.containsKey("Serie")?data["Serie"]:"",
+     Etat: data.containsKey("Etat")?data["Etat"]:false,
      niveauSerie: data.containsKey("NiveauSerie")?data["NiveauSerie"]:"",
      typeEnseignement: data.containsKey("TypeEnseignement")?data["TypeEnseignement"]:"",
     );
@@ -36,21 +40,20 @@ this.iDNiveauScolaire,this.iDSerie,this.serie,this.typeEnseignement,
 ////// ENVOIE DES DATAS 
 final controller = Get.find<TEtablissementController>();
  Map<String,dynamic> toMap(){
-  this.dataTable =dataTable;
 
-  // dataTable?.map((e)=>print(e.serie)).toList();
   return{
     "IDNiveauSerie" : iDNiveauSerie,
     "NiveauSerie" : niveauSerie,
     "Niveau" : niveau,
     "Serie" : serie,
+    "Etat" : Etat,
     "IDEtablissement" : controller.dataEtablissementModel.value.idEtablissement,
     "IDSerie" : iDSerie,
     "IDNiveauScolaire" : iDNiveauScolaire,
     "TypeEnseignement" : typeEnseignement,
-    "DataTable" : this.dataTable,
+    "DataTable" :DataTable==null?[]: DataTable!.map((x) => x.toMap()).toList(),
+    "DataTableNiveauSerie" :DataTableNiveauSerie
   };
 }
-
 }
 

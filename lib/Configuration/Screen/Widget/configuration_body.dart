@@ -11,7 +11,7 @@ class TBodyConfigurationScreen extends StatelessWidget {
     return 
     SizedBox(
       // width: 800,
-      height: 450,
+      height: 550,
       child: Row(
         children: [
           Expanded(

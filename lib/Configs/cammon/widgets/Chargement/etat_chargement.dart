@@ -40,7 +40,7 @@ class TEtatChargement {
     );
   }
 
-  static Widget H_EtatDataVide({VoidCallback? onPressedChargement}){
+  static Widget H_EtatDataVide({VoidCallback? onPressedChargement,double? height=250}){
     return Center(
           child: SingleChildScrollView(
             child: Column(
@@ -50,9 +50,9 @@ class TEtatChargement {
                 // const SizedBox(height: 16),
                 TAnimationLoaderWidget(
                 text: 'Aucune donnée disponible',
-                animation: TImages.videAnimation,height: 250,width: 250,),
+                animation: TImages.videAnimation,height: height,width: 200,),
                 // TTextCustom.body(text: 'Aucune donnée disponible',color: Colors.grey ),
-                const SizedBox(height: 16),
+                // const SizedBox(height: 16),
                 TextButton(
                   onPressed: onPressedChargement??(){},
                   child: const Text('Actualiser'),

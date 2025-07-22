@@ -1,85 +1,67 @@
-import 'package:ecole/Matiere%20coef/Screen/Widget/editermatiere.dart';
-import 'package:flutter/material.dart';
+import 'package:ecole/Configs/utils/Constant/texte_string.dart';
 import 'package:get/get.dart';
 
+import '../../Configs/utils/Implements/controller_data.dart';
 import '../../Configs/utils/Popup/loaders.dart';
 import '../../Configs/utils/Popup/showdialogue.dart';
 import 'matiere_controller.dart';
 
 
-mixin class TValidattionMatiere {
-  void H_Enregistrer({String? param}){}
-  void H_Modifier({String? param}){}
-  void H_OnSelect({String? param}){}
-  void H_Supprimer({String? param}){}
-  void H_Fermer(){}
-}
-final controller = Get.find<TMatiereController>();
 
-class TEnregistrerMatiere with TValidattionMatiere {
-  
-  @override
-  void H_OnSelect({String? param}) {
-    controller.matiere = TextEditingController();
-   
-    TShowdialogue.showWidget( titre: "Matiere",
-    widgets: TEditerMatiere(),
-    onPressedValide: ()=> H_Enregistrer()
-    );
-  }
+
+
+class TMatiereValidation with TControllerData {
+  final controller = Get.find<TMatiereController>();
+
 
   @override
-  void H_Enregistrer({String? param}){
+   H_Enregistrer()async{
      if (controller.matiere.text.isEmpty){
-      TLoader.errorSnack(title: "MATIERE",message: "Veuillez entrer votre matière");
+      TLoader.errorSnack(title:TText.libMatiere.toUpperCase(),message: TText.matiereMessage);
       return;
      } 
 
-     int index = controller.dataTableMatiere.indexWhere((e)=>e.matiere!.toLowerCase()==controller.matiere.text.toString().toLowerCase());
+     int index = controller.DataTableMatiere.indexWhere((e)=>e.matiere!.toLowerCase()==controller.matiere.text.toString().toLowerCase());
     
     ////VERIFIER SI LA MATIERE A DEJA ETE SELECTIONNER
-  if (index !=-1) {TLoader.warningSnack(title: controller.matiere.text.toString().toUpperCase(),message: "La matière existe déjà");
-    return;}
-    controller.H_Enregistrer(); 
-    Get.back();   
+  if (index !=-1) {
+    TLoader.warningSnack(title: controller.matiere.text.toString().toUpperCase(),message: TText.matiereExitseMessage);
+    return;
+    }
+   final result = await controller.H_Enregistrer(); 
+   
+   if(result){
+      Get.back();
+      TLoader.successSnack(title:TText.enregistrer.toUpperCase().tr, message: TText.messageEnregistrer.tr);
+   }  
   }
 
-}
-
-class TModifierMatiere with TValidattionMatiere{
-
-   @override
-  void H_OnSelect({String? param}) {
-    controller.matiere = TextEditingController();
-    int index = controller.dataTableMatiere.indexWhere((e)=>e.iDMatiere==int.parse(param.toString()));
-       controller.matiereModel=  controller.dataTableMatiere[index];
-       controller.matiere.text=  controller.dataTableMatiere[index].matiere.toString();
-
-    TShowdialogue.showWidget( titre: "Matiere",
-    widgets: TEditerMatiere( ),
-    onPressedValide: ()=> H_Modifier(param: param),
-    );
-     
-  }
-
-@override
-  void H_Modifier({String? param}) {
-   if (controller.matiere.text.isEmpty ){
-      TLoader.errorSnack(title: "MATIERE",message: "Veuillez entrer la matière");
+  @override
+  H_Modifier() async {
+     if (controller.matiere.text.isEmpty){
+      TLoader.errorSnack(title:TText.libMatiere.toUpperCase(),message: TText.matiereMessage);
       return;
      } 
-    controller.H_Modifier(); 
-    Get.back();   
+
+    final result = await controller.H_Modifier();
+    if (result) {
+       Get.back();
+      TLoader.successSnack(title: TText.modifier.toUpperCase().tr, message: TText.messageModifier.tr);
+    }
+  }
+
+  @override
+  H_Supprimer({int? id, String? param}) {
+    TShowdialogue().showQuestion(
+      titre: TText.suppression,
+      message: TText.messageSupprimer,
+      onPressedValide: () {
+         controller.H_Supprimer(id: id);
+         Get.back();
+         }
+    );
   }
 
 
-}
 
-class TSupprimerCoefficient with TValidattionMatiere {
-   @override
-  void H_Supprimer({String? param}) {
-    int index = controller.dataTableMatiere.indexWhere((e)=>e.matiere!.toLowerCase()==param.toString().toLowerCase());
-    controller.dataTableMatiere.removeAt(index);
-    Get.back();
-  }
 }

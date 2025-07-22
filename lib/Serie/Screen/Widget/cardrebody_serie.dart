@@ -15,7 +15,7 @@ class TCardreBodySerie extends StatelessWidget {
     return Padding(
         padding: EdgeInsets.only(left: TSizes.sm, right: TSizes.sm),
         child: Wrap(
-          children: controllerSerie.dataTableSerie.map((serie) {
+          children: controllerSerie.DataTableSerie.map((serie) {
             bool isChecked = controllerSerie.isSelectSerie.contains(serie.serie==""?serie.libSerie:serie.serie);
             return Padding(
               padding: EdgeInsets.all(2),
@@ -23,8 +23,7 @@ class TCardreBodySerie extends StatelessWidget {
                 width: 145,
                 child: controlleCheckBox.checkboxListTile(
                     procedure: (_) => controllerSerie.onSelectCheckBox(
-                        lib: serie.serie==""?serie.libSerie:serie.serie,
-                        titre: titreSerie),
+                        lib: serie.serie==""?serie.libSerie:serie.serie,),
                     titre: serie.serie==""?serie.libSerie:serie.serie,
                     isSelect: isChecked),
               ),

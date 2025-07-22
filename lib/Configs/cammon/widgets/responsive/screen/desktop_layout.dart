@@ -7,7 +7,8 @@ import '../../layouts/sidebar/sidebars.dart';
 import '../../win/move_window.dart';
 
 class DesktopLayout extends StatelessWidget {
- const DesktopLayout({super.key, this.body});
+  
+  const DesktopLayout({super.key, this.body});
   final Widget? body;
   @override
   Widget build(BuildContext context) {

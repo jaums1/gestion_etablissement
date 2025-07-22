@@ -6,7 +6,7 @@ import 'package:iconsax/iconsax.dart';
 import '../../../../../Configs/cammon/widgets/formulaire/form.dart';
 import '../../../../../Configs/utils/Constant/sizes.dart';
 import '../../../../../Configs/utils/Constant/texte_string.dart';
-import '../../../../Controller/login_controller.dart';
+import '../../../../Controller/user_controller.dart';
 
 class TRegisterReponsiveFormPassword extends StatelessWidget {
   const TRegisterReponsiveFormPassword({
@@ -16,7 +16,7 @@ class TRegisterReponsiveFormPassword extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
      final controllerForm = TFormulaire();
-     final controller     = Get.put(TLoginController());
+      final controller = Get.find<TUserController>();
     return Row(
      children: [
       
@@ -26,24 +26,21 @@ class TRegisterReponsiveFormPassword extends StatelessWidget {
        Expanded(
         child: Obx(
            ()=> controllerForm.textFormField(iconPrefix:Iconsax.password_check,label:TText.password,
-            isPassword: controller.hidePassword.value ,isIconSuffix: true,iconOff: Iconsax.eye_slash,iconOpen: Iconsax.eye,
-            onPressedIcon:controller.ishidePassword,textEditingController: controller.password
+            isPassword: controller.variable.hidePassword.value ,isIconSuffix: true,iconOff: Iconsax.eye_slash,iconOpen: Iconsax.eye,
+            onPressedIcon:(){
+              controller.variable.hidePassword.value =!controller.variable.hidePassword.value ;
+            },textEditingController: controller.variable.password
             )), 
-        //  child: TextFormField(
-        //       decoration: InputDecoration(
-        //   suffixIcon:IconButton(onPressed: (){}, icon: Icon(Iconsax.eye)),
-        //  prefixIcon: Icon(Iconsax.password_check),
-        //  border: OutlineInputBorder(),
-        //  label: Text(TText.password)
-        //       ),
-        //           ),
+     
        ),
     SizedBox(width: TSizes.spaceBtwInputfields/2,),
     Expanded(
       child: Obx(
            ()=> controllerForm.textFormField(iconPrefix:Iconsax.password_check,label:TText.password,
-            isPassword: controller.hidePasswordConfirm.value ,isIconSuffix: true,iconOff: Iconsax.eye_slash,iconOpen: Iconsax.eye,
-            onPressedIcon:controller.ishidePasswordConfirm,textEditingController: controller.passwordConfirm
+            isPassword: controller.variable.hidePasswordConfirm.value ,isIconSuffix: true,iconOff: Iconsax.eye_slash,iconOpen: Iconsax.eye,
+            onPressedIcon:(){
+              controller.variable.hidePasswordConfirm.value = !controller.variable.hidePasswordConfirm.value;
+            },textEditingController: controller.variable.passwordConfirm
             )),
     ),
      ],

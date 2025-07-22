@@ -1,4 +1,6 @@
-import '../../Decoupage_Scolaire/Model/decoupage_model.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first, unnecessary_this
+
+import 'decoupage_model.dart';
 
 class TTypeDecoupageModel {
   int? iDTypeDecoupage;
@@ -8,27 +10,57 @@ class TTypeDecoupageModel {
   String? sousTitre;
   String? typeDecoupage;
   int? iDEtablissement;
-  late final List<TDecoupageModel>? decoupage;
+  List<TDecoupageModel>? DataTableDecoupage;
 
-  TTypeDecoupageModel({this.iDTypeDecoupage, this.sousTitre, this.libTypeDecoupage, this.nbrDecoupage, this.decoupage, this.etat, this.typeDecoupage, this.iDEtablissement});
+  TTypeDecoupageModel({
+    this.iDTypeDecoupage,
+    this.libTypeDecoupage,
+    this.etat,
+    this.nbrDecoupage,
+    this.sousTitre,
+    this.typeDecoupage,
+    this.iDEtablissement,
+    this.DataTableDecoupage,
+  });
 
-  ///// RECUPERATION
-  factory TTypeDecoupageModel.fromMap(Map<String, dynamic> data) {
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'IDTypeDecoupage': iDTypeDecoupage,
+      'LibTypeDecoupage': libTypeDecoupage,
+      'Etat': etat,
+      'NbrDecoupage': nbrDecoupage,
+      'SousTitre': sousTitre,
+      'TypeDecoupage': typeDecoupage,
+      'IDEtablissement': iDEtablissement,
+    };
+  }
+
+  factory TTypeDecoupageModel.fromMap(Map<String, dynamic> map) {
     return TTypeDecoupageModel(
-      iDTypeDecoupage: data.containsKey("IDTypeDecoupage") ? data["IDTypeDecoupage"] : "",
-      typeDecoupage: data.containsKey("TypeDecoupage") ? data["TypeDecoupage"] : "",
-      iDEtablissement: data.containsKey("IDEtablissement") ? data["IDEtablissement"] : "",
-      // decoupage:data['DecoupageScolaire'].map((datas)=>print(TDecoupageModel.fromMap(datas))).toList() // List<TDecoupageModel>.from(data['DecoupageScolaire']),
+      iDTypeDecoupage: map['IDTypeDecoupage'] != null ? map['IDTypeDecoupage'] as int : null,
+      libTypeDecoupage: map['LibTypeDecoupage'] != null ? map['LibTypeDecoupage'] as String : null,
+      etat: map['Etat'] != null ? map['Etat'] as bool : null,
+      nbrDecoupage: map['NbrDecoupage'] != null ? map['NbrDecoupage'] as int : null,
+      typeDecoupage: map['TypeDecoupage'] != null ? map['TypeDecoupage'] as String : null,
+      iDEtablissement: map['IDEtablissement'] != null ? map['IDEtablissement'] as int : null,
+      DataTableDecoupage: map['DataTableDecoupage'] != null ? List<TDecoupageModel>.from((map['DataTableDecoupage']).map<TDecoupageModel?>((x) => TDecoupageModel.fromMap(x as Map<String,dynamic>),),) : null,
+      
     );
   }
 
-  ////// ENVOIE DES DATAS 
 
-  Map<String, dynamic> toMap() {
-    return {
-      "IDTypeDecoupage": iDTypeDecoupage,
-      "TypeDecoupage": typeDecoupage,
-      "IDEtablissement": iDEtablissement,
-    };
+  TTypeDecoupageModel copyWith({
+    TTypeDecoupageModel? Data
+  }) {
+    return TTypeDecoupageModel(
+      iDTypeDecoupage: Data!.iDTypeDecoupage ?? iDTypeDecoupage,
+      libTypeDecoupage: Data.libTypeDecoupage ?? this.libTypeDecoupage,
+      etat: Data.etat ?? this.etat,
+      nbrDecoupage: Data.nbrDecoupage ?? this.nbrDecoupage,
+      sousTitre: Data.sousTitre ?? this.sousTitre,
+      typeDecoupage: Data.typeDecoupage ?? this.typeDecoupage,
+      iDEtablissement: Data.iDEtablissement ?? this.iDEtablissement,
+      DataTableDecoupage: Data.DataTableDecoupage ?? this.DataTableDecoupage,
+    );
   }
 }

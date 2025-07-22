@@ -11,16 +11,16 @@ class TFiltreCoefficient with TFiltre {
     
   @override
   void H_FiltreElement({String param = ""}) {
-   controller.dataTableFiltreMatiere.value = controllerMatiere.dataTableMatiere.where(
+   controller.dataTableFiltreMatiere.value = controllerMatiere.DataTableMatiere.where(
     (e)=> e.matiere!.toLowerCase().contains(param.toLowerCase())  && e.etat==true
     ).toList();
   }
 
-void H_FiltreCoefficient({String param = ""}){
-  controller.dataTableFiltreCoefficient.value = controller.dataTableCoefficient.where(
-    (e)=> e.niveauSerie!.toLowerCase().contains(param.toLowerCase())
-    ).toList();
-}
+// void H_FiltreCoefficient({String param = ""}){
+//   controller.DataTableFiltreCoefficient.value = controller.DataTableCoefficient.where(
+//     (e)=> e.niveauSerie!.toLowerCase().contains(param.toLowerCase())
+//     ).toList();
+// }
 
 
 }

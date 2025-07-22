@@ -50,6 +50,8 @@ dependencies:
   data_table_2: 2.6.0
   cached_network_image: 3.4.1
   shimmer: 3.0.0
+  path: ^1.9.0
+  dio: ^5.8.0+1
   
   
 

@@ -1,11 +1,16 @@
 import 'package:data_table_2/data_table_2.dart';
-import 'package:ecole/Configs/utils/Constant/enums.dart';
 import 'package:ecole/Configs/utils/Implements/controller_data.dart';
 import 'package:ecole/Configs/utils/Popup/loaders.dart';
-import 'package:ecole/Matiere/Controller/page_matiere_controller.dart';
 import 'package:ecole/Matiere/Repository/matiere_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../Configs/utils/Constant/api_constants.dart';
+import '../../Configs/utils/Constant/image_string.dart';
+import '../../Configs/utils/Constant/texte_string.dart';
+import '../../Configs/utils/Popup/animation_loader.dart';
+import '../../Configs/utils/Popup/showdialogue.dart';
+import '../../Configs/utils/dio/dio_client.dart';
+import '../../Configs/utils/endpoint/endpoint.dart';
 import '../Model/matiere_model.dart';
 
 
@@ -14,8 +19,13 @@ class TMatiereController extends GetxController with TControllerData{
    static TMatiereController get instance => Get.find();
 
   ///// DECLARATION DE VARIABLE 
-   var dataTableMatiere= <TMatiereModel>[].obs;
-   var dataTableFiltreMatiere= <TMatiereModel>[].obs;
+   var DataTableMatiere= <TMatiereModel>[].obs;
+   var DataTableMatiereSelect= <TMatiereModel>[];
+   var DataTableMatiereSelectionner= <TMatiereModel>[];
+   var DataTableFiltreMatiere= <TMatiereModel>[].obs;
+   var DataMatiere = TMatiereModel();
+   final isLoading = false.obs;
+ 
    final params ="".obs;
    final action ="".obs;
    final indexData =0.obs;
@@ -25,137 +35,158 @@ class TMatiereController extends GetxController with TControllerData{
   final List<DataColumn> columns = [
      DataColumn2(label: Text("N°"),fixedWidth: 50,),
      DataColumn2(label: Text("Designation Matière"),size: ColumnSize.L),
-     DataColumn2(label: Text("Action"),fixedWidth: 120,headingRowAlignment: MainAxisAlignment.center),         
+     DataColumn2(label: Text("Action"),fixedWidth: 100,headingRowAlignment: MainAxisAlignment.center),         
   ];
 
   var matiere = TextEditingController();
   var codeMatiere = TextEditingController();
 
    ///// LES INSTANCES
-    var matiereModel = TMatiereModel();
+     final _client = TDioHelper(baseUrl: TApi.httpLien);
+   
     final repositorycontroller = Get.put(TMatiereRepository());
-     final controller = Get.find<TPageMatiereController>();
+    //  final controller = Get.find<TPageMatiereController>();
     
     ///////// TRAITEMENT
-   void hlitMatiere({String? param="AFFICHAGE"}){
+   void HLitMatiere({String? param="AFFICHAGE"}){
     if (param=="AFFICHAGE") {
-       codeMatiere.text = matiereModel.codeMatiere ==null? "":matiereModel.codeMatiere!;
-       matiere.text     =  matiereModel.matiere ==null? "":matiereModel.matiere!;
+       codeMatiere.text = DataMatiere.codeMatiere ==null? "":DataMatiere.codeMatiere!;
+       matiere.text     =  DataMatiere.matiere ==null? "":DataMatiere.matiere!;
     }else{
-      matiereModel.codeMatiere = codeMatiere.text;
-       matiereModel.matiere = matiere.text;
+      DataMatiere.codeMatiere = codeMatiere.text;
+       DataMatiere.matiere = matiere.text;
     }
    }
    
 @override
   void H_Initialise() {
-    final datainit =TMatiereModel();
-    matiereModel = datainit;
-    hlitMatiere();
+    DataMatiere =TMatiereModel();
+    codeMatiere.clear();
+    matiere.clear();
   }
 
 ///// ENREGISTREMENT 
 @override
-  Future<bool?> H_Enregistrer() async{
+ H_Enregistrer() async{
      try {
-     ///// VERIFICATION DE MATIERE 
-  final index = dataTableMatiere.indexWhere((data)=> data.matiere!.toLowerCase() == matiere.text.toLowerCase());
-   if (index ==-1) {
-      hlitMatiere(param: "ENVOYER");
-      await  repositorycontroller.H_EnregistrerData(matiereModel);
-      TLoader.successSnack(title:"Enregister" ,message: "La matière a bien été enregistrée");
-      //  controller.previousPage();
+       HLitMatiere(param: "ENVOYER");
+       TShowdialogue().showWidgetLoad(
+        widgets: TAnimationLoaderWidget(text:TText.messageEnregistrerChargement.tr,animation: TImages.docerAnimation, width: 150,));
+    
+       final reponse =await _client.post<TMatiereModel>(TEndpoint.linkMatiere,
+                        data: DataMatiere.toMap(),fromJson: (data) =>TMatiereModel.fromMap(data));
+    ////// VERIFICATION 
+    if(reponse.success){
+      DataMatiere =reponse.data!;
        H_RecupeData();
-      return true;
+        Get.back();
+       return true;
     }else{
-      TLoader.warningSnack(title:"ENREGISTREMENT",message: "${matiere.text} existe déjà veulliez entrer une autre");
-      return false;
+      Get.back();
+      
+      TLoader.errorSnack(title: TText.erreur,message: TText.messageErreur);
+       return false;
     }
-   } catch (e) {
-     TLoader.errorSnack(title: "Erreur",message: "Veuillez vérifier votre connexion");
-     return false;
-   }
+    } catch (e) {
+      TLoader.errorSnack(title: TText.erreur,message: "${TText.messageErreur} $e");
+    }
+     
   }
 
 // SUPPRIMER
 @override
-  Future<bool?> H_Supprimer({int? id,String? param}) async {
+  H_Supprimer({int? id,String? param}) async {
+   
     try {
-      await  repositorycontroller.H_SupprimerData(id);
-     H_RecupeData();
-     Get.back();
-     TLoader.successSnack(title: "SUPPRIMER",message: "La ligne a bien été supprimée");
-     return true;
-    } catch (e) {
-      return false;
+       TShowdialogue().showWidgetLoad(
+        widgets: TAnimationLoaderWidget(text:TText.messageSuppressionChargement.tr,animation: TImages.docerAnimation, width: 200,));
+       final reponse =await _client.delete("${TEndpoint.linkMatiere}/$id",);
+    ////// VERIFICATION 
+    if(reponse.success){
+        Get.back();
+       H_RecupeData();
+       return true;
+    }else{
+      Get.back();
+      TLoader.errorSnack(title: TText.erreur,message: TText.messageErreur);
+       return false;
     }
+    } catch (e) {
+      TLoader.errorSnack(title: TText.erreur,message: "${TText.messageErreur} $e");
+    }
+   
   }
 
 // MODIFICATION
 @override
-  Future<bool?> H_Modifier() async{
+  H_Modifier() async{
+   
     try {
-      hlitMatiere(param: "ENVOYER");
-      await  repositorycontroller.H_ModifierData(matiereModel);
-      TLoader.successSnack(title:"Modifier" ,message: "La matière a bien été modifier");
-      // controller.previousPage(); 
-      H_RecupeData();
-    return true;
-   } catch (e) {
-    TLoader.errorSnack(title: "Erreur",message: "Veuillez vérifier votre connexion");
-     return false;
-   }
+       HLitMatiere(param: "ENVOYER");
+       TShowdialogue().showWidgetLoad(
+        widgets: TAnimationLoaderWidget(text:TText.messageModifierChargement.tr,animation: TImages.docerAnimation, width: 200,));
+       
+       final reponse =await _client.patch<TMatiereModel>(TEndpoint.linkMatiere,
+                        data: DataMatiere.toMap(),fromJson: (data) =>TMatiereModel.fromMap(data));
+    ////// VERIFICATION 
+    if(reponse.success){
+      DataMatiere =reponse.data!;
+       H_RecupeData();
+         Get.back();
+       return true;
+    }else{
+      Get.back();
+      TLoader.errorSnack(title: TText.erreur,message: TText.messageErreur);
+       return false;
+    }
+    } catch (e) {
+      TLoader.errorSnack(title: TText.erreur,message: "${TText.messageErreur} $e");
+    }
 
   }
 
 @override
-  void H_RecupeData() async {
+ H_RecupeData() async {
   try {
-      dataTableMatiere.clear();
+    isLoading.value =false;
+  final reponse =await _client.getList<TMatiereModel>(TEndpoint.linkMatiere,
+                                             fromJson: (data) =>TMatiereModel.fromMap(data));
+    ////// VERIFICATION 
+    if(reponse.success){
       isSelectMatiere.clear();
-      final data = await repositorycontroller.H_RecupData(param: "");
-      if (data is List) {
-      dataTableMatiere.value = data.map((datas)=>TMatiereModel.fromMap(datas)).toList();
-      dataTableFiltreMatiere.value =dataTableMatiere;
-      isSelectMatiere.value = dataTableMatiere.where((e)=>e.etat==true).map((e)=> e.matiere.toString() ).toList();
-      // for (var element in dataTableMatiere) {
-      //    if (element.etat!) {
-      //      isSelectMatiere.add(element.matiere!);
-      //    }
-      // }
-      
-    }else{
-      
+      isLoading.value =true;
+      DataTableMatiere.value = reponse.data!;
+      DataTableFiltreMatiere.value =reponse.data!;
+      DataTableMatiereSelectionner = DataTableMatiere.where((e)=> e.etat==true).map((e)=> e).toList();
+      isSelectMatiere.value = DataTableMatiere.where((e)=> e.etat==true).map((e)=> e.matiere!).toList();
+      DataMatiere.DatatableMa = DataTableMatiereSelectionner;
     }
-    // controllerCoef.dataTableMatiere.value = dataTableMatiere;
-    // controllerCoef.dataTableFiltreMatiere.value = dataTableMatiere;
-   } catch (e) {
-     return null;
-   }
+    } catch (e) {
+      TLoader.errorSnack(title: TText.erreur.tr,message: "${TText.messageErreur.tr} $e");
+    }
   }
   
 @override
   void H_RecupeModif({int? id, String? param}) {
-     matiereModel = dataTableMatiere.firstWhere(
-    (data)=> data.iDMatiere ==id
-  );
-  indexData.value = dataTableMatiere.indexWhere( (data)=> data.iDMatiere ==id);
-  hlitMatiere();
-  action.value=TraitementAction.modifier.name;
-  controller.nextPage();
+     DataMatiere = DataTableMatiere.firstWhere((data)=> data.iDMatiere ==id
+                                      ,orElse: () => TMatiereModel(),);
+         HLitMatiere();
+
   }  
 
 
 @override
   H_ValiderConfig() {
-    if (isSelectMatiere.isEmpty || controller.currentPage.value==1 )return false;
+    if (isSelectMatiere.isEmpty )return false;
+    DataMatiere.DatatableMa = DataTableMatiereSelectionner;
+      H_Modifier();
       return true;
   }
 
 ////// INITIALISATION 
      @override
   void onInit() {
-      H_RecupeData();
+    H_RecupeData();
     super.onInit();
     
   }
@@ -171,35 +202,31 @@ class TMatiereController extends GetxController with TControllerData{
 
 /////// SELECTION DE CHECKBOX
 selectCheckBox({String? libMatiere=""}){
-  indexData.value = dataTableMatiere.indexWhere( (data)=> data.matiere ==libMatiere);
-  isSelectMatiere.contains(libMatiere) == true ?isSelectMatiere.remove(libMatiere)
-                                               :isSelectMatiere.add(libMatiere!);
+ 
+           bool isVerifie = isSelectMatiere.contains(libMatiere);
+               isVerifie == true ?isSelectMatiere.remove(libMatiere):isSelectMatiere.add(libMatiere!);
 
-    isSelectMatiere.contains(libMatiere) == true ? dataTableMatiere[indexData.value].etat=true:
-      dataTableMatiere[indexData.value].etat=false;
-     matiereModel = dataTableMatiere[indexData.value];
-     repositorycontroller.H_ModifierData(matiereModel);
-      // hModificationData();
-
+               if(isVerifie){
+               DataTableMatiereSelectionner.removeWhere((e)=> e.matiere==libMatiere);
+               }else{
+                DataTableMatiereSelectionner.add( 
+                 DataTableMatiere.firstWhere((e)=> e.matiere==libMatiere,orElse: () => TMatiereModel(),)
+                );
+               }
+         
     }
  
     /////// SELECTION TOUS LES CHECKBOX
 selectAllCheckBox({bool? value}){
-  value=!isSelectAll.value;
-   isSelectAll.value =value;
-   
-  for (var element in dataTableMatiere) {
-  final index = dataTableMatiere.indexWhere( (data)=> data.iDMatiere ==element.iDMatiere);
-  value==true? isSelectMatiere.contains(element.matiere) == true ?"":isSelectMatiere.add(element.matiere!):
-  isSelectMatiere.contains(element.matiere) == true ? isSelectMatiere.remove(element.matiere):"";
-  dataTableMatiere[index].etat=value;
-  }
-   matiereModel.datatable = dataTableMatiere;
-    // matiereModel.datatable!.map((e)=> print("${e.matiere} ${e.etat}")).toList();
-  //  print(matiereModel.datatable.);
-   repositorycontroller.H_ModifierData(matiereModel);
+ 
+   isSelectMatiere.clear();
+   if(value!){
+    DataTableMatiereSelectionner = DataTableMatiere.map((e)=> e ).toList();
+     isSelectMatiere.value = DataTableMatiereSelectionner.map((e)=> e.matiere.toString() ).toList();
+   }else{
+   DataTableMatiereSelectionner.clear();
+   }
 
-  
     }
 
 

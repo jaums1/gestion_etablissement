@@ -44,7 +44,7 @@ class TAffichageNiveauSerie extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final functions= TScolariteFunction();
-    print(controller.variable.DataTableNiveauSerie.length);
+   
     return Obx(
      ()=> Padding(
        padding: const EdgeInsets.only(bottom:  10.0),

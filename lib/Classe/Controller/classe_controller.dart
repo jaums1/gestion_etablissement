@@ -7,6 +7,8 @@ import '../../Configs/utils/Implements/controller_data.dart';
 import '../../Configs/utils/Popup/animation_loader.dart';
 import '../../Configs/utils/Popup/loaders.dart';
 import '../../Configs/utils/Popup/showdialogue.dart';
+import '../../Configs/utils/dio/dio_client.dart';
+import '../../Configs/utils/endpoint/endpoint.dart';
 import '../../Niveau Serie/Controller/niveau_serie_controller.dart';
 import '../Model/classe_model.dart';
 import '../Repository/classe_repository.dart';
@@ -28,7 +30,7 @@ class TClasseController extends GetxController with TControllerData{
   final repositorycontroller    = Get.put(TClasseRepository());
   final controllerNiveauSerie    = Get.find<TNiveauSerieController>();
   
-  
+  final client = TDioHelper(baseUrl:"http://localhost/" );
 
   //////TRAITEMENT
   HLitClasse({String? param="AFFICHIER"}){
@@ -43,7 +45,7 @@ variable.Capacite.text          = DataClasse.value.Capacite.toString();
    val?.IDEtablissement = int.tryParse(variable.IDEtablissement.text) ?? 0;
    val?.LibClasse = variable.LibClasse.text;
    val?.IDNiveauSerie = int.parse(variable.IDNiveauSerie.text);
-   val?.Capacite = int.parse(variable.Capacite.text);
+   val?.Capacite = int.parse(variable.Capacite.text==""?variable.Capacite.text:0.toString());
  });
     }
   }
@@ -56,7 +58,7 @@ variable.Capacite.text          = DataClasse.value.Capacite.toString();
 ///// ENREGISTREMENT 
 @override
  H_Enregistrer() async{
-  
+
      try {
     HLitClasse(param: "ENVOYER");
     ///LOADING
@@ -135,22 +137,36 @@ variable.Capacite.text          = DataClasse.value.Capacite.toString();
 
 @override
   void H_RecupeData({String? param}) async {
-  try {
-    isLoading.value =false;
+    final reponse = await client.getList<TClasseModel>(TEndpoint.linkClasse, fromJson: (data) =>TClasseModel.fromMap(data));
+    // final reponse = await client.getPaginated<TClasseModel>(TEndpoint.linkClasse, 
+    // config: PaginationConfig(limit: 4) ,
+    // fromJson: (data) =>TClasseModel.fromMap(data));
+    print(reponse.message);
       DataTableClasse.clear();
-      final data = await repositorycontroller.H_RecupData(param: param);
-       isLoading.value =true;
-      if (data is List) {
-        //// RECUPERER LA LISTE DES CLASSES
-      DataTableClasse.value = data.map((datas)=>TClasseModel.fromMap(datas)).toList();
+    if(reponse.success){
+      DataTableClasse.addAll(reponse.data!);
       DataTableFiltreClasse.value =DataTableClasse;
-  
+
     }
-    data==null? TLoader.errorSnack(title: "Erreur",message: "Veuillez vérifier votre connexion"):"";
-   } catch (e) {
-       TLoader.errorSnack(title: "Erreur",message: "Veuillez vérifier votre connexion source erreur $e");
-     return;
-   }
+    
+   
+  
+  // try {
+  //   isLoading.value =false;
+  //     DataTableClasse.clear();
+      // final data = await repositorycontroller.H_RecupData(param: param);
+  //      isLoading.value =true;
+  //     if (data is List) {
+  //       //// RECUPERER LA LISTE DES CLASSES
+  //     DataTableClasse.value = data.map((datas)=>TClasseModel.fromMap(datas)).toList();
+  //     DataTableFiltreClasse.value =DataTableClasse;
+  
+  //   }
+  //   data==null? TLoader.errorSnack(title: "Erreur",message: "Veuillez vérifier votre connexion"):"";
+  //  } catch (e) {
+  //      TLoader.errorSnack(title: "Erreur",message: "Veuillez vérifier votre connexion source erreur $e");
+  //    return;
+  //  }
   }
   
 @override

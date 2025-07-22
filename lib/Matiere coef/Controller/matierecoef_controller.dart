@@ -2,7 +2,6 @@ import 'package:data_table_2/data_table_2.dart';
 import 'package:ecole/Configs/utils/Implements/controller_data.dart';
 import 'package:ecole/Configs/utils/Popup/loaders.dart';
 import 'package:ecole/Cycle/Controller/cycle_controller.dart';
-import 'package:ecole/Matiere%20coef/Controller/page_matierecoef_controller.dart';
 import 'package:ecole/Matiere%20coef/Model/matierecoef_model.dart';
 import 'package:ecole/Matiere%20coef/Repository/coefficient_repository.dart';
 import 'package:ecole/Matiere/Controller/matiere_controller.dart';
@@ -12,7 +11,13 @@ import 'package:ecole/Niveau%20Serie/Model/niveau_serie_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../Configs/utils/Constant/enums.dart';
+import '../../Configs/utils/Constant/api_constants.dart';
+import '../../Configs/utils/Constant/image_string.dart';
+import '../../Configs/utils/Constant/texte_string.dart';
+import '../../Configs/utils/Popup/animation_loader.dart';
+import '../../Configs/utils/Popup/showdialogue.dart';
+import '../../Configs/utils/dio/dio_client.dart';
+import '../../Configs/utils/endpoint/endpoint.dart';
 
 
 
@@ -23,10 +28,12 @@ class TCoefficientController extends GetxController with TControllerData{
    static TCoefficientController get instance => Get.find();
 
   ///// DECLARATION DE VARIABLE 
-   var dataTableCoefficient= <TCoefficientModel>[].obs;
-   var dataTableFiltreCoefficient= <TCoefficientModel>[].obs;
+   var DataTableCoefficient= <TCoefficientModel>[].obs;
+   var DataTableFiltreCoefficient= <TCoefficientModel>[].obs;
    final params ="".obs;
    final action ="".obs;
+   final isExpanded = false.obs;
+   final isLoading = false.obs;
    final dataTableMatiere= <TMatiereModel>[].obs;
    final dataTableFiltreMatiere= <TMatiereModel>[].obs;
    
@@ -51,146 +58,183 @@ class TCoefficientController extends GetxController with TControllerData{
    var  dataNiveauSerie = TNiveauSerieModel();
    var  dataMatiere     = TMatiereModel();
 
-    var dataMatiereCoef = TCoefficientModel();
+    var DataMatiereCoef = TCoefficientModel();
     final repositorycontroller = Get.put(TCoefficientRepository());
-     final controller = Get.find<TPageMatiereCoefController>();
      final controllerMatiere = Get.find<TMatiereController>();
      final controllerNiveauSerie = Get.find<TNiveauSerieController>();
      final controllerCycle = Get.find<TCycleController>();
+
+      final _client = TDioHelper(baseUrl: TApi.httpLien);
     ///////// TRAITEMENT
-  @override
-  void onInit() {
-    H_RecupeData(param: controllerCycle.datacyleModel.cycleScolaire);
-    super.onInit();
-  }
-
-    void H_RecupMatiere(){
-      dataTableFiltreMatiere.value = controllerMatiere.dataTableMatiere.where((e)=> e.etat==true).
-      map((datas)=> datas).toList();
-    }
-
-    void H_Validation(){
-     if (dataNiveauSerie.niveauSerie==null) {
-        TLoader.errorSnack(title: "NIVEAU SERIE",message: "Veuillez sélectionner votre niveau série");
-        return;
-     }
-      dataMatiereCoef.datatableMatiere=dataTableMatiere;
-    //   dataMatiereCoef.datatableMatiere?.map((e){
-    //  dataMatiere =e;
-    //   return print(dataMatiere.toJson());
-    //   }).toList();
-    H_Enregistrer();
-
-    }
-    
-   void HLitMatiereCoef({String? param="AFFICHAGE"}){
-    if (param=="AFFICHAGE") {
-       iDMatiere.text       =  dataMatiereCoef.iDMatiere ==null? "":dataMatiereCoef.iDMatiere.toString();
-       iDNiveau.text        =  dataMatiereCoef.iDCoefficient ==null? "":dataMatiereCoef.iDCoefficient.toString();
-       coefficient.text     =  dataMatiereCoef.coefficient ==null? "":dataMatiereCoef.coefficient.toString();
-    }else{
-      dataMatiereCoef.coefficient = dataMatiere.coef;
-      dataMatiereCoef.iDMatiere   = dataMatiere.iDMatiere;
-      dataMatiereCoef.matiere     = dataMatiere.matiere;
-      dataMatiereCoef.iDNiveauSerie    = dataNiveauSerie.iDNiveauSerie;
-      dataMatiereCoef.iDNiveauScolaire    = dataNiveauSerie.iDNiveauScolaire;
-      dataMatiereCoef.niveauSerie      = dataNiveauSerie.niveauSerie;
-      dataMatiereCoef.niveau           = dataNiveauSerie.niveau;
-      dataMatiereCoef.typeEnseignement = controllerCycle.datacyleModel.cycleScolaire.toString();
       
-    }
-   }
-   
 @override
   void H_Initialise() {
-    final datainit =TCoefficientModel();
-    dataMatiereCoef = datainit;
-    HLitMatiereCoef();
+     DataMatiereCoef =TCoefficientModel();
+     coefficient.clear();
+     matiere.clear();
   }
 
 ///// ENREGISTREMENT 
 @override
  H_Enregistrer() async{
      try {
-      HLitMatiereCoef(param: "ENVOYER");
-   final result =  await  repositorycontroller.H_EnregistrerData(dataMatiereCoef);
-  if(result==false){TLoader.errorSnack(title: "Erreur",message: "Veuillez vérifier votre connexion");
-     return null;}
-      TLoader.successSnack(title:"ENREGISTRER" ,message: "Vos données ont bien été enregistrée");
-       controller.previousPage();
-       H_RecupeData(param:controllerCycle.datacyleModel.cycleScolaire );
-   } catch (e) {
-     TLoader.errorSnack(title: "Erreur",message: "Veuillez vérifier votre connexion source erreur $e");
-     return;
-   }
+       HLitMatiereCoef(param: "ENVOYER");
+       TShowdialogue().showWidgetLoad(
+        widgets: TAnimationLoaderWidget(text:TText.messageEnregistrerChargement.tr,animation: TImages.docerAnimation, width: 150,));
+    
+       final reponse =await _client.post<TCoefficientModel>(TEndpoint.linkCoefficient,
+                        data: DataMatiereCoef.toMap(),fromJson: (data) =>TCoefficientModel.fromMap(data));
+    ////// VERIFICATION 
+    if(reponse.success){
+      DataMatiereCoef =reponse.data!;
+       H_RecupeData();
+        Get.back();
+       return true;
+    }else{
+      Get.back();
+      TLoader.errorSnack(title: TText.erreur,message: TText.messageErreur);
+       return false;
+    }
+    } catch (e) {
+      TLoader.errorSnack(title: TText.erreur,message: "${TText.messageErreur} $e");
+    }
+     
   }
 
 // SUPPRIMER
 @override
- H_Supprimer({int? id,String? param}) async {
+  H_Supprimer({int? id,String? param}) async {
+   
     try {
-      await  repositorycontroller.H_SupprimerData(id);
-     H_RecupeData();
-     Get.back();
-     TLoader.successSnack(title: "SUPPRIMER",message: "La ligne a bien été supprimée");
-     return true;
-    } catch (e) {
-       TLoader.errorSnack(title: "Erreur",message: "Veuillez vérifier votre connexion source erreur $e");
-     return;
+       TShowdialogue().showWidgetLoad(
+        widgets: TAnimationLoaderWidget(text:TText.messageSuppressionChargement.tr,animation: TImages.docerAnimation, width: 200,));
+       final reponse =await _client.delete("${TEndpoint.linkCoefficient}/$id",);
+    ////// VERIFICATION 
+    if(reponse.success){
+        Get.back();
+       H_RecupeData();
+       return true;
+    }else{
+      Get.back();
+      TLoader.errorSnack(title: TText.erreur,message: TText.messageErreur);
+       return false;
     }
+    } catch (e) {
+      TLoader.errorSnack(title: TText.erreur,message: "${TText.messageErreur} $e");
+    }
+   
   }
 
 // MODIFICATION
 @override
- H_Modifier() async{
+  H_Modifier() async{
+   
     try {
-      HLitMatiereCoef(param: "ENVOYER");
-    final result=  await  repositorycontroller.H_ModifierData(dataMatiereCoef);
-     if(result==false){TLoader.errorSnack(title: "Erreur",message: "Veuillez vérifier votre connexion");
-     return null;}
-      TLoader.successSnack(title:"MODIFIER" ,message: "Vos données ont bien été modifiée");
-       controller.previousPage();
+       HLitMatiereCoef(param: "ENVOYER");
+       TShowdialogue().showWidgetLoad(
+        widgets: TAnimationLoaderWidget(text:TText.messageModifierChargement.tr,animation: TImages.docerAnimation, width: 200,));
+       
+       final reponse =await _client.patch<TCoefficientModel>(TEndpoint.linkCoefficient,
+                        data: DataMatiereCoef.toMap(),fromJson: (data) =>TCoefficientModel.fromMap(data));
+    ////// VERIFICATION 
+    if(reponse.success){
+      DataMatiereCoef =reponse.data!;
        H_RecupeData();
-   } catch (e) {
-    TLoader.errorSnack(title: "Erreur",message: "Veuillez vérifier votre connexion");
-     return false;
-   }
+         Get.back();
+       return true;
+    }else{
+      Get.back();
+      TLoader.errorSnack(title: TText.erreur,message: TText.messageErreur);
+       return false;
+    }
+    } catch (e) {
+      TLoader.errorSnack(title: TText.erreur,message: "${TText.messageErreur} $e");
+    }
 
   }
 
 @override
-  void H_RecupeData({String? param}) async {
+ H_RecupeData() async {
   try {
-      dataTableMatiere.clear();
-      isSelectNiveauSerie.clear();
-      final data = await repositorycontroller.H_RecupData(param: param);
-      if (data is List) {
-      dataTableCoefficient.value = data.map((datas)=>TCoefficientModel.fromMap(datas)).toList();
-      dataTableFiltreCoefficient.value =dataTableCoefficient;
-
+    isLoading.value =false;
+  final reponse =await _client.getList<TCoefficientModel>(TEndpoint.linkCoefficient,
+  // /${controllerCycle.DatacyleModel.cycleScolaire}",
+                                             fromJson: (data) =>TCoefficientModel.fromMap(data));
+    ////// VERIFICATION 
+    if(reponse.success){
+      isLoading.value =true;
+      DataTableCoefficient.value = reponse.data!;
+      DataTableFiltreCoefficient.value =reponse.data!;
+      print(DataTableCoefficient);
     }
-    data==null? TLoader.errorSnack(title: "Erreur",message: "Veuillez vérifier votre connexion"):"";
-   } catch (e) {
-       TLoader.errorSnack(title: "Erreur",message: "Veuillez vérifier votre connexion source erreur $e");
-     return;
-   }
+    } catch (e) {
+      TLoader.errorSnack(title: TText.erreur.tr,message: "${TText.messageErreur.tr} $e");
+    }
   }
   
 @override
   void H_RecupeModif({int? id, String? param}) {
-     dataMatiereCoef = dataTableCoefficient.firstWhere(
-    (data)=> data.iDCoefficient ==id
-  );
-  
-  HLitMatiereCoef();
-  action.value=TraitementAction.modifier.name;
-  controller.nextPage();
+     DataMatiereCoef = DataTableCoefficient.firstWhere(
+      (data)=> data.DataMatiereCoef!.IDAffectationNiveauMatiere ==id,orElse: () => TCoefficientModel(),);
+     HLitMatiereCoef();
+
   }  
 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  @override
+  void onInit() {
+    H_RecupeData();
+    super.onInit();
+  }
+
+   
+    
+   void HLitMatiereCoef({String? param="AFFICHAGE"}){
+    // if (param=="AFFICHAGE") {
+    //    iDMatiere.text       =  dataMatiereCoef.iDMatiere ==null? "":dataMatiereCoef.iDMatiere.toString();
+    //    iDNiveau.text        =  dataMatiereCoef.iDCoefficient ==null? "":dataMatiereCoef.iDCoefficient.toString();
+    //    coefficient.text     =  dataMatiereCoef.coefficient ==null? "":dataMatiereCoef.coefficient.toString();
+    // }else{
+    //   dataMatiereCoef.coefficient = dataMatiere.coef;
+    //   dataMatiereCoef.iDMatiere   = dataMatiere.iDMatiere;
+    //   dataMatiereCoef.matiere     = dataMatiere.matiere;
+    //   dataMatiereCoef.iDNiveauSerie    = dataNiveauSerie.iDNiveauSerie;
+    //   dataMatiereCoef.iDNiveauScolaire    = dataNiveauSerie.iDNiveauScolaire;
+    //   dataMatiereCoef.niveauSerie      = dataNiveauSerie.niveauSerie;
+    //   dataMatiereCoef.niveau           = dataNiveauSerie.niveau;
+    //   dataMatiereCoef.typeEnseignement = controllerCycle.DatacyleModel.cycleScolaire.toString();
+      
+    // }
+   }
+  
 
 @override
   H_ValiderConfig() {
-    if (dataTableCoefficient.isEmpty || controller.currentPage.value==1 )return false;
+    if (DataTableCoefficient.isEmpty )return false;
       return true;
   }
 

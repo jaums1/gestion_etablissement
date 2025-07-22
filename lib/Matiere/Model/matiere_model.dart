@@ -7,21 +7,19 @@ class TMatiereModel {
  String? matiere;
  bool? etat;
  double? coef;
- List <TMatiereModel>? datatable;
- int? iDEtablissement;
+ List <TMatiereModel>? DatatableMa;
+ 
 
 
-TMatiereModel({this.iDMatiere,this.codeMatiere,this.matiere,this.etat,this.datatable,this.coef, this.iDEtablissement});
+TMatiereModel({this.iDMatiere,this.codeMatiere,this.matiere,this.etat,this.DatatableMa,this.coef});
   
 ///// RECUPERATION
   factory TMatiereModel.fromMap(Map<String,dynamic> data){
     return TMatiereModel(
-     iDMatiere: data.containsKey("IDMatiere")?data["IDMatiere"]:"",
+     iDMatiere: data.containsKey("IDMatiere")?data["IDMatiere"]:null,
      codeMatiere: data.containsKey("CodeMatiere")?data["CodeMatiere"]:"",
      matiere: data.containsKey("Matiere")?data["Matiere"]:"",
      etat: data.containsKey("Etat")?data["Etat"]:"",
-     iDEtablissement: data.containsKey("IDEtablissement")?data["IDEtablissement"]:"",
-    //  datatable: data.containsKey("DataTable")?data["DataTable"]:""
     );
   }
 
@@ -32,10 +30,8 @@ final controller = Get.find<TEtablissementController>();
     "IDMatiere" : iDMatiere,
     "CodeMatiere" : codeMatiere,
     "Matiere" : matiere,
-    "Etat" :iDMatiere==null || iDMatiere==0 ? 1 : etat,
-    "Coefficient" : coef,
-    "DataTable" : datatable,
-    "IDEtablissement" : controller.dataEtablissementModel.value.idEtablissement,
+    "Etat" :etat,
+    "DataTable" :DatatableMa==null?[]: DatatableMa!.map((x)=> x.toMap()).toList(),
   };
 }
 

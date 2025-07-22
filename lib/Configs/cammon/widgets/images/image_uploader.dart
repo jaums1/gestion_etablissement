@@ -53,7 +53,7 @@ class TImageUploader extends StatelessWidget {
           width: width,
           height: height,
           imageType: imageType,
-          backgroundColor: TColors.primaryBackground,
+          backgroundColor: TColors.white,
           image: image.toString()
           ),
         editePhoto!?  Positioned(
