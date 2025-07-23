@@ -45,9 +45,21 @@ static  String rechcercheMatiere="Rechercher une Matière".tr;
 static  String matiereMessage="Veuillez entrer votre matière".tr;
 static  String matiereExitseMessage="La matière existe déjà".tr;
 
+///// ANNEE SCOLAIRE
+static  String libAnneeScolaire="Annee Scolaire".tr;
+static  String saveAnneeScolaire="Enregistrer Annee Scolaire".tr;
+static  String rechcercheAnneeScolaire="Rechercher une année scolaire".tr;
+static  String anneeScolaireMessage="Veuillez entrer votre année scolaire".tr;
+static  String anneeScolaireExitseMessage="L'année scolaire existe déjà".tr;
+
 ////// COEFFICIENT
 static  String libCoefficient="Coefficient".tr;
 static  String coefficientMessage="Veuillez entrer un coefficient superieur à zéro".tr;
+
+///// DATE 
+static  String dateDebut="Date Debut".tr;
+static  String dateFin="Date Fin".tr;
+
 
 
 //// LOGIN   

@@ -1,5 +1,7 @@
 class TEndpoint {
   
+  ///// ANNEE SCOLAIRE
+   static const linkAnneeScolaire = "AnneeScolaire";
   ///// LOGIN
   static const linkUser = "user";
 

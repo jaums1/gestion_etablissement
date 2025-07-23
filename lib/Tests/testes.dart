@@ -121,7 +121,7 @@ class TableauController extends GetxController {
 class TableauMatieres extends StatelessWidget {
   final TableauController controller = Get.put(TableauController());
 
-  TableauMatieres({Key? key}) : super(key: key);
+  TableauMatieres({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -413,7 +413,7 @@ class TableauMatieres extends StatelessWidget {
 
 // Application principale
 class MyAppExemple extends StatelessWidget {
-  const MyAppExemple({Key? key}) : super(key: key);
+  const MyAppExemple({super.key});
 
   @override
   Widget build(BuildContext context) {

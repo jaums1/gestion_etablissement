@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:dio/dio.dart';
 import 'dart:io';
 
@@ -84,6 +86,7 @@ class TDioHelper {
         requestHeader: true,
         responseHeader: true,
         error: true,
+      
         logPrint: (obj) => print('DIO: $obj'),
       )
       );

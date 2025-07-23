@@ -2,6 +2,7 @@
 import 'package:ecole/Serie/Controller/serie_controller.dart';
 import 'package:get/get.dart';
 
+import '../../Annee_Scolaire/Controller/annee_scolaire_controller.dart';
 import '../../Classe/Controller/classe_controller.dart';
 import '../../Configuration/Controller/config_controller.dart';
 import '../../Cycle/Controller/cycle_controller.dart';
@@ -35,6 +36,7 @@ class TGeneralBinding extends Bindings {
    Get.put<TNiveauSerieController>(TNiveauSerieController(),permanent: true);
    Get.put<TMatiereController>(TMatiereController(),permanent: true);
    Get.put<TCoefficientController>(TCoefficientController(),permanent: true);
+   Get.put<TAnneeScolaireController>(TAnneeScolaireController(),permanent: true);
    
     ///// NIVEAU SERIE
   
@@ -46,6 +48,15 @@ class TGeneralBinding extends Bindings {
     return result;
   },permanent: true);
   
+  ///// ANNEE SCOLAIRE
+  Get.putAsync<TAnneeScolaireController>(()async{
+    final result = TAnneeScolaireController();
+    await result.H_RecupeData();
+    return result;
+  },permanent: true);
+  
+
+
    Get.putAsync<TEleveController>(()async{
     final result = TEleveController();
     await result.H_RecupeData();
@@ -64,7 +75,7 @@ class TGeneralBinding extends Bindings {
     
      
    
-    ;
+    
      Get.lazyPut(()=>TConfigController(),fenix: true);
     
      

@@ -11,10 +11,10 @@ class TScolariteFunction with TFunctionData {
 
 
  void H_OnchangeNiveauSerie(){
-    print(controllerNS.DataTableSelectNiveauSerie.length);
+   
    controller.variable.DataTableNiveauSerie.value = controllerNS.DataTableSelectNiveauSerie.map(
     (e)=>e).toList();
-     print(controller.variable.DataTableNiveauSerie.length);
+    
    
    Get.back();
  }

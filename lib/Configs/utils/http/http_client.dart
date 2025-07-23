@@ -1,9 +1,6 @@
 
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:ecole/Configs/utils/Constant/image_string.dart';
-import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 class THttpHelper {
@@ -92,7 +89,6 @@ class THttpHelper {
   try {
     var streamedResponse = await request.send();
     final response = await http.Response.fromStream(streamedResponse);
-    print(response.body);
     return _handleResponse(response);
   } catch (e) {
     return {'error': e.toString()};
@@ -111,7 +107,6 @@ class THttpHelper {
   // request.
   // var picture = http.MultipartFile.fromPath('Logo',file.path );
   // request.files.add(picture);
-  print(request.headers);
   try {
     var streamedResponse = await request.send();
     final response = await http.Response.fromStream(streamedResponse);

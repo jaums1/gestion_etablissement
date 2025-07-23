@@ -50,7 +50,7 @@ variable.Capacite.text          = DataClasse.value.Capacite.toString();
     }
   }
  
-//  @override
+ @override
   void onInit() {
      H_RecupeData();
     super.onInit();
@@ -141,7 +141,7 @@ variable.Capacite.text          = DataClasse.value.Capacite.toString();
     // final reponse = await client.getPaginated<TClasseModel>(TEndpoint.linkClasse, 
     // config: PaginationConfig(limit: 4) ,
     // fromJson: (data) =>TClasseModel.fromMap(data));
-    print(reponse.message);
+  
       DataTableClasse.clear();
     if(reponse.success){
       DataTableClasse.addAll(reponse.data!);

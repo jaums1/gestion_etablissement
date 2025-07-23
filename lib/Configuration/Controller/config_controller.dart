@@ -1,15 +1,19 @@
 
+import 'package:ecole/Configs/utils/Constant/texte_string.dart';
 import 'package:ecole/Configs/utils/Popup/loaders.dart';
 import 'package:ecole/Matiere/Controller/matiere_controller.dart';
 import 'package:ecole/Niveau%20Serie/Controller/niveau_serie_controller.dart';
 import 'package:ecole/Serie/Controller/serie_controller.dart';
 import 'package:get/get.dart';
+import '../../Annee_Scolaire/Controller/annee_scolaire_controller.dart';
+import '../../Annee_Scolaire/Screen/Form/form_annee_scolaire.dart';
+import '../../Coefficient/Controller/matierecoef_controller.dart';
+import '../../Coefficient/matierecoef_principal.dart';
 import '../../Cycle/Controller/cycle_controller.dart';
 import '../../Cycle/Screen/cycle.dart';
 import '../../Type_Decoupage_Scolaire/Screen/Widget/decoupage.dart';
 import '../../Etablissement/Controller/etablissement_controller.dart';
 import '../../Etablissement/Screen/etablissement.dart';
-import '../../Coefficient/matierecoef_principal.dart';
 import '../../Matiere/Screen/matiere_principal.dart';
 import '../../Niveau Serie/Screen/niveau_serie_principal.dart';
 import '../../Niveau_Scolaire/Controller/niveauscolaire_controller.dart';
@@ -30,7 +34,8 @@ class TConfigController extends GetxController {
      TConfigModel(menu: "Serie", route:TSerieScolaireScreen()),
      TConfigModel(menu: "Niveau Serie", route:TNiveauSeriePrincipalScreen()),
      TConfigModel(menu: "Matières", route:TMatierePrincipalScreen()),
-     TConfigModel(menu: "Matière Niveau", route:TCoefficientPrincipalScreen()),
+     TConfigModel(menu: "Coefficient Matière", route:TCoefficientPrincipalScreen()),
+     TConfigModel(menu: TText.libAnneeScolaire, route:FormAnneeScolaire()),
      TConfigModel(menu: "Fin", route:TNiveauScolaireScreen()),
      
      ].obs;
@@ -46,6 +51,8 @@ final controlleMatiere= Get.find<TMatiereController>();
 final controlleNiveauSerie= Get.find<TNiveauSerieController>();
 final controlleTypeDecoupage= TTypeDecoupageController.instance;
 final controlleNiveauScolaire= TNiveauScolaireController.instance;
+final controlleCoefficient= Get.find<TCoefficientController>();
+final controlleAnneeScolaire= Get.find<TAnneeScolaireController>();
 
   void validePage(route,indice){
     selectListe.contains(route)==true ? "":selectListe.add(route);
@@ -87,6 +94,15 @@ void nextStep(indice) async {
    /// MATIERE
      case 6 : if(await controlleMatiere.H_ValiderConfig()==false){ 
     TLoader.errorSnack(title: "MATIERE",message: "Veuillez sélectionner votre matière ou achever l'action");
+     return;} 
+     break;
+      /// COEFFICIENT
+     case 7 : if(await controlleCoefficient.H_ValiderConfig()==false){ 
+    TLoader.errorSnack(title: TText.libCoefficient,message: "Veuillez vérifier votre liste");
+     return;} 
+     break; /// ANNEE SCOLAIRE
+     case 8 : if(await controlleAnneeScolaire.H_ValiderConfig()==false){ 
+    TLoader.errorSnack(title: TText.libAnneeScolaire,message: TText.anneeScolaireMessage);
      return;} 
      break;
 

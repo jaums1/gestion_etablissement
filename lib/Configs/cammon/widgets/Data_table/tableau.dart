@@ -68,7 +68,7 @@ class MapData extends DataTableSource {
   DataRow? getRow(int index) {
   final data =controller.dataList[index];
     return DataRow2(
-      onTap: (){print(index+1);},
+      onTap: (){},
       selected: true,
       onSelectChanged: (value){},
       cells: [

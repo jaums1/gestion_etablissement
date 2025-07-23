@@ -24,7 +24,7 @@ class TCoefficientScreen extends StatelessWidget {
     final controller = Get.find<TCoefficientController>();
     controller.H_RecupeData();
     return Scaffold(
-      backgroundColor: TColors.lightgrey,
+      backgroundColor: TColors.primaryBackground,
       appBar: AppBar(
         title:  TTitlePage(padding:false ,tilte:  TText.matiereCoef),
       ),

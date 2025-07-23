@@ -189,7 +189,7 @@ class TCoefficientController extends GetxController with TControllerData{
     if(DataCoefficient.DataMatiereCoef==null)return;
     controllerMatiere.H_RecupeModif(id: DataCoefficient.DataMatiereCoef!.IDMatiere);
     HLitMatiereCoef();
-    
+
   }  
 
  
@@ -209,7 +209,7 @@ class TCoefficientController extends GetxController with TControllerData{
       DataCoefficient.DataMatiereCoef!.IDMatiere = controllerMatiere.DataMatiere.value.iDMatiere;
       DataCoefficient.DataMatiereCoef!.Matiere = controllerMatiere.DataMatiere.value.matiere;
       DataCoefficient.DataMatiereCoef!.IDNiveauSerie = controllerNiveauSerie.DataNiveauSerie.value.iDNiveauSerie;
-      DataCoefficient.DataMatiereCoef!.TypeEnseignement = controllerCycle.DatacyleModel.cycleScolaire.toString();;      
+      DataCoefficient.DataMatiereCoef!.TypeEnseignement = controllerCycle.DatacyleModel.cycleScolaire.toString();
     }
    }
   

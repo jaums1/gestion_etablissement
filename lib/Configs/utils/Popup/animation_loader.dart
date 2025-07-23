@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import '../Constant/colors.dart';
-import '../Constant/sizes.dart';
+
 
 class TAnimationLoaderWidget extends StatelessWidget {
   const TAnimationLoaderWidget({super.key, this.text="Vide", this.style, this.animation,

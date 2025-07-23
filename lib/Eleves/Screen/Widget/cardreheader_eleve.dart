@@ -27,7 +27,7 @@ class TCadreHeaderEleve extends StatelessWidget {
              child: SizedBox(
               width: 400,
                child: formulaire.textFormField(label: "Recherche",isPadding: true,
-               onChanged:(value)=> print(value)
+               onChanged:(value){}
               //  controllerFiltre.H_FiltreCoefficient(param: value)
                ),
              ),

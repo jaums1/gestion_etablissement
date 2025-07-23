@@ -2,13 +2,13 @@
 import 'package:ecole/Configs/cammon/widgets/formulaire/form.dart';
 import 'package:ecole/Configs/utils/Constant/texte_string.dart';
 import 'package:ecole/Matiere/Controller/filtre_matiere.dart';
-import 'package:ecole/Matiere/Controller/page_matiere.dart';
+
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+
 
 import '../../../Configs/cammon/widgets/buttons/button.dart';
 import '../../../Tests/testes.dart';
-import '../../Controller/matiere_controller.dart';
+
 
 class TCadreHeaderMatiere extends StatelessWidget {
   const TCadreHeaderMatiere({

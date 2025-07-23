@@ -145,7 +145,7 @@ class TSerieController extends GetxController with TControllerData{
     if (isSelectSerie.isEmpty)return false;
      DataSerie.dataSerie=isSelectSerie;
     await  H_Modifier();
-      print("JAUMS");
+   
       return true;
     }
 

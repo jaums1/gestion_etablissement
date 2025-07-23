@@ -4,7 +4,7 @@ import '../../Configs/utils/Implements/controller_data.dart';
 import '../../Configs/utils/dio/dio_client.dart';
 import '../../Configs/utils/endpoint/endpoint.dart';
 import '../../Niveau Serie/Controller/niveau_serie_controller.dart';
-import '../Model/codeProjet_model.dart';
+import '../Model/codeprojet_model.dart';
 
 
 
@@ -27,7 +27,7 @@ class TCodeProjetController extends GetxController with TControllerData{
     final reponse = await client.get<TCodeProjetModel>(
       "${TEndpoint.linkCodeProjet}${param==""?"":"/$param"}",
       fromJson: (data) =>TCodeProjetModel.fromMap(data));
-      print(reponse.message);
+      
     if(reponse.success)DataCodeProjet.value = reponse.data!; 
   }
 
@@ -36,7 +36,7 @@ class TCodeProjetController extends GetxController with TControllerData{
     
    final reponse = await client.patch(TEndpoint.linkCodeProjet,
    fromJson: (data) =>TCodeProjetModel.fromMap(data));
-   print(reponse.message);
+   
     if(reponse.success){
     DataCodeProjet.value = reponse.data!;
     
