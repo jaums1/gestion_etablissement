@@ -9,7 +9,7 @@ import '../../Cycle/Screen/cycle.dart';
 import '../../Type_Decoupage_Scolaire/Screen/Widget/decoupage.dart';
 import '../../Etablissement/Controller/etablissement_controller.dart';
 import '../../Etablissement/Screen/etablissement.dart';
-import '../../Matiere coef/matierecoef_principal.dart';
+import '../../Coefficient/matierecoef_principal.dart';
 import '../../Matiere/Screen/matiere_principal.dart';
 import '../../Niveau Serie/Screen/niveau_serie_principal.dart';
 import '../../Niveau_Scolaire/Controller/niveauscolaire_controller.dart';
@@ -30,7 +30,7 @@ class TConfigController extends GetxController {
      TConfigModel(menu: "Serie", route:TSerieScolaireScreen()),
      TConfigModel(menu: "Niveau Serie", route:TNiveauSeriePrincipalScreen()),
      TConfigModel(menu: "Matières", route:TMatierePrincipalScreen()),
-     TConfigModel(menu: "Matière Niveau", route:TMatiereCoefPrincipalScreen()),
+     TConfigModel(menu: "Matière Niveau", route:TCoefficientPrincipalScreen()),
      TConfigModel(menu: "Fin", route:TNiveauScolaireScreen()),
      
      ].obs;

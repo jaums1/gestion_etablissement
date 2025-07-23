@@ -35,9 +35,13 @@ static const String email="E-mail";
 static const String password="Password";
 static const String confirpassword="Confirme Password";
 
+//////NIVEAU SERIE
+static  String rechcercheNiveauSerie="Rechercher Niveau / Série".tr;
+
  ////MATIERE
 static  String libMatiere="Matière".tr;
 static  String codeMatiere="Code Matière".tr;
+static  String rechcercheMatiere="Rechercher une Matière".tr;
 static  String matiereMessage="Veuillez entrer votre matière".tr;
 static  String matiereExitseMessage="La matière existe déjà".tr;
 
@@ -89,6 +93,7 @@ static String validation = "Validation".tr;
 static String niveauScolaire = "Niveau scolaire".tr;
 static String seleclniveauScolaire = "Selectionner votre niveau scolaire".tr;
 static String recherche = "Recherche".tr;
+static String add = "Ajouter".tr;
 
 static const siteWeb = "Site Web";
 

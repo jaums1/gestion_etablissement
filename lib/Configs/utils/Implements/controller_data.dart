@@ -26,6 +26,6 @@ H_ValiderConfig(){}
 
  void H_Initialise(){}
 
- void H_RecupeModif({int? id,String? param}){}
+  H_RecupeModif(){}
 }
 

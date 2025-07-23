@@ -1,5 +1,4 @@
 import 'package:ecole/Matiere/Controller/validation_matiere.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../Configs/utils/Constant/texte_string.dart';
@@ -15,13 +14,11 @@ class TMatierePage with TPageData {
  @override
   H_PageShowDialogNouveau() {
     controller.H_Initialise();
-   
     TShowdialogue.showWidget(
       titre: TText.enregistrement.tr,
-      widgets: SizedBox(width: 280,height: 230,
-        child:FormMatiere(
-          onPressed: ()=> TMatiereValidation().H_Enregistrer(),
-        )),
+      widgets: FormMatiere(
+        onPressed: ()=> TMatiereValidation().H_Enregistrer(),
+      ),
         );
   }
 
@@ -30,12 +27,9 @@ class TMatierePage with TPageData {
      controller.H_RecupeModif(id: id);
      TShowdialogue.showWidget(
       titre: TText.modification.tr,
-      widgets: SizedBox(
-        width: 250,
-        height: 280,
-        child:FormMatiere(
-          onPressed:  ()=> TMatiereValidation().H_Modifier(),
-        )),
+      widgets: FormMatiere(
+        onPressed:  ()=> TMatiereValidation().H_Modifier(),
+      ),
         );
   }
 

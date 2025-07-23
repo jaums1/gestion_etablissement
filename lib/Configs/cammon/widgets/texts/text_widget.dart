@@ -14,7 +14,7 @@ class TTextCustom {
   FontWeight?  fontWeight= FontWeight.w700}){
     return Text(text.isEmpty?"":text,style: Theme.of(Get.context!).textTheme.bodyMedium!.copyWith(
       fontSize: size, fontFamily: 'Lato',fontWeight: fontWeight,color: color,
-    ), overflow: TextOverflow.ellipsis,maxLines: 1,);
+    ), overflow: TextOverflow.ellipsis,maxLines: 2,);
   }
 
   static Text subtitle({required String text,Color? color=Colors.black,
@@ -23,6 +23,6 @@ class TTextCustom {
     return Text(text.isEmpty?"":text,style: Theme.of(Get.context!).textTheme.titleMedium!.copyWith(
       fontSize: size, fontFamily: 'Lato',fontWeight: fontWeight,
       color: color,
-    ),overflow: TextOverflow.ellipsis,maxLines: 1,);
+    ),overflow: TextOverflow.ellipsis,maxLines: 2,);
   }
 } 

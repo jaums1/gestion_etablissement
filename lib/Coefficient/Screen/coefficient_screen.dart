@@ -1,12 +1,17 @@
 import 'package:ecole/Configs/cammon/widgets/Data_table/table_action_icon_button.dart';
 import 'package:ecole/Configs/cammon/widgets/texts/texte_riche.dart';
-import 'package:ecole/Matiere%20coef/Controller/matierecoef_controller.dart';
+import 'package:ecole/Coefficient/Controller/matierecoef_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 import '../../Configs/cammon/widgets/TitrePage/titlepage.dart';
+import '../../Configs/cammon/widgets/buttons/button.dart';
 import '../../Configs/cammon/widgets/containers/rounded_container_create.dart';
 import '../../Configs/utils/Constant/colors.dart';
+import '../../Configs/utils/Constant/sizes.dart';
 import '../../Configs/utils/Constant/texte_string.dart';
+import '../Controller/coefficient_validation.dart';
+import '../Controller/page_coefficient.dart';
 
 
 
@@ -43,6 +48,13 @@ class TCoefficientScreen extends StatelessWidget {
                 child: Theme(
                   data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
                   child: ExpansionTile(
+                    leading: SizedBox(
+                      height: 30,
+                      width: 30,
+                      child: TButton.iconButton(padding: 0,
+                            icon: Iconsax.add,size: TSizes.md,
+                            onPressed: () => TCoefficientPage().H_PageShowDialogNouveau(id:data.DataNiveauSerie!.iDNiveauSerie ))
+                    ),
                     backgroundColor: Colors.transparent,
                     collapsedBackgroundColor: Colors.transparent,
                     title: Text(data.DataNiveauSerie==null?"" : data.DataNiveauSerie!.niveauSerie.toString()),
@@ -56,8 +68,9 @@ class TCoefficientScreen extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                            TTableActionIconButtons(iconSize: 20,
-                           onDeletePressed: (){},
-                           onEditPressed: (){},
+                           onDeletePressed: ()=>TCoefficientValidation().H_Supprimer(id:DataDetail.IDAffectationNiveauMatiere)  ,
+                           onEditPressed: ()=>TCoefficientPage().H_PageShowDialogModifier(
+                            id: DataDetail.IDAffectationNiveauMatiere,IDNiveauSerie:data.DataNiveauSerie!.iDNiveauSerie ),
                            )
                           ],
                         ) ,

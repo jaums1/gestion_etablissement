@@ -20,14 +20,14 @@ class TCoefficientValidation with TControllerData {
       TLoader.errorSnack(title:TText.libCoefficient.toUpperCase(),message: TText.coefficientMessage);
       return;
      } 
-  int index = 0;
-    //  int index = controller.DataTableCoefficient.indexWhere(
-    //   (e)=>e.DataTableMatiereCoef!.indexWhere((data)=> data.Matiere!.toLowerCase()==controller.coefficient.text.toLowerCase()
-    //   && data.IDNiveauSerie==0 ));
+
+   int index = controller.DataCoefficient.DataTableMatiereCoef==null? -1 : controller.DataCoefficient.DataTableMatiereCoef!.indexWhere(
+    (e)=> e.IDMatiere==controller.controllerMatiere.DataMatiere.value.iDMatiere);
     
     ////VERIFIER SI LA MATIERE A DEJA ETE SELECTIONNER
   if (index !=-1) {
-    TLoader.warningSnack(title: controller.matiere.text.toString().toUpperCase(),message: TText.matiereExitseMessage);
+    TLoader.warningSnack(title: controller.controllerMatiere.DataMatiere.value.matiere.toString().toUpperCase(),
+    message: TText.matiereExitseMessage);
     return;
     }
    final result = await controller.H_Enregistrer(); 
@@ -40,8 +40,8 @@ class TCoefficientValidation with TControllerData {
 
   @override
   H_Modifier() async {
-     if (controller.matiere.text.isEmpty){
-      TLoader.errorSnack(title:TText.libMatiere.toUpperCase(),message: TText.matiereMessage);
+     if (controller.coefficient.text.isEmpty ||controller.coefficient.text=="0" ){
+      TLoader.errorSnack(title:TText.libCoefficient.toUpperCase(),message: TText.matiereMessage);
       return;
      } 
 

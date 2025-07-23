@@ -1,4 +1,4 @@
-import 'package:ecole/Matiere%20coef/Controller/matierecoef_controller.dart';
+import 'package:ecole/Coefficient/Controller/matierecoef_controller.dart';
 import 'package:get/get.dart';
 
 import '../../Niveau Serie/Model/niveau_serie_model.dart';

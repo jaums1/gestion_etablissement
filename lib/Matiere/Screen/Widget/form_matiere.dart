@@ -18,28 +18,32 @@ class FormMatiere extends StatelessWidget {
   Widget build(BuildContext context) { 
     final controller = Get.find<TMatiereController>();
     final formulaire = TFormulaire();
-    return  SingleChildScrollView(
-      child: Padding(
-        padding:
-            EdgeInsets.only(right: TSizes.sm, left: TSizes.sm, top: TSizes.sm),
-            child: Column(
-              spacing: 5,
-              children: [
+    return  SizedBox(
+      width: 300,
+      child: SingleChildScrollView(
+        child: Padding(
+          padding:
+              EdgeInsets.symmetric(horizontal: TSizes.sm),
+              child: Column(
+                spacing: 5,
+                children: [
+                     formulaire.formulaireTextCheval(label: TText.codeMatiere,
+                  textEditingController: controller.codeMatiere),
+
+                  formulaire.formulaireTextCheval(label:TText.libMatiere,textEditingController: controller.matiere),
                   
-                formulaire.formulaireTextCheval(label:TText.libMatiere,textEditingController: controller.matiere),
-                
-                formulaire.formulaireTextCheval(label: TText.codeMatiere,
-                textEditingController: controller.codeMatiere),
-                SizedBox(height: 10,),
-                 SizedBox(width: double.infinity,
-                  child: TButton.elevatedButton(text: TText.validation,
-                  onPressed:onPressed??(){},),
-                  
-                  ),
-             
-              ],
-            )
-            ),
+                  SizedBox(height: 10,),
+                   SizedBox(width: double.infinity,
+                   height: 45,
+                    child: TButton.elevatedButton(text: TText.validation,
+                    onPressed:onPressed??(){},),
+                    
+                    ),
+               
+                ],
+              )
+              ),
+      ),
     );
   }
 }

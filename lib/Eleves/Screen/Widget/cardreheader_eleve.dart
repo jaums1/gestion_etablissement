@@ -1,9 +1,8 @@
 
 import 'package:ecole/Configs/cammon/widgets/formulaire/form.dart';
 import 'package:ecole/Configs/utils/Constant/enums.dart';
-import 'package:ecole/Matiere%20coef/Controller/flitre_coefficient.dart';
-import 'package:ecole/Matiere%20coef/Controller/matierecoef_controller.dart';
-import 'package:ecole/Matiere%20coef/Controller/page_coefficient.dart';
+import 'package:ecole/Coefficient/Controller/flitre_coefficient.dart';
+import 'package:ecole/Coefficient/Controller/matierecoef_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../Configs/cammon/widgets/buttons/button.dart';
@@ -15,7 +14,6 @@ class TCadreHeaderEleve extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<TPageMatiereCoefController>();
     final controllerAction = Get.find<TCoefficientController>();
     final formulaire =TFormulaire();
     final controllerFiltre =TFiltreCoefficient();
@@ -39,7 +37,6 @@ class TCadreHeaderEleve extends StatelessWidget {
             child: TButton.elevatedButton(text: "Nouveau",onPressed: (){
               controllerAction.action.value = TraitementAction.nouveau.name;
              controllerAction.H_Initialise();
-              controller.nextPage();
               }),
           ),
 

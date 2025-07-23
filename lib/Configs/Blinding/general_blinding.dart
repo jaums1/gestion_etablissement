@@ -11,8 +11,7 @@ import '../../Etablissement/Controller/etablissement_controller.dart';
 import '../../Etablissement/Repository/etatblissement_repository.dart';
 import '../../Inscription/Controller/inscription_controller.dart';
 import '../../Login/Controller/user_controller.dart';
-import '../../Matiere coef/Controller/matierecoef_controller.dart';
-import '../../Matiere coef/Controller/page_coefficient.dart';
+import '../../Coefficient/Controller/matierecoef_controller.dart';
 import '../../Matiere/Controller/data_source_matiere.dart';
 import '../../Matiere/Controller/matiere_controller.dart';
 import '../../Modalite_Paiement/Controller/modalite_paiement_controller.dart';
@@ -75,7 +74,7 @@ class TGeneralBinding extends Bindings {
      
 
      ///// MATIERE COEF
-      Get.lazyPut(()=>TPageMatiereCoefController(),fenix: true);
+     
 
       //////MENU
       Get.lazyPut(()=>SidebarController(),fenix: true);

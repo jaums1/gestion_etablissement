@@ -43,7 +43,7 @@ class TNiveauSerieController extends GetxController with TControllerData{
 
 
    ///// LES INSTANCES
-    var DataNiveauSerie = TNiveauSerieModel();
+    var DataNiveauSerie = TNiveauSerieModel().obs;
     final _client = TDioHelper(baseUrl: TApi.httpLien);
 
 
@@ -76,12 +76,12 @@ class TNiveauSerieController extends GetxController with TControllerData{
    
     
     }else{
-      DataNiveauSerie.typeEnseignement    = controllerCycle.DatacyleModel.cycleScolaire;
-      DataNiveauSerie.iDSerie             = controllerSerie.DataSerie.iDSerie;
-      DataNiveauSerie.serie               = controllerSerie.DataSerie.serie;
-      DataNiveauSerie.iDNiveauScolaire    = controllerNiveau.DataNiveau.iDNiveauScolaire;
-      DataNiveauSerie.niveau              = controllerNiveau.DataNiveau.niveau;
-      DataNiveauSerie.niveauSerie         = "${DataNiveauSerie.niveau} ${DataNiveauSerie.serie}";
+      DataNiveauSerie.value.typeEnseignement    = controllerCycle.DatacyleModel.cycleScolaire;
+      DataNiveauSerie.value.iDSerie             = controllerSerie.DataSerie.iDSerie;
+      DataNiveauSerie.value.serie               = controllerSerie.DataSerie.serie;
+      DataNiveauSerie.value.iDNiveauScolaire    = controllerNiveau.DataNiveau.iDNiveauScolaire;
+      DataNiveauSerie.value.niveau              = controllerNiveau.DataNiveau.niveau;
+      DataNiveauSerie.value.niveauSerie         = "${DataNiveauSerie.value.niveau} ${DataNiveauSerie.value.serie}";
       
     }
    
@@ -120,10 +120,10 @@ class TNiveauSerieController extends GetxController with TControllerData{
         widgets: TAnimationLoaderWidget(text:TText.messageEnregistrerChargement.tr,animation: TImages.docerAnimation, width: 150,));
     
        final reponse =await _client.post<TNiveauSerieModel>(TEndpoint.linkNiveauSerie,
-                        data: DataNiveauSerie.toMap(),fromJson: (data) =>TNiveauSerieModel.fromMap(data));
+                        data: DataNiveauSerie.value.toMap(),fromJson: (data) =>TNiveauSerieModel.fromMap(data));
     ////// VERIFICATION 
     if(reponse.success){
-      DataNiveauSerie =reponse.data!;
+      DataNiveauSerie.value =reponse.data!;
        H_RecupeData();
          Get.back();
        return true;
@@ -148,10 +148,10 @@ class TNiveauSerieController extends GetxController with TControllerData{
         widgets: TAnimationLoaderWidget(text:TText.messageModifierChargement.tr,animation: TImages.docerAnimation, width: 200,));
     
        final reponse =await _client.patch<TNiveauSerieModel>(TEndpoint.linkNiveauSerie,
-                        data: DataNiveauSerie.toMap(),fromJson: (data) =>TNiveauSerieModel.fromMap(data));
+                        data: DataNiveauSerie.value.toMap(),fromJson: (data) =>TNiveauSerieModel.fromMap(data));
     ////// VERIFICATION 
     if(reponse.success){
-      DataNiveauSerie =reponse.data!;
+      DataNiveauSerie.value =reponse.data!;
        H_RecupeData();
          Get.back();
        return true;
@@ -197,24 +197,24 @@ class TNiveauSerieController extends GetxController with TControllerData{
      H_Clear();
     controllerNiveau.DataNiveau = TNiveauModel(); 
     isSelectNiveauSerie.clear();
-    DataNiveauSerie = TNiveauSerieModel();
+    DataNiveauSerie.value = TNiveauSerieModel();
   }
 
   @override
   void H_RecupeModif({int? id, String? param}) {
      isSelectNiveauSerie.clear();
      DataTableSerie.clear();
-    DataNiveauSerie = TNiveauSerieModel();
-    DataNiveauSerie = DataTableNiveauSerie.firstWhere((e) =>e.iDNiveauSerie==id, orElse: () => TNiveauSerieModel(),);
-    DataNiveauSerie.niveau !=""? isSelectNiveauSerie.add(DataNiveauSerie.serie!):"";
-    controllerNiveau.H_RecupeModif(id: DataNiveauSerie.iDNiveauScolaire);
+    DataNiveauSerie.value = TNiveauSerieModel();
+    DataNiveauSerie.value = DataTableNiveauSerie.firstWhere((e) =>e.iDNiveauSerie==id, orElse: () => TNiveauSerieModel(),);
+    DataNiveauSerie.value.niveau !=""? isSelectNiveauSerie.add(DataNiveauSerie.value.serie!):"";
+    controllerNiveau.H_RecupeModif(id: DataNiveauSerie.value.iDNiveauScolaire);
   }
 
  //// VALIDATION CONFIGURATION
   @override
   H_ValiderConfig() async{
     if (isSelectNiveauSerieTable.isEmpty)return false;
-     DataNiveauSerie.DataTableNiveauSerie = isSelectNiveauSerieTable;
+     DataNiveauSerie.value.DataTableNiveauSerie = isSelectNiveauSerieTable;
     await H_Modifier();
       return true;
       
@@ -244,7 +244,7 @@ void onSelectCheckBox(value){
     );
     }
 
-    DataNiveauSerie.DataTable=DataTableSerie.map((e)=> e).toList();
+    DataNiveauSerie.value.DataTable=DataTableSerie.map((e)=> e).toList();
 }
 
 void onSelectCheckBoxTable({String? niveauSerie}){
@@ -268,7 +268,7 @@ void onSelectCombo(value){
 onIndexData(value){
   final index = DataTableNiveauSerie.indexWhere((e)=> e.iDNiveauSerie==value );
    if(index ==-1) return;
-  DataNiveauSerie = DataTableNiveauSerie[index];
+  DataNiveauSerie.value = DataTableNiveauSerie[index];
   return DataNiveauSerie;
 }
 

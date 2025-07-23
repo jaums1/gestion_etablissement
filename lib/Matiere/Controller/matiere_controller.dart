@@ -23,7 +23,7 @@ class TMatiereController extends GetxController with TControllerData{
    var DataTableMatiereSelect= <TMatiereModel>[];
    var DataTableMatiereSelectionner= <TMatiereModel>[];
    var DataTableFiltreMatiere= <TMatiereModel>[].obs;
-   var DataMatiere = TMatiereModel();
+   var DataMatiere = TMatiereModel().obs;
    final isLoading = false.obs;
  
    final params ="".obs;
@@ -50,17 +50,17 @@ class TMatiereController extends GetxController with TControllerData{
     ///////// TRAITEMENT
    void HLitMatiere({String? param="AFFICHAGE"}){
     if (param=="AFFICHAGE") {
-       codeMatiere.text = DataMatiere.codeMatiere ==null? "":DataMatiere.codeMatiere!;
-       matiere.text     =  DataMatiere.matiere ==null? "":DataMatiere.matiere!;
+       codeMatiere.text = DataMatiere.value.codeMatiere ==null? "":DataMatiere.value.codeMatiere!;
+       matiere.text     =  DataMatiere.value.matiere ==null? "":DataMatiere.value.matiere!;
     }else{
-      DataMatiere.codeMatiere = codeMatiere.text;
-       DataMatiere.matiere = matiere.text;
+      DataMatiere.value.codeMatiere = codeMatiere.text;
+       DataMatiere.value.matiere = matiere.text;
     }
    }
    
 @override
   void H_Initialise() {
-    DataMatiere =TMatiereModel();
+    DataMatiere.value =TMatiereModel();
     codeMatiere.clear();
     matiere.clear();
   }
@@ -74,10 +74,10 @@ class TMatiereController extends GetxController with TControllerData{
         widgets: TAnimationLoaderWidget(text:TText.messageEnregistrerChargement.tr,animation: TImages.docerAnimation, width: 150,));
     
        final reponse =await _client.post<TMatiereModel>(TEndpoint.linkMatiere,
-                        data: DataMatiere.toMap(),fromJson: (data) =>TMatiereModel.fromMap(data));
+                        data: DataMatiere.value.toMap(),fromJson: (data) =>TMatiereModel.fromMap(data));
     ////// VERIFICATION 
     if(reponse.success){
-      DataMatiere =reponse.data!;
+      DataMatiere.value =reponse.data!;
        H_RecupeData();
         Get.back();
        return true;
@@ -127,10 +127,10 @@ class TMatiereController extends GetxController with TControllerData{
         widgets: TAnimationLoaderWidget(text:TText.messageModifierChargement.tr,animation: TImages.docerAnimation, width: 200,));
        
        final reponse =await _client.patch<TMatiereModel>(TEndpoint.linkMatiere,
-                        data: DataMatiere.toMap(),fromJson: (data) =>TMatiereModel.fromMap(data));
+                        data: DataMatiere.value.toMap(),fromJson: (data) =>TMatiereModel.fromMap(data));
     ////// VERIFICATION 
     if(reponse.success){
-      DataMatiere =reponse.data!;
+      DataMatiere.value =reponse.data!;
        H_RecupeData();
          Get.back();
        return true;
@@ -159,7 +159,7 @@ class TMatiereController extends GetxController with TControllerData{
       DataTableFiltreMatiere.value =reponse.data!;
       DataTableMatiereSelectionner = DataTableMatiere.where((e)=> e.etat==true).map((e)=> e).toList();
       isSelectMatiere.value = DataTableMatiere.where((e)=> e.etat==true).map((e)=> e.matiere!).toList();
-      DataMatiere.DatatableMa = DataTableMatiereSelectionner;
+      DataMatiere.value.DatatableMa = DataTableMatiereSelectionner;
     }
     } catch (e) {
       TLoader.errorSnack(title: TText.erreur.tr,message: "${TText.messageErreur.tr} $e");
@@ -167,18 +167,17 @@ class TMatiereController extends GetxController with TControllerData{
   }
   
 @override
-  void H_RecupeModif({int? id, String? param}) {
-     DataMatiere = DataTableMatiere.firstWhere((data)=> data.iDMatiere ==id
-                                      ,orElse: () => TMatiereModel(),);
-         HLitMatiere();
-
+   H_RecupeModif({int? id, String? param}) {
+     DataMatiere.value = DataTableMatiere.firstWhere(
+      (data)=> data.iDMatiere ==id,orElse: () => TMatiereModel(),);
+      HLitMatiere();
   }  
 
 
 @override
   H_ValiderConfig() {
     if (isSelectMatiere.isEmpty )return false;
-    DataMatiere.DatatableMa = DataTableMatiereSelectionner;
+    DataMatiere.value.DatatableMa = DataTableMatiereSelectionner;
       H_Modifier();
       return true;
   }
