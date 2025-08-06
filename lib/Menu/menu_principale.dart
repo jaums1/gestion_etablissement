@@ -17,16 +17,27 @@ class TMenuPrincipalScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TDeviceUtility.isDesktop() == true ? TWindow().FullWindow() : null;
+    
   
-    return Obx(() => (controller.dataEtablissementModel.value.idEtablissement==0 || controller.dataEtablissementModel.value.idEtablissement==null) ||
-    controller.dataEtablissementModel.value.etatActivation==false?   
+    return Obx(() =>  (controller.DataEtablissement.value.idEtablissement==0 || controller.DataEtablissement.value.idEtablissement==null) ||
+    controller.DataEtablissement.value.etatActivation==false?   
         TConfigurationScreen()
-        :TSiteTemplate(
+        :TMenu());
+  }
+}
+
+
+class TMenu extends StatelessWidget {
+  const TMenu({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    TDeviceUtility.isDesktop() == true ? TWindow().FullWindow() : null;
+    return TSiteTemplate(
           useLayout: true,
           mobile: MenuMobileScreen(),
           desktop: TDashboardScreen(),
           tablet: MenuTabletScreen(),
-        ));
+        );
   }
 }

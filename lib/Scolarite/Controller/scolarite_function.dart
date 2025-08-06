@@ -1,18 +1,18 @@
 
 import 'package:get/get.dart';
 import '../../Configs/utils/Implements/function_data.dart';
-import '../../Niveau Serie/Controller/niveau_serie_controller.dart';
+import '../../Niveau_Scolaire/Controller/niveauscolaire_controller.dart';
 import 'scolarite_controller.dart';
 
 class TScolariteFunction with TFunctionData {
  
   final controller = Get.find<TScolariteController>();
-  final controllerNS = Get.find<TNiveauSerieController>();
+  final controllerNS = Get.find<TNiveauScolaireController>();
 
 
- void H_OnchangeNiveauSerie(){
+ void H_OnchangeNiveauScolaire(){
    
-   controller.variable.DataTableNiveauSerie.value = controllerNS.DataTableSelectNiveauSerie.map(
+   controller.variable.DataTableNiveauScolaire = controllerNS.DataTableNiveauEtude.map(
     (e)=>e).toList();
     
    
@@ -20,8 +20,10 @@ class TScolariteFunction with TFunctionData {
  }
   
 void H_OnchangeSupprime(param){
-  controller.variable.DataTableNiveauSerie.remove(param);
-  controllerNS.DataTableSelectNiveauSerie.remove(param);
+  controller.variable.DataTableNiveauScolaire.remove(param);
+  controller.DataTableNiveauScolaire.value = controller.variable.DataTableNiveauScolaire;
+  controller.DataTableNiveauScolaire.refresh();
+  // controllerNS.DataTableSelectNiveauSerie.remove(param);
 
   }
 

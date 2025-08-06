@@ -44,11 +44,11 @@ class TAnneeScolaireController extends GetxController with TControllerData{
    void HLitAnneeScolaire({String? param="AFFICHAGE"}){
     if (param=="AFFICHAGE") {
        variable.AnneeScolaire.text = DataAnneeScolaire.value.AnneeScolaire??"";
-       variable.DateDebut.text =DataAnneeScolaire.value.DateDebut==null?"":TFormatters.formatDate(DataAnneeScolaire.value.DateDebut);
-       variable.DateFin.text =DataAnneeScolaire.value.DateFin==null?"":TFormatters.formatDate(DataAnneeScolaire.value.DateFin);
+       variable.DateDebut.text =DataAnneeScolaire.value.DateDebut==null?"":TFormatters.formatDateFr(DataAnneeScolaire.value.DateDebut);
+       variable.DateFin.text =DataAnneeScolaire.value.DateFin==null?"":TFormatters.formatDateFr(DataAnneeScolaire.value.DateFin);
     }else{
       DataAnneeScolaire.value.AnneeScolaire = variable.AnneeScolaire.text;
-      DataAnneeScolaire.value.IDEtablissement = controllerEtablissement.dataEtablissementModel.value.idEtablissement;
+      DataAnneeScolaire.value.IDEtablissement = controllerEtablissement.DataEtablissement.value.idEtablissement;
     }
    }
    
@@ -151,6 +151,8 @@ class TAnneeScolaireController extends GetxController with TControllerData{
       DataAnneeScolairePrincipale.value = DataTableAnneeScolaire.firstWhere(
         (e)=> e.Statut=="En cours",orElse: () => TAnneeScolaireModel(),
         );
+         DataAnneeScolaire.value=DataAnneeScolairePrincipale.value;
+        HLitAnneeScolaire();
     }
     } catch (e) {
       TLoader.errorSnack(title: TText.erreur.tr,message: "${TText.messageErreur.tr} $e");

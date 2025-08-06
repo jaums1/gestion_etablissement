@@ -57,18 +57,7 @@ class TFormulaire {
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // RichText(
-        //   overflow: TextOverflow.ellipsis,
-        //   text: TextSpan(
-        //   text: label,style: Theme.of(Get.context!).textTheme.bodyMedium,
-        //   children: [
-        //     isPassword==true || isVerification ==true || isVerifieEmail==true || isVerifiePass==true ?
-        //     TextSpan(text: "*",style: Theme.of(Get.context!).textTheme.headlineSmall!.apply(
-        //       color: TColors.error
-        //     ),)
-        //     :TextSpan()
-        //   ]
-        // )),
+       
         Text(label!,style: Theme.of(Get.context!).textTheme.bodyMedium,maxLines: 1,overflow: TextOverflow.ellipsis,),
         TextFormField(
           onChanged:onChanged ,

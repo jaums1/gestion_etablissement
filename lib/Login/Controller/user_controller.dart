@@ -1,5 +1,4 @@
-
-
+import 'package:ecole/Configs/utils/Constant/enums.dart';
 import 'package:ecole/Configs/utils/dio/dio_client.dart';
 import 'package:ecole/Configs/utils/endpoint/endpoint.dart';
 import 'package:flutter/material.dart';
@@ -11,32 +10,52 @@ import '../../Configs/utils/Implements/controller_data.dart';
 import '../../Configs/utils/Popup/animation_loader.dart';
 import '../../Configs/utils/Popup/loaders.dart';
 import '../../Configs/utils/Popup/showdialogue.dart';
+import '../../Employe/Controller/employe_controller.dart';
 import '../Model/login_model.dart';
-import 'user_filtre.dart';
 import 'variable.dart';
 
 class TUserController extends GetxController with TControllerData{
   static TUserController get instance => Get.find();
-  
+  final adminTotal=0.obs;
+  final autreTootal=0.obs;
+  final total=0.obs;
+  final isLoading =false.obs;
   final DataUser = TUserModel().obs;
   final DataUserPrincipale = TUserModel().obs;
   final DataTableUser = <TUserModel>[].obs;
   final DataTableFiltreUser = <TUserModel>[].obs;
   var variable  = TUserVariable();
-
+  
   final _client = TDioHelper(baseUrl: TApi.httpLien);
+  final controller = Get.find<TEmployeController>();
  
   void HLitUser({String param="AFFICHAGE"}){
       if(param=="AFFICHAGE"){
        variable.user.text = DataUser.value.user??"";
        variable.password.text = DataUser.value.motDePasse??"";
+       variable.passwordConfirm.text = DataUser.value.motDePasse??"";
        variable.role.text = DataUser.value.role??"";
        
       }else{
         DataUser.value.user = variable.user.text;
         DataUser.value.motDePasse = variable.password.text;
         DataUser.value.role = variable.role.text;
+        DataUser.value.idEmploye = controller.DataEmploye.value.IDEmploye;
       }
+  }
+  
+  @override
+  H_Bilan(){
+     autreTootal.value =0;
+     adminTotal.value =0;
+    for (var data in DataTableUser) {
+       if (data.role.toString().toLowerCase()==AppRole.Admin.name.toLowerCase()) {
+         adminTotal.value +=1;
+       }else{
+            autreTootal.value +=1;
+       }
+    }
+    total.value = DataTableUser.length;
   }
 
 
@@ -54,6 +73,7 @@ class TUserController extends GetxController with TControllerData{
     ////// VERIFICATION 
     if(reponse.success){
       DataUser.value =reponse.data!;
+      H_RecupeData();
       Get.back();
       return true;
     }else{
@@ -81,6 +101,7 @@ class TUserController extends GetxController with TControllerData{
     ////// VERIFICATION 
     if(reponse.success){
       DataUser.value =reponse.data!;
+       H_RecupeData();
       Get.back();
       return true;
     }else{
@@ -106,7 +127,9 @@ class TUserController extends GetxController with TControllerData{
   final reponse =await _client.delete("${TEndpoint.linkUser}/$id",queryParameters: {'id':id});
     ////// VERIFICATION 
     if(reponse.success){
-      Get.back();
+       H_RecupeData();
+       Get.back();
+       Get.back();
       return true;
     }else{
       Get.back();
@@ -122,14 +145,18 @@ class TUserController extends GetxController with TControllerData{
 
 @override
  H_RecupeData() async{
+  
    try {
+    isLoading.value=false;
   ///// ENVOIE DES DONNEES
   final reponse =await _client.getList<TUserModel>(TEndpoint.linkUser,
                          fromJson: (data) =>TUserModel.fromMap(data));
     ////// VERIFICATION 
     if(reponse.success){
-      DataTableUser.addAll(reponse.data!);
+      DataTableUser.value =reponse.data!;
       DataTableFiltreUser.value =DataTableUser;
+      isLoading.value=true;
+       H_Bilan();
       return true;
     }else{
       Get.back();
@@ -152,6 +179,7 @@ class TUserController extends GetxController with TControllerData{
     "${TEndpoint.linkUser}/${variable.user.text}/${variable.password.text}",
                          fromJson: (data) =>TUserModel.fromMap(data));
     ////// VERIFICATION 
+
     if(reponse.success){
       DataUserPrincipale.value = reponse.data!;
       Get.back();
@@ -173,7 +201,11 @@ class TUserController extends GetxController with TControllerData{
 
  @override
   void H_RecupeModif({int? id, String? param}) {
-    TUserFiltre().H_FiltreElementParID(id: id);
+    
+    
+    DataUser.value = DataTableUser.firstWhere((e) =>e.idUtilisateur==id,orElse:()=> TUserModel());
+   controller.H_RecupeModif(id: DataUser.value.idEmploye);
+
     HLitUser();
   }
  
@@ -181,6 +213,7 @@ class TUserController extends GetxController with TControllerData{
   @override
   void H_Initialise() {
     DataUser.value = TUserModel();
+    controller.H_Initialise();
   }
    
  

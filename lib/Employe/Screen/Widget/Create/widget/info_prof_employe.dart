@@ -15,28 +15,33 @@ class TInformationProfessionnelleEmploye extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
      final combo = TCombo();
-       final formulaire = TFormulaire();
+      //  final formulaire = TFormulaire();
        final controller = Get.find<TEmployeController>();
     return   Form(
       key: controller.variable.keyInfoProfessionnelle,
       child: FocusTraversalGroup(
         child: Column(
           children: [
-            TCoupeSectionTitre(titre: "Informations professionnelles",),
+            TCoupeSectionTitre(titre: "Information professionnelles",),
                 SizedBox(height: TSizes.spaceBtwItems,),
             ////MATRICULE
-             formulaire.formulaireTextCheval(label: "Matricule",iconPrefix: Iconsax.code,
-             textEditingController: controller.variable.MatriculeEmploye,isVerification: true),
+            //  formulaire.formulaireTextCheval(label: "Matricule",iconPrefix: Iconsax.code,
+            //  textEditingController: controller.variable.MatriculeEmploye,isVerification: true),
+              combo.comboTextChevale(
+                   valeur: controller.variable.Fonction.text,     
+                  hintText: "Fonction",
+                  sections:controller.variable.fonctionsScolaires,
+                 label: "Fonction",onChanged:TEmployeFunction().H_OnChangedFonction ),
         
            ////DEPARTEMENT
-           combo.comboTextChevale(
-                  valeur: controller.variable.Departement.text, 
-                  hintText: "Département",
-                  sections:controller.variable.departements,
-                  label: "Département",onChanged:TEmployeFunction().H_OnChangedDepartement ), 
+          //  combo.comboTextChevale(
+          //         valeur: controller.variable.Departement.text, 
+          //         hintText: "Département",
+          //         sections:controller.variable.departements,
+          //         label: "Département",onChanged:TEmployeFunction().H_OnChangedDepartement ), 
         
                   ///// DATE EMBAUCHE ET DATE DE FIN DE CONTRAT
-                  SizedBox(child: TDateProfessionnelleEmploye(formulaire: formulaire, controller: controller),),
+                  // SizedBox(child: TDateProfessionnelleEmploye(formulaire: formulaire, controller: controller),),
                   
                   ////// STATUT ET TYPE CONTRAT
                   TStatutTypeContrat(combo: combo, controller: controller),

@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 import '../../Configs/utils/Implements/controller_data.dart';
 import '../../Scolarite/Controller/scolarite_controller.dart';
-import '../../Scolarite/Controller/scolarite_filtre.dart';
 import '../Model/modalite_paiement_model.dart';
 
 import 'modalite_paiement_variable.dart';
@@ -13,9 +12,7 @@ class TModalitePaiementController extends GetxController with TControllerData{
   var DataModalitePaiement = TModalitePaiementModel();
   var DataTableModalitePaiement =<TModalitePaiementModel>[].obs;
 
- final filtreScolarite = TScolariteFiltre();
-  final controller    = Get.find<TScolariteController>();
- 
+ final controller = Get.find<TScolariteController>();
   
 
   //////TRAITEMENT
@@ -29,6 +26,7 @@ class TModalitePaiementController extends GetxController with TControllerData{
       variable.JourMois.text = DataModalitePaiement.JourMois.toString();
       variable.JourRappel.text = DataModalitePaiement.JourRappel.toString();
       variable.JourRappelMois.text =DataModalitePaiement.JourRappelMois.toString();
+      variable.MontantVersementAnterieur= DataModalitePaiement.Montant!;
     } else {
       DataModalitePaiement.IDScolarite =int.tryParse(variable.IDScolarite.text) ?? 0;
       DataModalitePaiement.LibVersement = variable.LibVersement.text;
@@ -41,36 +39,35 @@ class TModalitePaiementController extends GetxController with TControllerData{
     }
   }
  
-
-
-
 ///// ENREGISTREMENT 
 @override
  H_Enregistrer(){
-  H_Initialise();
+  // H_Initialise();
     HLitModalitePaiement(param: "ENVOYER");
     ///LOADING
-  controller.variable.DataTableModalitePaiement.add(DataModalitePaiement);
+  // controller.variable.DataTableModalitePaiement.add(DataModalitePaiement);
   DataTableModalitePaiement.add(DataModalitePaiement);
  
   Get.back();
   ///// TRAITEMENT RESULTAT
-
   }
 
 // SUPPRIMER
 @override
  H_Supprimer({int? id,String? param}) {
-    final index = filtreScolarite.H_RecupeVersement(param: param);
-    final versement = controller.variable.DataTableModalitePaiement[index].LibVersement!.split(' ');
-    controller.variable.DataTableModalitePaiement.removeAt(index);
-    for (var i = 0; i < controller.variable.DataTableModalitePaiement.length; i++) {
+ 
+  DataTableModalitePaiement.removeWhere((item) => item.LibVersement==param);  
+  
+  for (var i = 0; i < DataTableModalitePaiement.length; i++) {
         if (i==0) {
-        controller.variable.DataTableModalitePaiement[i].LibVersement="${i+1}er ${versement[1]}";  
+        DataTableModalitePaiement[i].LibVersement="${i+1}er Versement";  
         }else{
-          controller.variable.DataTableModalitePaiement[i].LibVersement="${i+1}e ${versement[1]}";
+         DataTableModalitePaiement[i].LibVersement="${i+1}e Versement";
         }
-    }
+    } 
+
+  
+
   }
 
 // MODIFICATION
@@ -78,10 +75,12 @@ class TModalitePaiementController extends GetxController with TControllerData{
  H_Modifier() {
    
   HLitModalitePaiement(param: "ENVOYER");
-  final index = filtreScolarite.H_RecupeVersement(param: DataModalitePaiement.LibVersement); 
-  controller.variable.DataTableModalitePaiement[index]=DataModalitePaiement;
-  Get.back();
+  final index = DataTableModalitePaiement.indexWhere((e) => e.LibVersement== DataModalitePaiement.LibVersement);
 
+  // filtreScolarite.H_RecupeVersement(param: DataModalitePaiement.LibVersement); 
+  DataTableModalitePaiement[index]=DataModalitePaiement;
+  // Navigator.pop(Get.context!);  
+    Get.back();
 
   }
 
@@ -89,14 +88,15 @@ class TModalitePaiementController extends GetxController with TControllerData{
   
 @override
   void H_RecupeModif({int? id, String? param}) {
-  final index = filtreScolarite.H_RecupeVersement(param: param); 
-  DataModalitePaiement= controller.variable.DataTableModalitePaiement[index];
+   DataModalitePaiement=  DataTableModalitePaiement.firstWhere((item) => item.LibVersement==param,
+   orElse: () =>TModalitePaiementModel() ,);
     HLitModalitePaiement();
 
   }
 
   @override
   void H_Initialise() {
+    variable.H_initVariables();
     DataModalitePaiement=TModalitePaiementModel();
   }
   

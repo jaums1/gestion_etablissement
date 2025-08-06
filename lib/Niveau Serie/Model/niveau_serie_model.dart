@@ -47,7 +47,7 @@ final controller = Get.find<TEtablissementController>();
     "Niveau" : niveau,
     "Serie" : serie,
     "Etat" : Etat,
-    "IDEtablissement" : controller.dataEtablissementModel.value.idEtablissement,
+    "IDEtablissement" : controller.DataEtablissement.value.idEtablissement,
     "IDSerie" : iDSerie,
     "IDNiveauScolaire" : iDNiveauScolaire,
     "TypeEnseignement" : typeEnseignement,

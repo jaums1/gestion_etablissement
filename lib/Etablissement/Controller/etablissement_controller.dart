@@ -34,7 +34,7 @@ class TEtablissementController extends GetxController with TControllerData {
 
   final _client = TDioHelper(baseUrl: TApi.httpLien);
 	
-   var dataEtablissementModel =TEtablissementModel().obs;  	
+   var DataEtablissement =TEtablissementModel().obs;  	
   	
    /////INIT userController
   TEtablissementRepository repositorycontroller = Get.put(TEtablissementRepository());
@@ -42,34 +42,34 @@ class TEtablissementController extends GetxController with TControllerData {
 
   HLitEtablissement({String? param ="AFFICHAGE"}){
    if (param=="AFFICHAGE") {
-    etablissement.text=  dataEtablissementModel.value.nom ==""?"":dataEtablissementModel.value.nom.toString() ;
-    codeEtablissemnt.text = dataEtablissementModel.value.codeEtatblissement ==""?"":dataEtablissementModel.value.codeEtatblissement.toString(); 
-    adresse.text = dataEtablissementModel.value.adresse ==""?"":dataEtablissementModel.value.adresse.toString() ; 
-    email.text = dataEtablissementModel.value.email ==""?"":dataEtablissementModel.value.email.toString() ; 
-    logo.text = dataEtablissementModel.value.logo ==""?"":dataEtablissementModel.value.logo.toString() ; 
-    directeur.text = dataEtablissementModel.value.nomDirecteur ==""?"":dataEtablissementModel.value.nomDirecteur.toString() ; 
-    selectPays.value = dataEtablissementModel.value.pays ==""?"":dataEtablissementModel.value.pays.toString() ; 
-    siteWeb.text = dataEtablissementModel.value.siteWeb ==""?"":dataEtablissementModel.value.siteWeb.toString() ; 
-    phoneDirecteur.text = dataEtablissementModel.value.telephone ==""?"":dataEtablissementModel.value.telephone.toString() ; 
-    telephone2.text = dataEtablissementModel.value.Telephone2 ==""?"":dataEtablissementModel.value.Telephone2.toString() ; 
-    selectTypeEnseignement.value = dataEtablissementModel.value.typeEtablissement ==""?"":dataEtablissementModel.value.typeEnseignement.toString() ; 
-    selectTypeEnseignement.value = dataEtablissementModel.value.typeEnseignement ==""?"":dataEtablissementModel.value.typeEnseignement.toString() ; 
-    ville.text = dataEtablissementModel.value.ville ==""?"":dataEtablissementModel.value.ville.toString() ; 
-    ville.text = dataEtablissementModel.value.Telephone2 ==""?"":dataEtablissementModel.value.Telephone2.toString() ; 
+    etablissement.text=  DataEtablissement.value.nom ==""?"":DataEtablissement.value.nom.toString() ;
+    codeEtablissemnt.text = DataEtablissement.value.codeEtatblissement ==""?"":DataEtablissement.value.codeEtatblissement.toString(); 
+    adresse.text = DataEtablissement.value.adresse ==""?"":DataEtablissement.value.adresse.toString() ; 
+    email.text = DataEtablissement.value.email ==""?"":DataEtablissement.value.email.toString() ; 
+    logo.text = DataEtablissement.value.logo ==""?"":DataEtablissement.value.logo.toString() ; 
+    directeur.text = DataEtablissement.value.nomDirecteur ==""?"":DataEtablissement.value.nomDirecteur.toString() ; 
+    selectPays.value = DataEtablissement.value.pays ==""?"":DataEtablissement.value.pays.toString() ; 
+    siteWeb.text = DataEtablissement.value.siteWeb ==""?"":DataEtablissement.value.siteWeb.toString() ; 
+    phoneDirecteur.text = DataEtablissement.value.telephone ==""?"":DataEtablissement.value.telephone.toString() ; 
+    telephone2.text = DataEtablissement.value.Telephone2 ==""?"":DataEtablissement.value.Telephone2.toString() ; 
+    selectTypeEnseignement.value = DataEtablissement.value.typeEtablissement ==""?"":DataEtablissement.value.typeEnseignement.toString() ; 
+    selectTypeEnseignement.value = DataEtablissement.value.typeEnseignement ==""?"":DataEtablissement.value.typeEnseignement.toString() ; 
+    ville.text = DataEtablissement.value.ville ==""?"":DataEtablissement.value.ville.toString() ; 
+    ville.text = DataEtablissement.value.Telephone2 ==""?"":DataEtablissement.value.Telephone2.toString() ; 
    }else{
-  dataEtablissementModel.value.nom =  instance.etablissement.text;
-  dataEtablissementModel.value.codeEtatblissement =instance.codeEtablissemnt.text; 
-  dataEtablissementModel.value.adresse = instance.adresse.text;
-  dataEtablissementModel.value.email = instance.email.text;
-  dataEtablissementModel.value.logo = instance.logo.text;
-  dataEtablissementModel.value.nomDirecteur = instance.directeur.text;
-  dataEtablissementModel.value.pays = instance.selectPays.string; ///instance.pays.text;
-  dataEtablissementModel.value.siteWeb = instance.siteWeb.text;
-  dataEtablissementModel.value.telephone = instance.phoneDirecteur.text;
-  dataEtablissementModel.value.typeEtablissement =instance.selectTypeEnseignement.string;   //instance.typeEtablissement.text;
-  dataEtablissementModel.value.typeEnseignement =instance.selectTypeEnseignement.string;   
-  dataEtablissementModel.value.ville = instance.ville.text;
-  dataEtablissementModel.value.Telephone2 = instance.telephone2.text;
+  DataEtablissement.value.nom =  instance.etablissement.text;
+  DataEtablissement.value.codeEtatblissement =instance.codeEtablissemnt.text; 
+  DataEtablissement.value.adresse = instance.adresse.text;
+  DataEtablissement.value.email = instance.email.text;
+  DataEtablissement.value.logo = instance.logo.text;
+  DataEtablissement.value.nomDirecteur = instance.directeur.text;
+  DataEtablissement.value.pays = instance.selectPays.string; ///instance.pays.text;
+  DataEtablissement.value.siteWeb = instance.siteWeb.text;
+  DataEtablissement.value.telephone = instance.phoneDirecteur.text;
+  DataEtablissement.value.typeEtablissement =instance.selectTypeEnseignement.string;   //instance.typeEtablissement.text;
+  DataEtablissement.value.typeEnseignement =instance.selectTypeEnseignement.string;   
+  DataEtablissement.value.ville = instance.ville.text;
+  DataEtablissement.value.Telephone2 = instance.telephone2.text;
    }
 
  }
@@ -89,7 +89,7 @@ class TEtablissementController extends GetxController with TControllerData {
                                              fromJson: (data) =>TEtablissementModel.fromMap(data));
     ////// VERIFICATION 
     if(reponse.success){
-      dataEtablissementModel.value = reponse.data!;
+      DataEtablissement.value = reponse.data!;
       HLitEtablissement();
     }
     } catch (e) {
@@ -112,10 +112,10 @@ class TEtablissementController extends GetxController with TControllerData {
   animation: TImages.docerAnimation,width: 250,));
   ///// ENVOIE DES DONNEES
   final reponse =await _client.post<TEtablissementModel>(TEndpoint.linkEtablissement,
-  data: dataEtablissementModel.value.toMap(),fromJson: (data) =>TEtablissementModel.fromMap(data));
+  data: DataEtablissement.value.toMap(),fromJson: (data) =>TEtablissementModel.fromMap(data));
     ////// VERIFICATION 
     if(reponse.success){
-      dataEtablissementModel.value =reponse.data!;
+      DataEtablissement.value =reponse.data!;
       Get.back();
       return true;
     }else{
@@ -141,10 +141,10 @@ class TEtablissementController extends GetxController with TControllerData {
   // animation: TImages.docerAnimation,width: 250,));
   ///// ENVOIE DES DONNEES
   final reponse =await _client.patch<TEtablissementModel>(TEndpoint.linkEtablissement,
-  data: dataEtablissementModel.value.toMap(),fromJson: (data) =>TEtablissementModel.fromMap(data));
+  data: DataEtablissement.value.toMap(),fromJson: (data) =>TEtablissementModel.fromMap(data));
     ////// VERIFICATION 
     if(reponse.success){
-      dataEtablissementModel.value =reponse.data!;
+      DataEtablissement.value =reponse.data!;
       // Get.back();
       return true;
     }else{
@@ -173,7 +173,7 @@ class TEtablissementController extends GetxController with TControllerData {
  @override
   void H_Initialise() {
    final data = TEtablissementModel();
-   dataEtablissementModel.value = data;
+   DataEtablissement.value = data;
   }
 
  //// VALIDATION CONFIGURATION
@@ -189,6 +189,31 @@ class TEtablissementController extends GetxController with TControllerData {
       return true;
     }
 
+  H_TermineConfig() async{
+
+   try {
+       ///LOADING
+  TShowdialogue().showWidgetLoad(widgets: 
+  TAnimationLoaderWidget(text: "Chargement encours...",color: Colors.white,
+  animation: TImages.docerAnimation,width: 250,));
+  ///// ENVOIE DES DONNEES
+  final reponse =await _client.patch<TEtablissementModel>("${TEndpoint.linkEtablissement}/${TEndpoint.linkValidation}",
+  data: DataEtablissement.value.toMap(),fromJson: (data) =>TEtablissementModel.fromMap(data));
+    ////// VERIFICATION 
+    if(reponse.success){
+      DataEtablissement.value =reponse.data!;
+      Get.back();
+      return true;
+    }else{
+      Get.back();
+      TLoader.errorSnack(title: "Erreur",message: "Veuillez vérifier votre connexion internet");
+     return false;
+    }
+    } catch (e) {
+      TLoader.errorSnack(title: "Erreur",message: "Veuillez vérifier votre connexion source erreur $e");
+     return false;
+    }
+  }
  //// AUTRE PROCEDURE
 void onSelectPays(value){
   selectPays.value =value;

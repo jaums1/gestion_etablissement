@@ -2,6 +2,7 @@ import 'package:ecole/Configs/utils/Constant/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../Constant/texte_string.dart';
 import '../Device/devices_utility.dart';
 
 class TShowdialogue {
@@ -16,7 +17,7 @@ Get.dialog(
   shape: RoundedRectangleBorder(
     borderRadius: BorderRadius.all(Radius.circular(8))
   ),
-  title: Text(titre!,style: Theme.of(Get.context!).textTheme.headlineSmall,),
+  title: Text(titre??TText.suppression,style: Theme.of(Get.context!).textTheme.headlineSmall,),
   titlePadding: EdgeInsets.all(10),
   actionsAlignment: MainAxisAlignment.end,
   actionsPadding: EdgeInsets.all(8),
@@ -40,7 +41,7 @@ Get.dialog(
     
     
   ],
-content: Text(message!,style: Theme.of(Get.context!).textTheme.bodyMedium ,),
+content: Text(message??TText.messageSupprimer,style: Theme.of(Get.context!).textTheme.bodyMedium ,),
 contentPadding: EdgeInsets.symmetric(horizontal:20,vertical: 15),
 
 ));
@@ -62,7 +63,9 @@ Get.dialog(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
       Expanded(
-        child:titre ==""?SizedBox(): Text(titre.toString(),style: Theme.of(Get.context!).textTheme.titleLarge,)),
+        child:titre ==""?SizedBox(): Text(titre.toString(),style: Theme.of(Get.context!).textTheme.titleLarge,)
+        ),
+     
       Expanded(
         flex: TDeviceUtility.isMobileScreen(Get.context!)?1:1,
         child: Align(
@@ -110,4 +113,12 @@ Get.dialog(
 ));
 }
 
+
+showSupprimer({VoidCallback? onPressedValide}){
+    showQuestion(
+      titre: TText.supprimer,
+      message:TText.messageSupprimer,
+      onPressedValide: onPressedValide,
+    );
+}
 }

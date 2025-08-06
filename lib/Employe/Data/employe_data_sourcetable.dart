@@ -1,5 +1,4 @@
 import 'package:data_table_2/data_table_2.dart';
-import 'package:ecole/Configs/utils/formatters/formatters.dart';
 import 'package:ecole/Employe/Controller/employe_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,10 +16,10 @@ class TEmployeSourceData extends DataTableSource {
      final data = controller.DataTableFiltreEmploye[index];
     return DataRow2(onTap: (){},cells: [
        
-        DataCell(Text("${index+1}",style: Theme.of(Get.context!).textTheme.bodyMedium,)),
+        DataCell(Align(child: Text("${index+1}",style: Theme.of(Get.context!).textTheme.bodyMedium,))),
        
-        DataCell(Text(data.MatriculeEmploye.toString(),style: Theme.of(Get.context!).textTheme.bodyMedium,
-        overflow: TextOverflow.ellipsis,maxLines: 2,)),
+        // DataCell(Text(data.MatriculeEmploye.toString(),style: Theme.of(Get.context!).textTheme.bodyMedium,
+        // overflow: TextOverflow.ellipsis,maxLines: 2,)),
        
         DataCell(Text(data.NomComplet.toString(),
         overflow: TextOverflow.ellipsis,maxLines: 1,
@@ -38,8 +37,8 @@ class TEmployeSourceData extends DataTableSource {
         DataCell(Text(data.TypeContrat.toString(),style: Theme.of(Get.context!).textTheme.bodyMedium,
         overflow: TextOverflow.ellipsis,maxLines: 1,),),
         
-        DataCell(Text(TFormatters.formatDateFr(data.DateEmbauche),style: Theme.of(Get.context!).textTheme.bodyMedium,
-        overflow: TextOverflow.ellipsis,maxLines: 1,)),
+        // DataCell(Text(TFormatters.formatDateFr(data.DateEmbauche),style: Theme.of(Get.context!).textTheme.bodyMedium,
+        // overflow: TextOverflow.ellipsis,maxLines: 1,)),
 
         DataCell(Center(child: TEmployeStatut().H_OnChangeCouleur(titre: data.Statut))),
 

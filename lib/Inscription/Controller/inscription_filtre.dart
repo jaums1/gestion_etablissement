@@ -13,8 +13,8 @@ class TInscriptionFiltre with TFiltre {
   @override
   void H_FiltreElement({String param = ""}) {
     controller.DataTableFiltreInscription.value = controller.DataTableInscription.where(
-      (e) => e.IDEtudiant.toString().toLowerCase().contains(param.toLowerCase()) ||
-             e.IDClasse.toString().toLowerCase().contains(param.toLowerCase()) ||
+      (e) => e.DataEleve!.NomComplet.toString().toLowerCase().contains(param.toLowerCase()) ||
+             e.DataClasse!.LibClasse.toString().toLowerCase().contains(param.toLowerCase()) ||
              e.Statut.toString().toLowerCase().contains(param.toLowerCase())
     ).toList();
   }

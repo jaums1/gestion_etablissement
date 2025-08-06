@@ -9,8 +9,7 @@ class TClasseVariable {
    final List<DataColumn> columns = [
      DataColumn2(label: Text("N°"),fixedWidth: 50,headingRowAlignment: MainAxisAlignment.center),
      DataColumn2(label: Text("Niveau Serie"),size: ColumnSize.L),
-     DataColumn2(label: Text("Classe"),size: ColumnSize.L),
-     DataColumn2(label: Text("Capicite"),size: ColumnSize.S,),              
+     DataColumn2(label: Text("Classe"),size: ColumnSize.L),           
      DataColumn2(label: Text("Action"),fixedWidth: 100,headingRowAlignment: MainAxisAlignment.center),         
   ];
 
@@ -24,7 +23,7 @@ class TClasseVariable {
 
  final GlobalKey<FormState> keyClasse=GlobalKey<FormState>();
  
- H_Initialise(){
+ H_Clear(){
     LibClasse.clear();
     Capacite.clear();
     NiveauSerie.value.clear();

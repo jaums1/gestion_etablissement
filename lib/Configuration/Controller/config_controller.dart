@@ -20,6 +20,7 @@ import '../../Niveau_Scolaire/Controller/niveauscolaire_controller.dart';
 import '../../Niveau_Scolaire/Screen/niveauscolaire.dart';
 import '../../Serie/Screen/serie_scolaire.dart';
 import '../../Type_Decoupage_Scolaire/Controller/typedecoupage_controller.dart';
+import '../Screen/Widget/form_terminer_config.dart';
 
 
 
@@ -36,7 +37,7 @@ class TConfigController extends GetxController {
      TConfigModel(menu: "Matières", route:TMatierePrincipalScreen()),
      TConfigModel(menu: "Coefficient Matière", route:TCoefficientPrincipalScreen()),
      TConfigModel(menu: TText.libAnneeScolaire, route:FormAnneeScolaire()),
-     TConfigModel(menu: "Fin", route:TNiveauScolaireScreen()),
+     TConfigModel(menu: "Fin", route:FormTerminerConfig()),
      
      ].obs;
   final selectListe =[].obs;
@@ -59,6 +60,12 @@ final controlleAnneeScolaire= Get.find<TAnneeScolaireController>();
     index.value = indice;
   } 
 
+
+void terimnerStep()async{
+  if(await controlleEtablissement.H_TermineConfig()==false){ 
+    TLoader.errorSnack(title: TText.libConfig,message: "Veuillez vérifier votre connexion");
+     return;}
+}
 
 void nextStep(indice) async {
  
@@ -97,14 +104,22 @@ void nextStep(indice) async {
      return;} 
      break;
       /// COEFFICIENT
-     case 7 : if(await controlleCoefficient.H_ValiderConfig()==false){ 
+     case 7 : if( controlleCoefficient.H_ValiderConfig()==false){ 
     TLoader.errorSnack(title: TText.libCoefficient,message: "Veuillez vérifier votre liste");
      return;} 
-     break; /// ANNEE SCOLAIRE
+     break; 
+     /// ANNEE SCOLAIRE
      case 8 : if(await controlleAnneeScolaire.H_ValiderConfig()==false){ 
     TLoader.errorSnack(title: TText.libAnneeScolaire,message: TText.anneeScolaireMessage);
-     return;} 
+     return;}
      break;
+    //  /// ANNEE SCOLAIRE
+    //  case 9 : if(await controlleEtablissement.H_TermineConfig()==false){ 
+    // TLoader.errorSnack(title: TText.libConfig,message: "Veuillez vérifier votre connexion");
+    //  return;}else{
+    //   print("Data");
+    //   Get.offNamed(TRoutes.menu); } 
+    //  break;
 
 
   }

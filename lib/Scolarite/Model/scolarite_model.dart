@@ -1,27 +1,29 @@
 
 
 import 'package:ecole/Modalite_Paiement/Model/modalite_paiement_model.dart';
-import 'package:ecole/Niveau%20Serie/Model/niveau_serie_model.dart';
+import '../../Niveau_Scolaire/Model/niveauscolaire_model.dart';
 
 class TScolariteModel {
 int? IDScolarite;
 int? MontantScolarite;
 int? FraisAnnexe;
 int? FraisInscription;
-int? IDNiveauSerie;
+int? IDNiveauScolaire;
+String? TypeScolarite;
 List<TModalitePaiementModel>? DataTable;
-List<TNiveauSerieModel>? DataTableNiveauSerie;
-TNiveauSerieModel? DataNiveauSerie;
+List<TNiveauModel>? DataTableNiveauScolaire;
+TNiveauModel? DataNiveauScolaire;
 
   TScolariteModel({
     this.IDScolarite,
     this.MontantScolarite,
     this.FraisAnnexe,
     this.FraisInscription,
-    this.IDNiveauSerie,
     this.DataTable,
-    this.DataTableNiveauSerie,
-    this.DataNiveauSerie,
+    this.DataTableNiveauScolaire,
+    this.IDNiveauScolaire,
+    this.DataNiveauScolaire,
+    this.TypeScolarite
   });
 
   Map<String, dynamic> toMap() {
@@ -30,10 +32,11 @@ TNiveauSerieModel? DataNiveauSerie;
       'MontantScolarite': MontantScolarite,
       'FraisAnnexe': FraisAnnexe,
       'FraisInscription': FraisInscription,
-      'IDNiveauSerie': IDNiveauSerie,
+      'IDNiveauScolaire': IDNiveauScolaire,
+      'TypeScolarite': TypeScolarite,
       'DataTable': DataTable!.map((x) => x.toMap()).toList(),
-      'DataTableNiveauSerie': DataTableNiveauSerie!.map((x) => x.toMap()).toList(),
-      'DataNiveauSerie': DataNiveauSerie?.toMap(),
+      // 'DataNiveauScolaire': DataNiveauScolaire!.toMap(),
+      'DataTableNiveauScolaire': DataTableNiveauScolaire!.map((x) => x.toMap()).toList(),
     };
   }
 
@@ -43,10 +46,11 @@ TNiveauSerieModel? DataNiveauSerie;
       MontantScolarite: map['MontantScolarite'] != null ? map['MontantScolarite'] as int : null,
       FraisAnnexe: map['FraisAnnexe'] != null ? map['FraisAnnexe'] as int : null,
       FraisInscription: map['FraisInscription'] != null ? map['FraisInscription'] as int : null,
-      IDNiveauSerie: map['IDNiveauSerie'] != null ? map['IDNiveauSerie'] as int : null,
+      IDNiveauScolaire: map['IDNiveauScolaire'] != null ? map['IDNiveauScolaire'] as int : null,
+      TypeScolarite: map['TypeScolarite'] != null ? map['TypeScolarite'] as String : null,
       DataTable: map['DataTable'] != null ? List<TModalitePaiementModel>.from((map['DataTable'] ).map<TModalitePaiementModel?>((x) => TModalitePaiementModel.fromMap(x as Map<String,dynamic>),),) : null,
-       DataTableNiveauSerie: map['DataTableNiveauSerie'] != null ? List<TNiveauSerieModel>.from((map['DataTableNiveauSerie']).map<TNiveauSerieModel?>((x) => TNiveauSerieModel.fromMap(x as Map<String,dynamic>),),) : null,
-       DataNiveauSerie: map['DataNiveauSerie'] != null ? TNiveauSerieModel.fromMap(map['DataNiveauSerie']) : null,
+      //  DataTableNiveauSerie: map['DataTableNiveauSerie'] != null ? List<TNiveauSerieModel>.from((map['DataTableNiveauSerie']).map<TNiveauSerieModel?>((x) => TNiveauSerieModel.fromMap(x as Map<String,dynamic>),),) : null,
+     DataNiveauScolaire: map['DataNiveauScolaire'] != null ? TNiveauModel.fromMap(map['DataNiveauScolaire']) : null,
     );
   }
 

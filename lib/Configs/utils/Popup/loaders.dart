@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../Constant/colors.dart';
+import '../Constant/texte_string.dart';
 import '../helpers/helpers_function.dart';
 
 class TLoader {
@@ -86,6 +87,38 @@ class TLoader {
 
   }
 
+ 
 
+
+  static messageEnregistrer(route){
+    Get.offNamed(route);
+    successSnack(title:TText.enregistrer, message: TText.messageEnregistrer);
+      
+  }
+
+  static messageModifier(String route){
+    successSnack(title: TText.modifier, message: TText.messageModifier);
+      Get.offNamed(route);
+  }
+  
+  static messageEnregistrerDialog(){
+    Get.back();
+    successSnack(title:TText.enregistrer, message: TText.messageEnregistrer);
+     
+  }
+
+  static messageModifierDialog(){
+    Get.back();
+    successSnack(title: TText.modifier, message: TText.messageModifier);
+  
+  }
+
+
+
+   static messageErreur(){
+    errorSnack(title: TText.erreur,message:TText.messageErreur );
+   }
+  static messageSupprimer(){}
+ 
 
 }

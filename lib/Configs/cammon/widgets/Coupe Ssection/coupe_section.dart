@@ -8,17 +8,15 @@ final Color? color;
   @override
   Widget build(BuildContext context) {
     return Row(
+      spacing: 8,
       children: [
-        Expanded(
-          child: Text(titre.toString().toUpperCase(),style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-            color: color
-          ),softWrap: true,maxLines: 1,overflow: TextOverflow.ellipsis,),
-        ),
-        // SizedBox(width: 10,),
-        Expanded(
-          flex: 2,
+        Text(titre.toString().toUpperCase(),style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+          color: color
+        ),softWrap: true,maxLines: 1,overflow: TextOverflow.ellipsis,),
+    
+        Flexible(
           child: SizedBox(
-            width: MediaQuery.of(context).size.width,
+            width: double.infinity,
             child: Divider(
               thickness: 0.3,
             ),

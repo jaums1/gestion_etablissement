@@ -6,29 +6,20 @@ import '../../Configs/utils/Implements/page_data.dart';
 import 'user_controller.dart';
 
 
-class TUserPage with TPageData {
+class TUtilisateurPage with TPageData {
   final controller = Get.find<TUserController>();
   @override
   H_PageNouveau() {
-    controller.H_Initialise();
-    controller.variable.clear();
-
+  controller.H_Initialise();
+  controller.variable.clear();
+  Get.offNamed(TRoutes.registerutilisateur,arguments: TraitementAction.nouveau.name); 
    
   }
 
   @override
   H_PageModifier({int? id}) {
-    // Get.bottomSheet(Container(
-    //   width: 100,
-    //   alignment: Alignment.centerLeft,
-    //   child: Column(
-    //     children: [
-    //       ListTile(title: Text("Option 1"),)
-    //     ],
-    //   ),
-    // ));
-    // controller.H_RecupeModif(id: id);
-    Get.offNamed(TRoutes.registerversement, arguments: TraitementAction.modifier.name);
+      controller.H_RecupeModif(id: id);
+    Get.offNamed(TRoutes.registerutilisateur, arguments: TraitementAction.modifier.name);
   }
 
   

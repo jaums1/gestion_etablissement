@@ -23,13 +23,13 @@ class TStatutCustom {
     if(titre=="Suspendu") return   H_CardreCouleur(titre: titre,color: Colors.grey);
     if(titre=="En congé") return   H_CardreCouleur(titre: titre,color: Colors.amber);
     if(titre=="Démissionnaire") return   H_CardreCouleur(titre: titre,color: Colors.redAccent[100]);
-    if(titre=="Licencié") return   H_CardreCouleur(titre: titre,color: Colors.red[800]);
+    if(titre=="Licencié" || titre=="Bloqué") return   H_CardreCouleur(titre: titre,color: Colors.red[800]);
     if(titre=="Retraité") return   H_CardreCouleur(titre: titre,color: Colors.blueGrey);
     if(titre=="Décédé") return   H_CardreCouleur(titre: titre,color: Colors.black);
-    if(titre!.toLowerCase()=="solde") return   H_CardreCouleur(titre: titre,color: Colors.green);
-    if(titre.toLowerCase()=="non solde") return   H_CardreCouleur(titre: titre,color: Colors.red);
+    if(titre!.toLowerCase()=="solde" || titre.toLowerCase()=="actif") return   H_CardreCouleur(titre: titre,color: Colors.green);
+    if(titre.toLowerCase()=="non solde"||titre.toLowerCase()=="admin") return   H_CardreCouleur(titre: titre,color: Colors.red);
     
-    return H_CardreCouleur(titre: "Autre",color: Colors.blueAccent);
+    return H_CardreCouleur(titre: titre,color: Colors.blueAccent);
     
   }
   static paiement(montant){

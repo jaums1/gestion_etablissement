@@ -10,13 +10,13 @@ class TInscriptionVariable {
     DataColumn2(label: Text("Date Inscription",softWrap: true,), size: ColumnSize.S, headingRowAlignment: MainAxisAlignment.center),
     DataColumn2(label: Text("Matricule",softWrap: true), size: ColumnSize.S),
     DataColumn2(label: Text("Étudiant",softWrap: true), size: ColumnSize.L),
-    DataColumn2(label: Text("Classe",softWrap: true), size: ColumnSize.L),
-    DataColumn2(label: Text("Nbr Versement",softWrap: true,), size: ColumnSize.S,headingRowAlignment: MainAxisAlignment.center),
-    DataColumn2(label: Text("Date Pro.. Versement",softWrap: true,), size: ColumnSize.S,headingRowAlignment: MainAxisAlignment.center),
-    DataColumn2(label: Text("Paiement Effectue",softWrap: true,), size: ColumnSize.S),
+    DataColumn2(label: Text("Classe",softWrap: true), size: ColumnSize.S),
+    DataColumn2(label: Text("Statut",softWrap: true,), size: ColumnSize.S,headingRowAlignment: MainAxisAlignment.center),
+    DataColumn2(label: Text("D.Pro.. Versement",softWrap: true,maxLines: 1, overflow: TextOverflow.ellipsis), size: ColumnSize.S,headingRowAlignment: MainAxisAlignment.center),
+    DataColumn2(label: Text("Paiement Effectué",softWrap: true,maxLines: 1, overflow: TextOverflow.ellipsis,), size: ColumnSize.S),
     DataColumn2(label: Text("Reste à payer",softWrap: true), size: ColumnSize.S),
     DataColumn2(label: Text("Net à payer",softWrap: true), size: ColumnSize.S),
-    DataColumn2(label: Text("Statut",softWrap: true), size: ColumnSize.S,headingRowAlignment: MainAxisAlignment.center),
+    DataColumn2(label: Text("Etat",softWrap: true), size: ColumnSize.S,headingRowAlignment: MainAxisAlignment.center),
     DataColumn2(label: Text("Action",softWrap: true), fixedWidth: 100, headingRowAlignment: MainAxisAlignment.center),
   ];
 

@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 
 
 class TModalitePaiementModel {
@@ -52,4 +53,28 @@ String? JourRappelMois;
     );
   }
 
+
+  TModalitePaiementModel copyWith({
+    int? IDModalitePaiement,
+    int? IDScolarite,
+    String? LibVersement,
+    int? Montant,
+    String? Jour,
+    String? Mois,
+    String? JourMois,
+    String? JourRappel,
+    String? JourRappelMois,
+  }) {
+    return TModalitePaiementModel(
+      IDModalitePaiement: IDModalitePaiement ?? this.IDModalitePaiement,
+      IDScolarite: IDScolarite ?? this.IDScolarite,
+      LibVersement: LibVersement ?? this.LibVersement,
+      Montant: Montant ?? this.Montant,
+      Jour: Jour ?? this.Jour,
+      Mois: Mois ?? this.Mois,
+      JourMois: JourMois ?? this.JourMois,
+      JourRappel: JourRappel ?? this.JourRappel,
+      JourRappelMois: JourRappelMois ?? this.JourRappelMois,
+    );
+  }
 }

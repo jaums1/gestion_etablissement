@@ -10,12 +10,12 @@ class TVariableEleve {
      DataColumn2(label: Text("N°"),fixedWidth: 50,headingRowAlignment: MainAxisAlignment.center),
      DataColumn2(label: Text("Matricule"),fixedWidth: 130),
      DataColumn2(label: Text("Nom Prénoms"),size: ColumnSize.L),
-     DataColumn2(label: Text("Sexe"),size: ColumnSize.S,),
-     DataColumn2(label: Text("Date Naissance",softWrap: true,maxLines: 2,overflow: TextOverflow.ellipsis,),size: ColumnSize.S,
+     DataColumn2(label: Text("Sexe"),size: ColumnSize.S,headingRowAlignment: MainAxisAlignment.center),
+     DataColumn2(label: Text("Date Naissance",softWrap: true,maxLines: 1,overflow: TextOverflow.ellipsis,),size: ColumnSize.S,
      headingRowAlignment: MainAxisAlignment.center),
      DataColumn2(label: Text("Contact"),size: ColumnSize.S),
-     DataColumn2(label: Text("Statut"),size: ColumnSize.S,),         
-     DataColumn2(label: Text("Régime"),size: ColumnSize.S),        
+     DataColumn2(label: Text("Statut"),size: ColumnSize.S,headingRowAlignment: MainAxisAlignment.center),         
+     DataColumn2(label: Text("Régime"),size: ColumnSize.S,headingRowAlignment: MainAxisAlignment.center),        
      DataColumn2(label: Text("Action"),fixedWidth: 100,headingRowAlignment: MainAxisAlignment.center),         
   ];
 
@@ -41,7 +41,7 @@ class TVariableEleve {
  final GlobalKey<FormState> keyInfoStatut=GlobalKey<FormState>();
  final keyInfoParent=GlobalKey<FormState>();
   
- void H_Initialise(){
+ void H_Clear(){
  matricule.clear();
    nom.clear();
    prenoms.clear();

@@ -60,8 +60,8 @@ class TConfigurationBodyRight extends StatelessWidget {
                     TButton.elevatedButton(text:"Précédente",isPrincipal: false,
                     onPressed:()=> controller.preStep(controller.index.value) ),
                   SizedBox(width: 10,),
-                  TButton.elevatedButton(text:"Suivant",
-                    onPressed:()=> controller.nextStep(controller.index.value) )
+                  TButton.elevatedButton(text:"Terminer",
+                    onPressed:()=> controller.terimnerStep() )
                   ],
                 ),
               )   

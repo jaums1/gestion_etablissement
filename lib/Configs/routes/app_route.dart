@@ -22,6 +22,8 @@ import '../../Scolarite/Screen/Widget/Create/create_scolarite_principal.dart';
 import '../../Scolarite/Screen/Widget/update/update_scolarite_principal.dart';
 import '../../Scolarite/Screen/Widget/view/scolarite_screen_principale.dart';
 import '../../Serie/Screen/serie_scolaire.dart';
+import '../../Utilisateur/Screen/Create/create_utilisateur_principale.dart';
+import '../../Utilisateur/Screen/utilisateur_principale.dart';
 import '../../Versement/Screen/Widget/Create/versement_create_principal.dart';
 import 'route.dart';
 
@@ -59,6 +61,10 @@ class TAppRoute {
 
     //// VERSEMENT
     GetPage(name: TRoutes.registerversement, page: ()=>const TCreateVersementPrincipaleScreen()), 
+    
+    //// UTILISATEUR
+    GetPage(name: TRoutes.utilisateur, page: ()=>const TUtilisateurPrincipalScreen()), 
+    GetPage(name: TRoutes.registerutilisateur, page: ()=>const CreateUtilisateurPrincipaleForm()), 
   
   ]; 
 }

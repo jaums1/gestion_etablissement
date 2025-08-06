@@ -50,9 +50,12 @@ class TNiveauSerieController extends GetxController with TControllerData{
     
     final controlleEtablissement= Get.find<TEtablissementController>();
     // final controllerPage= Get.put(TPageNiveauSerieController());
-    final controllerSerie= Get.find<TSerieController>();
-    final controllerNiveau= Get.find<TNiveauScolaireController>();
     final controllerCycle = Get.find<TCycleController>();
+     final controllerSerie= Get.find<TSerieController>();
+    final controllerNiveau= Get.find<TNiveauScolaireController>();
+   
+    
+    
       List<DataColumn> columns = [
      DataColumn2(label: Text("N°"),fixedWidth: 50,headingRowAlignment: MainAxisAlignment.center),
      DataColumn2(label: Text("Niveau Serie"),size: ColumnSize.L),
@@ -71,6 +74,8 @@ class TNiveauSerieController extends GetxController with TControllerData{
       serie.clear();
     }
 
+ 
+
   void HLitSerieScolaire({String? param="AFFICHAGE"}){
     if(param=="AFFICHAGE"){
    
@@ -79,15 +84,19 @@ class TNiveauSerieController extends GetxController with TControllerData{
       DataNiveauSerie.value.typeEnseignement    = controllerCycle.DatacyleModel.cycleScolaire;
       DataNiveauSerie.value.iDSerie             = controllerSerie.DataSerie.iDSerie;
       DataNiveauSerie.value.serie               = controllerSerie.DataSerie.serie;
-      DataNiveauSerie.value.iDNiveauScolaire    = controllerNiveau.DataNiveau.iDNiveauScolaire;
-      DataNiveauSerie.value.niveau              = controllerNiveau.DataNiveau.niveau;
+      DataNiveauSerie.value.iDNiveauScolaire    = controllerNiveau.DataNiveau.value.iDNiveauScolaire;
+      DataNiveauSerie.value.niveau              = controllerNiveau.DataNiveau.value.niveau;
       DataNiveauSerie.value.niveauSerie         = "${DataNiveauSerie.value.niveau} ${DataNiveauSerie.value.serie}";
       
     }
    
    }
 
-
+@override
+  void onInit() {
+   H_RecupeData();
+    super.onInit();
+  }
 ////// RECUPERATION
  @override
   H_RecupeData({String? param})async {
@@ -141,15 +150,17 @@ class TNiveauSerieController extends GetxController with TControllerData{
   ////// MODIFIER
   @override
   H_Modifier() async{
-    
+
     try {
        HLitSerieScolaire(param: "ENVOYER");
+      
        TShowdialogue().showWidgetLoad(
         widgets: TAnimationLoaderWidget(text:TText.messageModifierChargement.tr,animation: TImages.docerAnimation, width: 200,));
     
        final reponse =await _client.patch<TNiveauSerieModel>(TEndpoint.linkNiveauSerie,
                         data: DataNiveauSerie.value.toMap(),fromJson: (data) =>TNiveauSerieModel.fromMap(data));
     ////// VERIFICATION 
+    
     if(reponse.success){
       DataNiveauSerie.value =reponse.data!;
        H_RecupeData();
@@ -195,7 +206,7 @@ class TNiveauSerieController extends GetxController with TControllerData{
   void H_Initialise() {
     DataTableSerie.clear();
      H_Clear();
-    controllerNiveau.DataNiveau = TNiveauModel(); 
+    controllerNiveau.DataNiveau.value = TNiveauModel(); 
     isSelectNiveauSerie.clear();
     DataNiveauSerie.value = TNiveauSerieModel();
   }
@@ -261,7 +272,7 @@ void onSelectCheckBoxAll(value){
 }
 
 void onSelectCombo(value){
-  controllerNiveau.DataNiveau = controllerNiveau.DataTableNiveauEtude.firstWhere((e)=>e.niveau==value,
+  controllerNiveau.DataNiveau.value = controllerNiveau.DataTableNiveauEtude.firstWhere((e)=>e.niveau==value,
   orElse: () => TNiveauModel(),);
 }
 

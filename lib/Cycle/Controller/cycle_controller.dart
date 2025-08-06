@@ -18,6 +18,7 @@ class TCycleController extends GetxController with TControllerData{
    ///// LES INSTANCES
     final  id = 0.obs;
     var DatacyleModel = TCycleModel();
+   
     final _client = TDioHelper(baseUrl: TApi.httpLien);
 
 
@@ -47,6 +48,9 @@ class TCycleController extends GetxController with TControllerData{
       DataTableCycle.value = reponse.data!;
       DatacyleModel = DataTableCycle.firstWhere((e)=> e.etat==true,orElse: () =>TCycleModel());
       selectRadio.value = DataTableCycle.firstWhere((e)=> e.etat==true,orElse: () =>TCycleModel()).cycleScolaire.toString();
+      // if(selectRadio!=""){
+      //   controller.H_RecupeData();
+      // }
     }
     } catch (e) {
       TLoader.errorSnack(title: "Erreur",message: "Veuillez vérifier votre connexion source erreur $e");
@@ -83,9 +87,9 @@ class TCycleController extends GetxController with TControllerData{
 
  //// VALIDATION CONFIGURATION
   @override
-  H_ValiderConfig() {
-    if (selectRadio.value.isEmpty)return false;
-    H_Modifier();
+  H_ValiderConfig() async{
+    if (selectRadio.value.isEmpty || selectRadio.value=="null" )return false;
+   await H_Modifier();
       return true;
     }
 

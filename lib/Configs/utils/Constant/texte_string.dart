@@ -2,6 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class TText{
+ 
+////// MENU
+static  String Dashboard="Dashboard".tr;
+static  String Eleve="Eleve".tr;
+static  String Enseignant="Enseignant".tr;
+static  String Employe="Employe".tr;
+static  String Notes="Notes".tr;
+static  String Salle="Salle".tr;
+static  String Classe="Classe".tr;
+static  String Scolarite="Scolarite".tr;
+static  String Inscription="Inscription".tr;
+static  String User="Utilisateur".tr;
+static  String Emplois_du_Temps="Emplois du Temps".tr;
 ////// FONTS
 static const String fontFamilyPrimary = 'Urbanist';
 static const String fontFamilySecond = 'Roboto';
@@ -52,6 +65,10 @@ static  String rechcercheAnneeScolaire="Rechercher une année scolaire".tr;
 static  String anneeScolaireMessage="Veuillez entrer votre année scolaire".tr;
 static  String anneeScolaireExitseMessage="L'année scolaire existe déjà".tr;
 
+///// CONFIGURATION
+static  String libConfig="Configuration".tr;
+static  String Config="Validation encours...".tr;
+
 ////// COEFFICIENT
 static  String libCoefficient="Coefficient".tr;
 static  String coefficientMessage="Veuillez entrer un coefficient superieur à zéro".tr;
@@ -68,6 +85,69 @@ static  String votrecode="Avez vous votre code?".tr;
 static  String connexion="Connexion".tr;
 static  String loginTitle="Content de vous revoir".tr;
 static  String loginSubTitle="Utilisez vos identifiants pour vous connecter à votre logiciel.".tr;
+
+///// UTILISATEUR
+static String roleaccess="Role".tr;
+static String titreAffichageUtilisateur="Liste des utilisateurs".tr;
+static String titreVide="Aucun Utilisateur".tr;
+static String buttonEnregistrer="J'enregistre un Utilisateur".tr;
+static String bilanCompteAdmin="Compte Admin".tr;
+static String bilanCompteAutre="Audre Compte".tr;
+static String bilanCompteTotal="Compte Total".tr;
+static String messageUtilisateurExiste="Le nom utilisateur existe déjà, veuillez enseigner autre.".tr;
+
+
+/////// EMPLOYE
+
+static String titreAffichageEmploye="Liste des Employes".tr;
+static String titreVideEMploye="Aucun Employe Enregisterer".tr;
+static String buttonEnregistrerEmploye="J'enregistre un Employe".tr;
+static String bilanFemmeEmploye="Total Femme".tr;
+static String bilanHommeEmploye="Total Homme".tr;
+static String bilanTotalEmploye="Total Employe".tr;
+static String messageSelectEmploye="Veuillez sélectionner un employe".tr;
+
+////// ELEVE
+static String titreAffichageEleve="Liste des Elèves".tr;
+static String titreAffichageEtudiant="Liste des Etudiants".tr;
+static String buttonEnregistrerEleve="J'enregistre un Elève".tr;
+static String buttonEnregistrerEtudiant="J'enregistre un Etudiant".tr;
+static String bilanFemmeEleve="Total Femme".tr;
+static String bilanHommeEleve="Total Homme".tr;
+static String bilanTotalEleve="Total Elève".tr;
+static String bilanTotalEtudiant="Total Etudiant".tr;
+static String messageSelectEleve="Veuillez sélectionner un élève".tr;
+static String messageSelectEtudiant="Veuillez sélectionner un étudiant".tr;
+static String messageExisteEleve="Le matricule existe déjà dans la base donnée".tr;
+
+////// CLASSE
+static String titreAffichageClasse="Liste des Classes".tr;
+static String buttonEnregistrerClasse="J'enregistre une Classe".tr;
+static String bilanTotalClasse="Total Classe".tr;
+static String messageSelectClasse="Veuillez sélectionner une classe".tr;
+static String messageExisteClasse="La classe existe déjà dans la base donnée".tr;
+
+///// NIVEAU SCOLAIRE
+// static String titreAffichageClasse="Liste des Classes".tr;
+static String RechercheNiveauScolaire="Rechercher un Niveau Scolaire".tr;
+static String buttonEnregistrerS="J'enregistre une Classe".tr;
+// static String bilanTotalClasse="Total Classe".tr;
+// static String messageSelectClasse="Veuillez sélectionner une classe".tr;
+// static String messageExisteClasse="La classe existe déjà dans la base donnée".tr;
+ 
+ ///// NIVEAU SCOLAIRE
+  static String titreAffichageScolalrite="Liste de Scolarite".tr;
+  static String bilanTotalScolarite="Total Scolarité".tr;
+  
+  ///// INSCRIPTION
+  static String titreAffichageInscription="Liste des Inscrits".tr;
+  static String bilanTotalInscription="Total Inscrit".tr;
+  static String bilanSolde="Reste à payer".tr;
+  static String bilanNetApayer="Net à payer".tr;
+  static String bilanPaiement="Paiement".tr;
+
+//////// AUTRE PARAMETTRE
+static String messagePasswordNonconforme="Mot de passe non conforme".tr;
 
 
 
@@ -181,6 +261,8 @@ static List<String> listPays = ['Algérie','Angola','Bénin','Botswana','Burkina
   static List<String> listTypeEnseignement =["Enseignement Général","Enseignement Technique","Enseignement Professionnelle"];
   static List<String> Sexe =["Homme","Femme"];
   static List<String> MethodePaiement=["espèces","chèque","Mobile Moneny" ];
+  
+  static String nationalitesSelect ="Ivoirienne";
   static List<String> nationalites = [
   'Ivoirienne',
   'Béninoise',
@@ -217,6 +299,7 @@ static List<String> listPays = ['Algérie','Angola','Bénin','Botswana','Burkina
   'Japonaise',
 ];
 
+static List role =["Admin","Secretaire","Enseignant"]; //Comptable Parent
 
 /////// TITRE FORMULAIRE
 static const String eleve ="Elève";

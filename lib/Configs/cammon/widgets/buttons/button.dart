@@ -9,6 +9,7 @@ class TButton {
 static Widget elevatedButton({
 String? text,double? padding=15.0,VoidCallback? onPressed,bool? isPrincipal=true
   }){
+   
     return SizedBox(
            width:TDeviceUtility.isMobileScreen(Get.context!)? 100:null,
       child: ElevatedButton(
@@ -54,6 +55,25 @@ static Widget ValidateButton({required String titre,VoidCallback? onPressed}){
                  MediaQuery.of(Get.context!).size.width*0.1:  MediaQuery.of(Get.context!).size.width*0.4,
                 child: TButton.elevatedButton(text:"Valider",onPressed: onPressed)),
               );
+}
+
+static Widget textButton({String? text,double? padding=15.0,VoidCallback? onPressed,bool? isPrincipal=true}){
+  return SizedBox(
+           width:TDeviceUtility.isMobileScreen(Get.context!)? 100:null,
+      child: TextButton(
+             onPressed:onPressed,
+             style: TextButton.styleFrom(
+              textStyle: TextStyle(fontSize: 15),
+             foregroundColor:isPrincipal==true?null: TColors.primary,
+             backgroundColor:isPrincipal==true?null: Colors.white,  
+             padding: EdgeInsets.all(padding!),     
+             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))
+              ),
+            child:TDeviceUtility.isMobileScreen(Get.context!)?Tooltip(
+              message: text!.tr,
+              child:Text(text,maxLines: 1,overflow: TextOverflow.ellipsis,) ,
+            ): Text(text!,maxLines: 1,overflow: TextOverflow.ellipsis,)),
+    );
 }
 }
 

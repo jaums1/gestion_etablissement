@@ -1,11 +1,13 @@
 
+// ignore_for_file: constant_identifier_names
+
 enum TextSizes {small,medium,large} 
 
 enum OrderStatuts {processing,shipped,delivered,pending,cancelled} 
 
 enum PaymentMetho {paypal,googlePay,appPay,visa,masterCard,creditCard,paystack,razorPay,paytm} 
 
-enum AppRole {admin,user}
+enum AppRole {Admin,Secretaire,Enseignant}
 
 enum TransactionType {buy,sell}
 

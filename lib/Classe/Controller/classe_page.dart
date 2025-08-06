@@ -1,5 +1,6 @@
 import 'package:ecole/Configs/routes/route.dart';
 import 'package:ecole/Configs/utils/Constant/enums.dart';
+import 'package:ecole/Configs/utils/Constant/texte_string.dart';
 import 'package:get/get.dart';
 
 import '../../Configs/utils/Implements/page_data.dart';
@@ -13,7 +14,6 @@ class TClassePage with TPageData{
    @override
   H_PageNouveau() {
    controller.H_Initialise();
-   controller.variable.H_Initialise();
    Get.offNamed(TRoutes.registerclasse,arguments:TraitementAction.nouveau.name );
   }
 
@@ -31,9 +31,9 @@ class TClassePage with TPageData{
 
   @override
   H_PageShowDialogNouveau() {
-    controller.variable.H_Initialise();
+    controller.H_Initialise();
     TShowdialogue.showWidget(
-      titre: "Enregistrement",
+      titre: TText.enregistrement,
       widgets: ShowClasseDialog(argument: TraitementAction.nouveau.name,));
   }
 
@@ -41,7 +41,7 @@ class TClassePage with TPageData{
   H_PageShowDialogModifier({int? id}) {
     controller.H_RecupeModif(id: id);
     TShowdialogue.showWidget(
-      titre: "Modification",
+      titre: TText.modification,
       widgets: ShowClasseDialog(argument: TraitementAction.modifier.name,));
   }
 }

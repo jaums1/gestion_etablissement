@@ -26,6 +26,8 @@ H_ValiderConfig(){}
 
  void H_Initialise(){}
 
-  H_RecupeModif(){}
+  H_RecupeModif(){} 
+  
+  H_Bilan(){}
 }
 

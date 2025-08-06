@@ -12,7 +12,7 @@ class ShowClasseDialog extends StatelessWidget {
    
     return SizedBox(
       width: 300,
-      height: 320,
+      height: 220,
       child: SingleChildScrollView(
         child: TClasseInformation(argument: argument!,show: true,),
       ),

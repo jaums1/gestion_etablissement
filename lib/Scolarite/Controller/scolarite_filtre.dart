@@ -12,7 +12,7 @@ class TScolariteFiltre with TFiltre {
   @override
   void H_FiltreElement({String param = ""}) {
    controller.DataTableFiltreScolarite.value = controller.DataTableScolarite.where(
-    (e)=> e.DataNiveauSerie!.niveauSerie.toString().contains(param)
+    (e)=> e.DataNiveauScolaire!.niveau.toString().contains(param)
     ).toList();
    
   }
@@ -24,18 +24,18 @@ class TScolariteFiltre with TFiltre {
     controller.DataScolarite.value = controller.DataTableFiltreScolarite[index];
   }
 
- H_RecupeParNiveauSerie({int? id}){
+ H_RecupeParNiveauScolaire({int? id}){
    controller.H_Initialise();
-   final index = controller.DataTableScolarite.indexWhere((e)=> e.IDNiveauSerie==id );
+   final index = controller.DataTableScolarite.indexWhere((e)=> e.IDNiveauScolaire==id );
     if(index==-1) return;
     controller.DataScolarite.value = controller.DataTableFiltreScolarite[index];
   
  }
 
-  H_RecupeVersement({String? param}){
-    final index= controller.variable.DataTableModalitePaiement.indexWhere(
-      (e)=> e.LibVersement==param
-      );
-     return index; 
-  }
+  // H_RecupeVersement({String? param}){
+  //   final index= controller.variable.DataTableModalitePaiement.indexWhere(
+  //     (e)=> e.LibVersement==param
+  //     );
+  //    return index; 
+  // }
 }

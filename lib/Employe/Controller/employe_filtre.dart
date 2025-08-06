@@ -22,7 +22,7 @@ class TEmployeFiltre with TFiltre {
   H_FiltreElementParID({int? id}) {
     final index = controller.DataTableEmploye.indexWhere((e)=> e.IDEmploye==id );
     if(index==-1) return;
-    controller.DataEmploye = controller.DataTableEmploye[index];
+    controller.DataEmploye.value = controller.DataTableEmploye[index];
   }
 
   @override

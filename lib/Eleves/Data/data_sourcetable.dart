@@ -17,7 +17,7 @@ class EleveSourceData extends DataTableSource {
     return DataRow2(
       onTap: (){},
       cells: [
-        DataCell(Text("${index+1}",style: Theme.of(Get.context!).textTheme.bodyMedium,)),
+        DataCell(Align(child: Text("${index+1}",style: Theme.of(Get.context!).textTheme.bodyMedium,))),
 
         DataCell(Text(dataEleve.Matricule.toString(),style: Theme.of(Get.context!).textTheme.bodyMedium,
         overflow: TextOverflow.ellipsis,maxLines: 1,)),
@@ -29,8 +29,10 @@ class EleveSourceData extends DataTableSource {
           style: Theme.of(Get.context!).textTheme.bodyMedium,),
         )),
 
-        DataCell(Text(dataEleve.Sexe.toString(),style: Theme.of(Get.context!).textTheme.bodyMedium,
-        overflow: TextOverflow.ellipsis,maxLines: 1,),),
+        DataCell(Align(
+          child: Text(dataEleve.Sexe.toString(),style: Theme.of(Get.context!).textTheme.bodyMedium,
+          overflow: TextOverflow.ellipsis,maxLines: 1,),
+        ),),
 
         DataCell(Text(TFormatters.formatDateFr(dataEleve.DateNaissance),style: Theme.of(Get.context!).textTheme.bodyMedium,
         overflow: TextOverflow.ellipsis,maxLines: 1,)),
@@ -38,16 +40,22 @@ class EleveSourceData extends DataTableSource {
         DataCell(Text(dataEleve.Contact1.toString(),style: Theme.of(Get.context!).textTheme.bodyMedium,
         overflow: TextOverflow.ellipsis,maxLines: 1,)),
 
-        DataCell(Text(dataEleve.Statut.toString(),style: Theme.of(Get.context!).textTheme.bodyMedium,
-        overflow: TextOverflow.ellipsis,maxLines: 1,)),
+        DataCell(Align(
+          child: Text(dataEleve.Statut.toString(),style: Theme.of(Get.context!).textTheme.bodyMedium,
+          overflow: TextOverflow.ellipsis,maxLines: 1,),
+        )),
 
-        DataCell(Text(dataEleve.Regime.toString(),style: Theme.of(Get.context!).textTheme.bodyMedium,
-        overflow: TextOverflow.ellipsis,maxLines: 1,)),
+        DataCell(Align(
+          child: Text(dataEleve.Regime.toString(),style: Theme.of(Get.context!).textTheme.bodyMedium,
+          overflow: TextOverflow.ellipsis,maxLines: 1,),
+        )),
 
-          DataCell(TTableActionIconButtons(
-            // view: true,
-            onDeletePressed: ()=> TValidationEleve().H_Supprimer(id: dataEleve.IDEtudiant),
-            onEditPressed: ()=>TElevePage().H_PageModifier(id: dataEleve.IDEtudiant),
+          DataCell(Align(
+            child: TTableActionIconButtons(
+              // view: true,
+              onDeletePressed: ()=> TValidationEleve().H_Supprimer(id: dataEleve.IDEtudiant),
+              onEditPressed: ()=>TElevePage().H_PageModifier(id: dataEleve.IDEtudiant),
+            ),
           )),
     ]);
   }

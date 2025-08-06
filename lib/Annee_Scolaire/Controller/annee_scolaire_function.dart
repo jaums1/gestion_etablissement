@@ -8,13 +8,14 @@ class TAnneeScolaireFunction with TFunctionData {
   final controller = Get.find<TAnneeScolaireController>();
   
    void H_OnChangedDateDebut()async{
-   final date= await TShowDate().H_RecupDate();
+   final date= await TShowDate().H_RecupDate(dateLointaine: true);
    if(date==null) return;
+  
    controller.variable.DateDebut.text = TFormatters.formatDateFr(date).toString();
    controller.DataAnneeScolaire.value.DateDebut = date;
   }
    void H_OnChangedDateFin()async{
-   final date= await TShowDate().H_RecupDate();
+   final date= await TShowDate().H_RecupDate(dateLointaine: true);
    if(date==null) return;
    controller.variable.DateFin.text = TFormatters.formatDateFr(date).toString();
    controller.DataAnneeScolaire.value.DateFin = date;

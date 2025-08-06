@@ -1,7 +1,10 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 
-
-import '../../Configs/utils/formatters/formatters.dart';
+import 'package:ecole/Configs/utils/formatters/formatters.dart';
+import 'package:get/get.dart';
 import '../../Configs/utils/model_file/model_file.dart';
+import '../../Employe/Model/employe_model.dart';
+import '../../Login/Controller/user_controller.dart';
 
 class TModelEleve {
   int? IDEtudiant;
@@ -22,12 +25,16 @@ class TModelEleve {
   String? PrenomsParent;
   String? ContactParent1;
   String? ContactParent2;
+  TEmployeModel? DataEmploye;
+  int? IDEmploye;
   TUploadFileModel? filePhoto; 
-   TModelEleve({
+
+  TModelEleve({
     this.IDEtudiant,
     this.Matricule,
     this.Nom,
     this.Prenoms,
+    this.NomComplet,
     this.Sexe,
     this.DateNaissance,
     this.LieuNaissance,
@@ -41,9 +48,12 @@ class TModelEleve {
     this.PrenomsParent,
     this.ContactParent1,
     this.ContactParent2,
-    this.NomComplet
+    this.DataEmploye,
+    this.IDEmploye,
+    this.filePhoto,
   });
 
+final controller = Get.find<TUserController>();
    ///// RECUPERATION
   factory TModelEleve.fromMap(Map<String,dynamic> data){
     return TModelEleve(
@@ -65,6 +75,8 @@ class TModelEleve {
       PrenomsParent: data.containsKey("PrenomsParent")?data["PrenomsParent"]??'':'',
       ContactParent1: data.containsKey("ContactParent1")?data["ContactParent1"]??'':'',
       ContactParent2: data.containsKey("ContactParent2")?data["ContactParent2"]??'':'',
+      DataEmploye: data['DataEmploye'] != null ? TEmployeModel.fromMap(data['DataEmploye']) : null,
+      IDEmploye: data['IDEmploye'] != null ? data['IDEmploye'] as int : null,
     );
   }
 
@@ -72,25 +84,33 @@ class TModelEleve {
   
 ////// ENVOIE DES DATAS 
 
- Map<String,dynamic> toMap(){
-  return{
-    "IDEtudiant" : IDEtudiant,
-    "Matricule" : Matricule,
-    "Nom" : Nom,
-    "Prenoms" : Prenoms,
-    "Sexe" : Sexe,
-    "LieuNaissance" : LieuNaissance,
-    "Adresse" : Adresse,
-    "Contact1" : Contact1,
-    "Contact2" : Contact2,
-    "Statut" : Statut,
-    "Regime" : Regime,
-    "Photo" : Photo,
-    "DateNaissance" : TFormatters.formatDate(DateNaissance),
-    "NomParent" : NomParent,
-    "PrenomsParent" : PrenomsParent,
-    "ContactParent1" : ContactParent1,
-    "ContactParent2" : ContactParent2,
-  };
-}
-}
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'IDEtudiant': IDEtudiant,
+      'Matricule': Matricule,
+      'Nom': Nom,
+      'Prenoms': Prenoms,
+      'NomComplet': NomComplet,
+      'Sexe': Sexe,
+      'DateNaissance': TFormatters.formatDate(DateNaissance),
+      'LieuNaissance': LieuNaissance,
+      'Adresse': Adresse,
+      'Contact1': Contact1,
+      'Contact2': Contact2,
+      'Statut': Statut,
+      'Regime': Regime,
+      'Photo': Photo,
+      'NomParent': NomParent,
+      'PrenomsParent': PrenomsParent,
+      'ContactParent1': ContactParent1,
+      'ContactParent2': ContactParent2,
+      'DataEmploye': DataEmploye?.toMap(),
+      'IDEmploye':IDEmploye==null || IDEmploye==""|| IDEmploye==0? controller.DataUserPrincipale.value.idEmploye:IDEmploye,
+      // 'filePhoto': filePhoto?.toMap(),
+    };
+  }
+
+ 
+  }
+
+

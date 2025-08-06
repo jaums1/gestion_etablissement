@@ -49,19 +49,25 @@ class TInscriptionSourceData extends DataTableSource {
           // textAlign: TextAlign.center,
           style: Theme.of(Get.context!).textTheme.bodyMedium)),
 
-      DataCell(SizedBox(
-        height: 30,
-        width: 30,
-        child: CircleAvatar(
-          backgroundColor: TColors.resteAPayerColor,
-          foregroundColor: Colors.white,
-          child: Text(data.NbrVersement.toString(),
-              textAlign: TextAlign.center,
-              style: Theme.of(Get.context!).textTheme.bodyMedium!.copyWith(
-                color: Colors.white
-              )),
-        ),
-      )),
+
+DataCell(Align( child:  data.DataEleve!.Statut=="Affecté(e)"? TStatutCustom.H_CardreCouleur(titre:data.DataEleve!.Statut,color: TColors.primary):
+            TStatutCustom.H_CardreCouleur(titre:data.DataEleve!.Statut,color: TColors.warning),
+))
+        ,
+       
+      // DataCell(SizedBox(
+      //   height: 30,
+      //   width: 30,
+      //   child: CircleAvatar(
+      //     backgroundColor: TColors.resteAPayerColor,
+      //     foregroundColor: Colors.white,
+      //     child: Text(data.NbrVersement.toString(),
+      //         textAlign: TextAlign.center,
+      //         style: Theme.of(Get.context!).textTheme.bodyMedium!.copyWith(
+      //           color: Colors.white
+      //         )),
+      //   ),
+      // )),
 
         DataCell(Text(TFormatters.formatDateFr(data.DateProchainVersement),
           textAlign: TextAlign.center,

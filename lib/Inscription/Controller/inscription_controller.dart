@@ -1,24 +1,30 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../Annee_Scolaire/Controller/annee_scolaire_controller.dart';
 import '../../Classe/Controller/classe_controller.dart';
+import '../../Configs/utils/Constant/api_constants.dart';
 import '../../Configs/utils/Constant/image_string.dart';
+import '../../Configs/utils/Constant/texte_string.dart';
 import '../../Configs/utils/Implements/controller_data.dart';
 import '../../Configs/utils/Popup/animation_loader.dart';
 import '../../Configs/utils/Popup/loaders.dart';
 import '../../Configs/utils/Popup/showdialogue.dart';
 import '../../Configs/utils/Statut/statut.dart';
+import '../../Configs/utils/dio/dio_client.dart';
+import '../../Configs/utils/endpoint/endpoint.dart';
 import '../../Eleves/Controller/eleve_controller.dart';
 import '../Model/inscription_model.dart';
-import '../Repository/inscription_repository.dart';
-import 'inscription_filtre.dart';
 import 'inscription_variable.dart';
 
 class TInscriptionController extends GetxController with TControllerData {
   static TInscriptionController get instance => Get.find();
 
   ///// DECLARATION DE VARIABLE 
-  var action = "";
+  final bilanTotal =0.obs;
+  final bilanSolde =0.obs;
+  final bilanNetaPayer =0.obs;
+  final bilanPaiement =0.obs;
+
   final variable = TInscriptionVariable();
   final isLoading = false.obs;
   final isInitialise = false.obs;
@@ -28,11 +34,11 @@ class TInscriptionController extends GetxController with TControllerData {
   var DataTableInscription = <TInscriptionModel>[].obs;
   var DataTableFiltreInscription = <TInscriptionModel>[].obs;
 
-  final repositorycontroller = Get.put(TInscriptionRepository());
   final controllerClasse     = Get.find<TClasseController>();
+  final controllerAS     = Get.find<TAnneeScolaireController>();
   final controllerEleve      = Get.find<TEleveController>();
-
-  //////TRAITEMENT
+ final _client = TDioHelper(baseUrl: TApi.httpLien);
+//////TRAITEMENT
   HLitInscription({String? param = "AFFICHIER"}) {
     if (param == "AFFICHIER") {
       variable.IDInscription.text    = DataInscription.value.IDInscription.toString();
@@ -53,139 +59,150 @@ class TInscriptionController extends GetxController with TControllerData {
       DataInscription.value.MontantVersement= int.tryParse(variable.MontantVersement.text) ?? 0;
       DataInscription.value.DroitInscription= int.tryParse(variable.DroitInscription.text) ?? 0;
       DataInscription.value.FraisAnnexe     = int.tryParse(variable.FraisAnnexe.text) ?? 0;
-      int sommeAnnexeInscription      = DataInscription.value.FraisAnnexe!+ DataInscription.value.DroitInscription!; 
-      int scolarite                   = int.parse(variable.Scolarite.text);
+      int sommeAnnexeInscription            = DataInscription.value.FraisAnnexe!+ DataInscription.value.DroitInscription!; 
+      int scolarite                         = int.parse(variable.Scolarite.text);
       DataInscription.value.NetAPayer       = sommeAnnexeInscription+scolarite;
       DataInscription.value.ResteAPayer     =  DataInscription.value.NetAPayer! -DataInscription.value.MontantVersement!-sommeAnnexeInscription;
       DataInscription.value.Paiement        = sommeAnnexeInscription+DataInscription.value.MontantVersement!;
       DataInscription.value.IDEtudiant      = controllerEleve.DataEleve.value.IDEtudiant;
+      DataInscription.value.Regime          = controllerEleve.DataEleve.value.Regime;
       DataInscription.value.Statut          = TStatutCustom.paiement(DataInscription.value.ResteAPayer);
     }
   }
 
-  //// INITIALISER
+  @override
+  H_Bilan() {
+    bilanNetaPayer.value=0;
+    bilanPaiement.value=0;
+    bilanSolde.value=0;
+    for (var data in DataTableInscription) {
+        if(data.Paiement !=0){
+         bilanPaiement.value += data.Paiement!;
+        }
+        bilanNetaPayer.value += data.NetAPayer!; 
+        bilanSolde.value += data.ResteAPayer!; 
+    }
+    bilanTotal.value = DataTableInscription.length;
+  }
+
+//// INITIALISER
   @override
   void onInit() {
    H_RecupeData();
     super.onInit();
   }
 
-  ///// ENREGISTREMENT 
-  @override
-  H_Enregistrer() async {
-    try {
-      HLitInscription(param: "ENVOYER");
-     /// COMPARAISON
-      if(DataInscription.value.NetAPayer! < DataInscription.value.Paiement!){
-       TLoader.errorSnack(title: "Erreur",message: "Le montant saisi dépasse le net à payer.");
-        return false;
-      }
 
-      ///LOADING
-      TShowdialogue().showWidgetLoad(widgets: 
-        TAnimationLoaderWidget(text: "enregistrement en cours...", color: Colors.white,
-          animation: TImages.docerAnimation, width: 250,));
-      ///// ENVOIE DES DONNEES
-      final result = await repositorycontroller.H_EnregistrerData(DataInscription.value);
-      H_RecupeData();
-      ///// FERMER LOADING
-      Get.back();
-      ///// TRAITEMENT RESULTAT
-      if (result == false) {
-        TLoader.errorSnack(title: "Erreur", message: "Veuillez vérifier votre connexion");
-        return false;
-      }
-      return true;
-    } catch (e) {
-      TLoader.errorSnack(title: "Erreur", message: "Veuillez vérifier votre connexion sources erreur $e");
-      return false;
-    }
-  }
 
-  // SUPPRIMER
-  @override
-  H_Supprimer({int? id, String? param}) async {
-    try {
-      ///LOADING
-      TShowdialogue().showWidgetLoad(widgets: 
-        TAnimationLoaderWidget(text: "Suppression en cours...", color: Colors.white,
-          animation: TImages.docerAnimation, width: 250,));
-
-      ///// ENVOIE DES DONNEES
-      final result = await repositorycontroller.H_SupprimerData(id);
-      ///// FERMER LOADING
-      Get.back();
-      ///// TRAITEMENT RESULTAT   
-      if (result == false) {
-        TLoader.errorSnack(title: "Erreur", message: "Veuillez vérifier votre connexion");
-        return false;
-      }
-      H_RecupeData();
-      Get.back();
-      TLoader.successSnack(title: "SUPPRIMER", message: "La ligne a bien été supprimée");
-      return true;
-    } catch (e) {
-      TLoader.errorSnack(title: "Erreur", message: "Veuillez vérifier votre connexion source erreur $e");
-      return;
-    }
-  }
-
-  // MODIFICATION
-  @override
-  H_Modifier() async {
-    try {
-      HLitInscription(param: "ENVOYER");
-      ///LOADING
-      TShowdialogue().showWidgetLoad(widgets: 
-        TAnimationLoaderWidget(text: "Modification en cours...", color: Colors.white,
-          animation: TImages.docerAnimation, width: 250,));
-
-      ///// ENVOIE DES DONNEES
-      final result = await repositorycontroller.H_ModifierData(DataInscription.value);
-      ///// FERMER LOADING
-      H_RecupeData();
-      Get.back();
-      ///// TRAITEMENT RESULTAT 
-      if (result == false) {
-        TLoader.errorSnack(title: "Erreur", message: "Veuillez vérifier votre connexion");
-        return false;
-      }
-      return true;
-    } catch (e) {
-      TLoader.errorSnack(title: "Erreur", message: "Veuillez vérifier votre connexion");
-      return false;
-    }
-  }
-
-  @override
-  void H_RecupeData({String? param}) async {
-    try {
+///// ENREGISTREMENT 
   
-      isLoading.value = false;
-      DataTableInscription.clear();
-      final data = await repositorycontroller.H_RecupData(param: param);
-      isLoading.value = true;
-      // print(data);
-      if (data is List) {
-        //// RECUPERER LA LISTE DES INSCRIPTIONS
-        DataTableInscription.value = data.map((datas) => TInscriptionModel.fromMap(datas)).toList();
-        DataTableFiltreInscription.value = DataTableInscription;
-      }
-      data == null ? TLoader.errorSnack(title: "Erreur", message: "Veuillez vérifier votre connexion") : "";
+@override
+ H_Enregistrer() async{
+   try {
+       HLitInscription(param: "ENVOYER");
+       TShowdialogue().showWidgetLoad(
+        widgets: TAnimationLoaderWidget(text:TText.messageEnregistrerChargement.tr,animation: TImages.docerAnimation, width: 150,));
+    
+       final reponse =await _client.post<TInscriptionModel>(TEndpoint.linkInscription,
+                        data: DataInscription.value.toMap(),fromJson: (data) =>TInscriptionModel.fromMap(data));
+    ////// VERIFICATION 
+    if(reponse.success){
+      DataInscription.value =reponse.data!;
+       H_RecupeData();
+        Get.back();
+       return true;
+    }else{
+      Get.back();
+      TLoader.errorSnack(title: TText.erreur,message: TText.messageErreur);
+       return false;
+    }
     } catch (e) {
-      TLoader.errorSnack(title: "Erreur", message: "Veuillez vérifier votre connexion source erreur $e");
-      return;
+      TLoader.errorSnack(title: TText.erreur,message: "${TText.messageErreur} $e");
+       return false;
+    }
+
+  }
+
+// SUPPRIMER
+@override
+ H_Supprimer({int? id,String? param}) async {
+    
+    try {
+       TShowdialogue().showWidgetLoad(
+        widgets: TAnimationLoaderWidget(text:TText.messageSuppressionChargement.tr,animation: TImages.docerAnimation, width: 200,));
+       final reponse =await _client.delete("${TEndpoint.linkInscription}/$id",);
+    ////// VERIFICATION 
+    if(reponse.success){
+        Get.back();
+       H_RecupeData();
+       return true;
+    }else{
+      Get.back();
+      TLoader.errorSnack(title: TText.erreur,message: TText.messageErreur);
+       return false;
+    }
+    } catch (e) {
+      TLoader.errorSnack(title: TText.erreur,message: "${TText.messageErreur} $e");
+    }
+   
+  }
+
+// MODIFICATION
+@override
+ H_Modifier() async{
+    try {
+       HLitInscription(param: "ENVOYER");
+       TShowdialogue().showWidgetLoad(
+        widgets: TAnimationLoaderWidget(text:TText.messageModifierChargement.tr,animation: TImages.docerAnimation, width: 200,));
+       
+       final reponse =await _client.patch<TInscriptionModel>(TEndpoint.linkInscription,
+                        data: DataInscription.value.toMap(),fromJson: (data) =>TInscriptionModel.fromMap(data));
+    ////// VERIFICATION 
+    if(reponse.success){
+      DataInscription.value =reponse.data!;
+       H_RecupeData();
+         Get.back();
+       return true;
+    }else{
+      Get.back();
+      TLoader.errorSnack(title: TText.erreur,message: TText.messageErreur);
+       return false;
+    }
+    } catch (e) {
+      TLoader.errorSnack(title: TText.erreur,message: "${TText.messageErreur} $e");
+    }
+  }
+
+@override
+ H_RecupeData({String? param}) async {
+   try {
+    isLoading.value =false;
+  final reponse =await _client.getList<TInscriptionModel>(
+    "${TEndpoint.linkInscription}/${controllerAS.DataAnneeScolairePrincipale.value.IDAnneeScolaire}",
+    fromJson: (data) =>TInscriptionModel.fromMap(data));
+    ////// VERIFICATION 
+    if(reponse.success){
+      isLoading.value =true;
+      DataTableInscription.value = reponse.data!;
+      DataTableFiltreInscription.value =reponse.data!;
+      H_Bilan();
+    }
+    } catch (e) {
+      TLoader.errorSnack(title: TText.erreur.tr,message: "${TText.messageErreur.tr} $e");
     }
   }
   
-  @override
-  void H_RecupeModif({int? id, String? param}) {
-    TInscriptionFiltre().H_FiltreElementParID(id: id);
-    HLitInscription();
+@override
+ H_RecupeModif({int? id, String? param}) {
+      DataInscription.value = DataTableInscription.firstWhere(
+      (data)=> data.IDInscription ==id,orElse: () => TInscriptionModel(),);
+      HLitInscription();
   }
+
 
   @override
   void H_Initialise() {
+    variable.H_Initialise();
     DataInscription.value = TInscriptionModel();
   }
 

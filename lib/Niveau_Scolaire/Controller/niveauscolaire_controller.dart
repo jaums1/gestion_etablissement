@@ -15,12 +15,15 @@ class TNiveauScolaireController extends GetxController with TControllerData{
 
   ///// DECLARATION DE VARIABLE 
    var DataTableNiveauEtude= <TNiveauModel>[].obs;
-   var DataNiveau = TNiveauModel();
-
+   var DataTableNiveauEtudeFiltre= <TNiveauModel>[].obs;
+   var DataNiveau = TNiveauModel().obs;
+  
    final idNiveau =0.obs;
+   final isreactive =false.obs;
    final params ="".obs;
-  final isSelectTitreNiveau = <String>[].obs;
-  final isSelectNiveau = <String>[].obs;
+   final isLoading =false.obs;
+   final isSelectTitreNiveau = <String>[].obs;
+   final isSelectNiveau = <String>[].obs;
 
   final niveau = TextEditingController();
   final typeNiveau = TextEditingController();
@@ -34,43 +37,46 @@ class TNiveauScolaireController extends GetxController with TControllerData{
      
    HLitNiveauScolaire({String? param="AFFICHAGE"}){
     if(param=="AFFICHAGE"){
-    idCycle.text =   DataNiveau.iDCycleScolaire.toString() ;
-    niveau.text =  DataNiveau.niveau.toString()==""?"":DataNiveau.niveau.toString();
-    typeNiveau.text = DataNiveau.typeNiveau.toString() == ""?"":DataNiveau.typeNiveau.toString();
+    idCycle.text =   DataNiveau.value.iDCycleScolaire.toString() ;
+    niveau.text =  DataNiveau.value.niveau.toString()==""?"":DataNiveau.value.niveau.toString();
+    typeNiveau.text = DataNiveau.value.typeNiveau.toString() == ""?"":DataNiveau.value.typeNiveau.toString();
     }else{
      
-      DataNiveau.iDCycleScolaire=controlle.DatacyleModel.iDCycleScolaire ;
-      DataNiveau.niveau=niveau.text;
-      DataNiveau.typeNiveau=typeNiveau.text;
+      DataNiveau.value.iDCycleScolaire=controlle.DatacyleModel.iDCycleScolaire ;
+      DataNiveau.value.niveau=niveau.text;
+      DataNiveau.value.typeNiveau=typeNiveau.text;
     }
    
    }
 
 @override
-  void onInit() {
-   H_RecupeData();
+  void onInit() async{
+   await H_RecupeData();
     super.onInit();
   }
 
 ////// RECUPERATION
  @override
   H_RecupeData({String? param})async {
-
-  
+   controlle.selectRadio.value==""?  controlle.H_RecupeData() : null;
    try {
-    if( params.value.toLowerCase() == controlle.selectRadio.value.toLowerCase()) return;
+    if(param=="Configuration") if( params.value.toLowerCase() == controlle.selectRadio.value.toLowerCase()) return;
      DataTableNiveauEtude.clear();
       isSelectNiveau.clear();
-
+      isLoading.value=false;
   ///// ENVOIE DES DONNEES
-  final reponse =await _client.getList<TNiveauModel>("${TEndpoint.linkNiveauScolaire}/${controlle.selectRadio.value}",
+  final reponse =await _client.getList<TNiveauModel>("${TEndpoint.linkNiveauScolaire}/${controlle.DatacyleModel.cycleScolaire}",
                                              fromJson: (data) =>TNiveauModel.fromMap(data));
     ////// VERIFICATION 
     if(reponse.success){
       DataTableNiveauEtude.value = reponse.data!;
-      isSelectNiveau.value = DataTableNiveauEtude.where((e)=> e.etat==true).map((e)=> e.niveau??"").toList();
-      isSelectNiveau.length == DataTableNiveauEtude.length? isSelectTitreNiveau.add(controlle.selectRadio.value):"";
-      params.value = controlle.selectRadio.value;
+      DataTableNiveauEtudeFiltre.value = reponse.data!;
+      if(param=="Configuration"){
+        isSelectNiveau.value = DataTableNiveauEtude.where((e)=> e.etat==true).map((e)=> e.niveau??"").toList();
+        isSelectNiveau.length == DataTableNiveauEtude.length? isSelectTitreNiveau.add(controlle.selectRadio.value):"";
+        params.value = controlle.selectRadio.value;
+      }
+      isLoading.value=true;
     }
     } catch (e) {
       TLoader.errorSnack(title: "Erreur",message: "Veuillez vérifier votre connexion source erreur $e");
@@ -86,10 +92,10 @@ class TNiveauScolaireController extends GetxController with TControllerData{
        HLitNiveauScolaire(param: "ENVOYER");
     
        final reponse =await _client.post<TNiveauModel>(TEndpoint.linkTypeDecoupageScolaire,
-                        data: DataNiveau.toMap(),fromJson: (data) =>TNiveauModel.fromMap(data));
+                        data: DataNiveau.value.toMap(),fromJson: (data) =>TNiveauModel.fromMap(data));
     ////// VERIFICATION 
     if(reponse.success){
-      DataNiveau =reponse.data!;
+      DataNiveau.value =reponse.data!;
        H_RecupeData();
     }else{
       TLoader.errorSnack(title: "Erreur",message: "Veuillez vérifier votre connexion internet");
@@ -108,11 +114,11 @@ class TNiveauScolaireController extends GetxController with TControllerData{
        HLitNiveauScolaire(param: "ENVOYER");
     
      final reponse =await _client.patch<TNiveauModel>(TEndpoint.linkNiveauScolaire,
-  data: DataNiveau.toMap(),fromJson: (data) =>TNiveauModel.fromMap(data));
+  data: DataNiveau.value.toMap(),fromJson: (data) =>TNiveauModel.fromMap(data));
     ////// VERIFICATION 
     if(reponse.success){
-      DataNiveau =reponse.data!;
-      H_RecupeModif(id:DataNiveau.iDNiveauScolaire);
+      DataNiveau.value =reponse.data!;
+      H_RecupeModif(id:DataNiveau.value.iDNiveauScolaire);
     }else{
       TLoader.errorSnack(title: "Erreur",message: "Veuillez vérifier votre connexion internet");
     }
@@ -141,15 +147,15 @@ class TNiveauScolaireController extends GetxController with TControllerData{
  ///// INITIALISATION
  @override
   void H_RecupeModif({int? id, String? param}) {
-    DataNiveau = DataTableNiveauEtude.firstWhere((e)=> e.iDNiveauScolaire==id   ,
+    DataNiveau.value = DataTableNiveauEtude.firstWhere((e)=> e.iDNiveauScolaire==id   ,
     orElse: () => TNiveauModel(),); 
   }
 
  //// VALIDATION CONFIGURATION
   @override
-  H_ValiderConfig() {
+  H_ValiderConfig() async{
     if (isSelectNiveau.isEmpty)return false;
-      H_Modifier();
+   await H_Modifier();
       return true;
     }
 
@@ -172,7 +178,7 @@ onSelectAllChecBox(){
     isSelectNiveau.value = DataTableNiveauEtude.map((e)=> e.niveau??"").toList();
  isSelectNiveau.value = isSelectNiveau.toSet().toList();
  isSelectTitreNiveau.add(controlle.selectRadio.value);
- DataNiveau.niveauData=isSelectNiveau;
+ DataNiveau.value.niveauData=isSelectNiveau;
  } else{
    isSelectNiveau.clear(); 
    isSelectTitreNiveau.clear(); 
@@ -190,9 +196,10 @@ onSelectCheckBox({String? libNiveau=""}){
      
      isverification? isSelectTitreNiveau.add(controlle.selectRadio.value):isSelectTitreNiveau.clear();
     
-     DataNiveau.niveauData=isSelectNiveau;
+     DataNiveau.value.niveauData=isSelectNiveau;
 
  }
+
 
 
  }

@@ -18,9 +18,9 @@ class TDialogueNiveauSerie extends StatelessWidget {
     
     final controllerFiltre = TFiltreNiveauSerie();
 
-    controller.DataTableSelectNiveauSerie.value= controllerSc.variable.DataTableNiveauSerie.map(
-      (e)=>e
-      ).toList();
+    // controller.DataTableSelectNiveauSerie.value= controllerSc.variable.DataTableNiveauSerie.map(
+    //   (e)=>e
+    //   ).toList();
     return SizedBox(
       width: 600,
       height: 300,

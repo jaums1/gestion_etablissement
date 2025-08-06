@@ -1,5 +1,4 @@
 import 'package:data_table_2/data_table_2.dart';
-import 'package:ecole/Configs/utils/Constant/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -18,7 +17,7 @@ class TClasseSourceData extends DataTableSource {
       onTap: (){},
       cells: [
        
-        DataCell(Text("${index+1}",style: Theme.of(Get.context!).textTheme.bodyMedium,)),
+        DataCell(Align(child: Text("${index+1}",style: Theme.of(Get.context!).textTheme.bodyMedium,))),
        
         DataCell(Text(data.DataNiveauSerie!.niveauSerie.toString(),style: Theme.of(Get.context!).textTheme.bodyMedium,
         overflow: TextOverflow.ellipsis,maxLines: 2,)),
@@ -27,21 +26,12 @@ class TClasseSourceData extends DataTableSource {
         overflow: TextOverflow.ellipsis,maxLines: 2,
         style: Theme.of(Get.context!).textTheme.bodyMedium,)),
        
-        DataCell(
-        data.Capacite.toString().isEmpty? Container(padding: EdgeInsets.all(8),
-          decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(8)),
-            color: TColors.buttonPrimary.withValues(alpha: 0.4)
-          ),
-          child: Text("Non defini",textAlign: TextAlign.center,style: Theme.of(Get.context!).textTheme.bodyMedium!.copyWith(
-            color: TColors.buttonPrimary),
-          overflow: TextOverflow.ellipsis,maxLines: 1,),
-        ): Text(data.Capacite.toString(),textAlign: TextAlign.center,) 
-        ),
-
-          DataCell(TTableActionIconButtons(
-            // view: true,
-            onDeletePressed: ()=> TClasseValidation().H_Supprimer(id: data.IDClasse),
-            onEditPressed: ()=>   TClassePage().H_PageModifier(id: data.IDClasse),
+          DataCell(Align(
+            child: TTableActionIconButtons(
+              // view: true,
+              onDeletePressed: ()=> TClasseValidation().H_Supprimer(id: data.IDClasse),
+              onEditPressed: ()=>   TClassePage().H_PageModifier(id: data.IDClasse),
+            ),
           )),
     ]);
   }

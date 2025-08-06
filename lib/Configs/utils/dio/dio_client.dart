@@ -173,7 +173,7 @@ class TDioHelper {
         queryParameters: queryParameters,
         options: Options(headers: headers),
       );
-
+     
       return _handleResponse<T>(response, fromJson);
     } on DioException catch (e) {
       return _handleError<T>(e);

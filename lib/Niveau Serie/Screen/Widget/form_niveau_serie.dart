@@ -31,7 +31,7 @@ class FormNiveauSerie extends StatelessWidget {
           Expanded(
             flex: 2,
             child: combo.comboTextChevale(
-                valeur: controllerNiveau.DataNiveau.niveau,
+                valeur: controllerNiveau.DataNiveau.value.niveau,
                 hintText: TText.seleclniveauScolaire.tr,
                 sections: controllerNiveau.isSelectNiveau,
                 label: TText.niveauScolaire.tr,

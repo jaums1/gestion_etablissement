@@ -1,5 +1,5 @@
 import 'package:ecole/Classe/Controller/classe_page.dart';
-import 'package:ecole/Classe/Screen/Widget/search_classe_dialog.dart';
+import 'package:ecole/Search_widget/search_classe_dialog.dart';
 import 'package:ecole/Configs/cammon/widgets/combo/combo.dart';
 import 'package:ecole/Configs/cammon/widgets/formulaire/form.dart';
 import 'package:ecole/Configs/cammon/widgets/texts/text_widget.dart';
@@ -17,9 +17,9 @@ import '../../../../../Configs/cammon/widgets/containers/rounded_container_creat
 import '../../../../../Configs/utils/Constant/sizes.dart';
 import '../../../../../Configs/utils/Device/devices_utility.dart';
 import '../../../../../Configs/utils/Popup/loaders.dart';
-import '../../../../../Modalite_Paiement/Model/modalite_paiement_model.dart';
 import '../../../../../Scolarite/Controller/scolarite_controller.dart';
 import '../../../../Controller/inscription_controller.dart';
+import '../../../../Controller/inscription_function.dart';
 import '../../../../Controller/inscription_validation.dart';
 import 'info_paiement.dart';
 
@@ -33,22 +33,12 @@ final controller = Get.find<TInscriptionController>();
    InfoClasseInscription({super.key});
   @override
   Widget build(BuildContext context) {
-  
+
     return Obx(
-      (){
-        if(controllerClasse.DataClasse.value.IDClasse !=null){
-         final data =controllerScolarite.DataScolarite.value.DataTable==null?TModalitePaiementModel():
-         controllerScolarite.DataScolarite.value.DataTable![0];
-         String dateChaine ="${data.JourMois} ${DateTime.now().year}";
-         int? montant = data.Montant;
-          controller.variable.DateProchainVersement.text = TFormatters.formatChaineVersDateFr(dateChaine);
-          controller.DataInscription.value.DateProchainVersement = TFormatters.formatChaineVersDateAng(dateChaine);
-
-          ///// PAIEMENT 
-          controller.variable.MontantVersement.text =montant.toString();
-          controller.DataInscription.value.MontantVersement =montant;
-        }
-
+      (){  
+    
+         TInscriptionFunction().H_onSelectClasse();
+        
          var DataClasse = controllerClasse.DataClasse.value;
                  
                   if (controllerClasse.edite.value==false) {
@@ -177,12 +167,15 @@ final controller = Get.find<TInscriptionController>();
       ///// BUTTON VALIDER
                 
          DataClasse.IDClasse==null? SizedBox():SizedBox(child:
-           TButton.ValidateButton(titre: "Valider",onPressed:(){ 
+           TButton.ValidateButton(titre: "Valider",onPressed:()async{ 
            final result = controller.variable.keyInscription.currentState!.validate();
             
             if (result) {
               if(controller.isFraisAnnexe.value && controller.isFraisInscription.value){
-                   validation.H_Enregistrer(); 
+                // final int scolarite= int.parse(controller.variable.Scolarite.text);
+                // final int paiement= int.parse(controller.variable.MontantVersement.text);
+                  
+                 await validation.H_Enregistrer(); 
               }else{
                 TLoader.errorSnack(title: "CASE A COCHE",message:"Veuillez cocher "
                 "les cases a cocher pour valider le paiement");

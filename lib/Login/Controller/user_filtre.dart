@@ -3,14 +3,15 @@ import 'package:get/get.dart';
 import 'user_controller.dart';
 
 
-class TUserFiltre with TFiltre {
+class TUtilisateurFiltre with TFiltre {
   final controller = Get.find<TUserController>();
  
   
   @override
   void H_FiltreElement({String param = ""}) {
     controller.DataTableFiltreUser.value = controller.DataTableUser.where(
-      (e) => e.dataEmploye!.NomComplet!.contains(param) || e.user!.contains(param)
+      (e) => e.dataEmploye!.NomComplet.toString().toLowerCase().contains(param.toLowerCase()) 
+      || e.user.toString().toLowerCase().contains(param.toLowerCase())
     ).toList();
   }
 

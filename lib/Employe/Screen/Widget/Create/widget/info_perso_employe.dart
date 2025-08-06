@@ -26,7 +26,7 @@ class TEmployeInformationPerso extends StatelessWidget {
          child: FocusTraversalGroup(
            child: Column(
             children: [
-              TCoupeSectionTitre(titre: "Informations personnelles",),
+              TCoupeSectionTitre(titre: "Infomation personnelles",),
               SizedBox(height: TSizes.spaceBtwItems,),
               Column(
               children: [
@@ -47,13 +47,14 @@ class TEmployeInformationPerso extends StatelessWidget {
                  ///// SEXE ET DATE NAISANCE
                  SizedBox(
                   child: Row(
+                    spacing: 20,
                     children: [
                       Expanded(child: combo.comboTextChevale(
                    valeur: controller.variable.Sexe.text,     
                   hintText: "Sexe",
                   sections:TText.Sexe,
                  label: "Sexe",onChanged:TEmployeFunction().H_OnChangedSexe ),),
-                 SizedBox(width: 20,),
+              
                  Expanded(child:   formulaire.formulaireTextCheval(
                   isIconSuffix:true,readOnly: true,isVerification: true,
                   textInputType: TextInputType.datetime,
@@ -63,6 +64,13 @@ class TEmployeInformationPerso extends StatelessWidget {
                     ],
                   ),
                  ),
+                  //// CIVILITE
+                   combo.comboTextChevale(
+                   valeur: controller.variable.EtatCivil.text,     
+                   hintText: "Civilité",
+                  sections:controller.variable.etatsCivil,
+                  label: "Civilité",onChanged:TEmployeFunction().H_OnChangedEtatCivil ), 
+
                 //// LIEU NAISSANCE
                 formulaire.formulaireTextCheval(label: "Lieu Naissance",iconPrefix: Iconsax.location,
                 textEditingController: controller.variable.LieuNaissance
@@ -76,17 +84,13 @@ class TEmployeInformationPerso extends StatelessWidget {
                  label: "Nationnalité",onChanged:TEmployeFunction().H_OnChangedNationnalite ),
               
               
-                   combo.comboTextChevale(
-                   valeur: controller.variable.EtatCivil.text,     
-                  hintText: "Civilité",
-                  sections:controller.variable.etatsCivil,
-                 label: "Civilité",onChanged:TEmployeFunction().H_OnChangedEtatCivil ), 
+                 
            
-                 combo.comboTextChevale(
-                   valeur: controller.variable.Fonction.text,     
-                  hintText: "Fonction",
-                  sections:controller.variable.fonctionsScolaires,
-                 label: "Fonction",onChanged:TEmployeFunction().H_OnChangedFonction ),
+                //  combo.comboTextChevale(
+                //    valeur: controller.variable.Fonction.text,     
+                //   hintText: "Fonction",
+                //   sections:controller.variable.fonctionsScolaires,
+                //  label: "Fonction",onChanged:TEmployeFunction().H_OnChangedFonction ),
                         
                
               

@@ -15,7 +15,7 @@ class TNiveauSerieValidation with TControllerData {
   @override
   H_Enregistrer() async {
    
-   if(controllerNiveau.DataNiveau.iDNiveauScolaire==0 || controllerNiveau.DataNiveau.iDNiveauScolaire==null){
+   if(controllerNiveau.DataNiveau.value.iDNiveauScolaire==0 || controllerNiveau.DataNiveau.value.iDNiveauScolaire==null){
       TLoader.errorSnack(title: "NIVEAU SCOLAIRE", message: "Veuillez sélectionner votre niveau scolaire");
       return;
     }

@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import '../../Configs/cammon/widgets/Data_table/data_table.dart';
 import '../../Scolarite/Controller/scolarite_controller.dart';
 import '../Controller/niveau_serie_controller.dart';
-import '../Controller/niveauserie_function.dart';
+// import '../Controller/niveauserie_function.dart';
 
 class TDataTableNiveauSerie extends StatelessWidget {
   final controllerS =Get.find<TScolariteController>();
@@ -17,7 +17,7 @@ class TDataTableNiveauSerie extends StatelessWidget {
  final bool? showdialogue;
   @override
   Widget build(BuildContext context) {
-  final functions=TNiveauSerieFunction();
+  // final functions=TNiveauSerieFunction();
     return Obx(
       (){
         int i=0;
@@ -26,10 +26,10 @@ class TDataTableNiveauSerie extends StatelessWidget {
             columns: controller.columns.map((column)=> column).toList(),
             rows: controller.DataTableFiltreNiveauSerie.map((data)
             {
-              final verif = controller.DataTableSelectNiveauSerie.contains(data);
-              final select = controllerS.DataTableScolarite.indexWhere(
-                (e)=> e.DataNiveauSerie!.iDNiveauSerie==data.iDNiveauSerie
-                );
+              // final verif = controller.DataTableSelectNiveauSerie.contains(data);
+              // final select = controllerS.DataTableScolarite.indexWhere(
+              //   (e)=> e.DataNiveauScolaire!.iDNiveauScolaire==data.iDNiveauScolaire
+              //   );
                 
              ++i;
             

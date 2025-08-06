@@ -14,27 +14,30 @@ class TTableHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final formulaire =TFormulaire();
-    return Row(
-      children: [
-        ///// RECHERCHE
-        Expanded(
-          flex: TDeviceUtility.isDesktopScreen(context)?  2: 1,
-          child:formulaire.textFormField(hintText:"Recherche...",iconPrefix: Iconsax.search_normal,
-          isPadding: true,onChanged: onChanged
-           ) ), 
-            /// BUTTON
-            
-           Expanded(
-          flex: TDeviceUtility.isDesktopScreen(context)? 3 : 1,
-          child:Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              TButton.elevatedButton(text: buttonText,onPressed:onPressed),
-            ],
-          )),
-
-       
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(top:  8.0),
+      child: Row(
+        children: [
+          ///// RECHERCHE
+          Expanded(
+            flex: TDeviceUtility.isDesktopScreen(context)?  2: 1,
+            child:formulaire.textFormField(hintText:"Recherche...",iconPrefix: Iconsax.search_normal,
+            isPadding: true,onChanged: onChanged
+             ) ), 
+              /// BUTTON
+              
+             Expanded(
+            flex: TDeviceUtility.isDesktopScreen(context)? 3 : 1,
+            child:Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TButton.elevatedButton(text: buttonText,onPressed:onPressed),
+              ],
+            )),
+      
+         
+        ],
+      ),
     );
   }
 }

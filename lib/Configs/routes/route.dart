@@ -38,6 +38,10 @@ class TRoutes {
   static const classe ="/Classes/";
   static const registerclasse ="/RegisterClasses/";
   
+  ///// UTILISATEUR
+  static const utilisateur ="/Utilisateur/";
+  static const registerutilisateur="/RegisterUtilisateur/";
+  
 ///// SCOLARITE
   static const scolarite ="/Scolarite/";
   static const registerscolarite ="/RegisterScolarite/";

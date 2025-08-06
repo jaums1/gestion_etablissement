@@ -4,17 +4,19 @@ import 'package:ecole/Configs/utils/Device/devices_utility.dart';
 import 'package:ecole/Eleves/Controller/eleve_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../../../Classe/Controller/classe_controller.dart';
 import '../../../../../Configs/cammon/widgets/Recherche_Add/recherche_add_create.dart';
 import '../../../../../Configs/cammon/widgets/containers/rounded_container_create.dart';
 import '../../../../../Configs/utils/Constant/sizes.dart';
 import '../../../../../Configs/utils/Emplacement_Texte/text_affiche_enligne.dart';
 import '../../../../../Configs/utils/Emplacement_Texte/texte_cheval.dart';
 import '../../../../../Eleves/Controller/eleve_page.dart';
-import '../../../../../Eleves/Screen/Widget/search_eleve_dialog.dart';
+import '../../../../../Search_widget/search_eleve_dialog.dart';
 import 'info_classe.dart';
 
 class InfoEleveInscription extends StatelessWidget {
     final controllerEleve = Get.find<TEleveController>();
+    final controllerClasse = Get.find<TClasseController>();
     // 
    InfoEleveInscription({super.key,});
   @override
@@ -24,6 +26,7 @@ class InfoEleveInscription extends StatelessWidget {
         ////// INFORMATION ELEVE
         Obx(
           (){
+            
           var DataEleve = controllerEleve.DataEleve.value;
          return SizedBox(
            child: Column(
@@ -38,16 +41,13 @@ class InfoEleveInscription extends StatelessWidget {
                        ///// RECHERHE ET AJOUT
                        SizedBox(
                          child: TRechercheAddCreate(
-                           onPressedAdd:()=> TElevePage().H_PageShowDialogNouveau() ,
-                           onPressedRecherche: () async{
-                          final resul= await showSearchEleveDialog();
-                          if(resul !=null){
-                           controllerEleve.DataEleve.value = resul;
-                           DataEleve = controllerEleve.DataEleve.value ;
-                          }
-                         
-                          },
-                           // onPressedRecherche: ()=>showSearchEleveDialog(),
+                           onPressedAdd:()async{
+                            await TElevePage().H_PageShowDialogNouveau();
+                            controllerClasse.actualise.toggle();
+                             
+                            } ,
+                           onPressedRecherche: ()async{ await showSearchEleveDialog(arg: "Inscription");
+                          controllerClasse.actualise.toggle(); },
                          ),
                        ),
                       DataEleve.IDEtudiant==null?SizedBox():  SizedBox(height: TSizes.spaceBtwSections,),
@@ -61,8 +61,11 @@ class InfoEleveInscription extends StatelessWidget {
                           child: TAffichageTextEnChevel(
                            label: "Nom Prenoms",
                            color: TColors.primary,
-                           valeur: "${DataEleve.Nom} ${DataEleve.Prenoms}",
-                           onPressed:()=> TElevePage().H_PageShowDialogModifier(id: DataEleve.IDEtudiant) ,
+                           valeur: DataEleve.NomComplet??"",
+                          //  onPressed:()=> TElevePage().H_PageShowDialogModifier(id: DataEleve.IDEtudiant) ,
+                           onPressed:()async{ 
+                            TElevePage().H_PageShowDialogModifier(id: DataEleve.IDEtudiant);
+                           controllerClasse.actualise.toggle();  } ,
                           ),
                         ),
                      

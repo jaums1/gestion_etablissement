@@ -8,6 +8,6 @@ class TEmployePrincipaleScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DesktopLayout(body: TEmployeScreen(),);
+    return DesktopLayout(body: TEmployeDesktopScreen(),);
   }
 }

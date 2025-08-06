@@ -1,4 +1,5 @@
 import 'package:ecole/Configs/routes/route.dart';
+import 'package:ecole/Configs/utils/Constant/texte_string.dart';
 import 'package:ecole/Configs/utils/Popup/showdialogue.dart';
 import 'package:ecole/Login/Controller/user_filtre.dart';
 import 'package:get/get.dart';
@@ -9,10 +10,10 @@ import 'user_controller.dart';
 
 class TUserValidation with TControllerData {
   final controller = Get.find<TUserController>();
-   final filtre = TUserFiltre();
+   final filtre = TUtilisateurFiltre();
 
  H_CreationCompte()async{
-  controller.variable.role.text = AppRole.admin.name;
+  controller.variable.role.text = AppRole.Admin.name;
   final result=await controller.H_Enregistrer();
   if(result){
      controller.variable.clear();
@@ -27,8 +28,7 @@ H_Connexion()async{
   }
   final result=await controller.H_Connexion();
   if(result){
-   
-    if(controller.DataUser.value.idUtilisateur !=null || controller.DataUser.value.idUtilisateur !=0 )  Get.offNamed(TRoutes.menu); 
+    if(controller.DataUserPrincipale.value.idUtilisateur !=0 )  Get.offNamed(TRoutes.menu); 
    }
   }
 
@@ -36,16 +36,30 @@ H_Connexion()async{
 @override
   H_Enregistrer() async{
     ////// VERIFICATION
+     
+    ///// DE SELECTION D'EMPLOYE
+    if(controller.controller.DataEmploye.value.IDEmploye==null){
+      TLoader.errorSnack(title: TText.Employe.toUpperCase(), message: TText.messageSelectEmploye);
+      return;
+    }     
+
      if (filtre.H_Verification(param: controller.variable.user.text) != -1) {
-      TLoader.errorSnack(title: "UTILISATEUR", message: "Cet utilisateur ${controller.variable.user.text}"
-      " existe déjà");
+      TLoader.errorSnack(title: TText.User.toUpperCase(), message: TText.messageUtilisateurExiste);
       return;
     }
+    
+    ///// VERIFICATION DE LA CONFORMITER DE MOT DE PASSE
+    
+    if(controller.variable.password.text==controller.variable.passwordConfirm.text){}else{
+      TLoader.errorSnack(title:TText.User.toUpperCase(), message:TText.messagePasswordNonconforme);
+       return;
+    }
+
+
     ////// VALIDATION DES DATAS
     final result = await controller.H_Enregistrer();
     if (result) {
-      TLoader.successSnack(title: "ENREGISTRER", message: "Vos données ont été enregistrées");
-      Get.offNamed(TRoutes.inscription);
+      TLoader.messageEnregistrer(TRoutes.utilisateur);
     }
   }
 
@@ -53,17 +67,19 @@ H_Connexion()async{
   H_Modifier() async {
     final result = await controller.H_Modifier();
     if (result) {
-      TLoader.successSnack(title: "MODIFIER", message: "Vos données ont été modifiées");
-      Get.offNamed(TRoutes.inscription);
+      TLoader.messageModifier(TRoutes.utilisateur);
     }
   }
 
   @override
   H_Supprimer({int? id, String? param}) {
-    TShowdialogue().showQuestion(
-      titre: "Suppression",
-      message: "Voulez-vous vraiment supprimer cette inscription?",
-      onPressedValide: () => controller.H_Supprimer(id: id),
-    );
+    TShowdialogue().showSupprimer( onPressedValide:() =>controller.H_Supprimer(id: id));
+    // TShowdialogue().showQuestion(
+    //   titre: TText.supprimer,
+    //   message:TText.messageSupprimer,
+    //   onPressedValide: () => controller.H_Supprimer(id: id),
+    // );
+
+ 
   }
 } 

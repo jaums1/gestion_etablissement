@@ -1,4 +1,6 @@
+import 'package:ecole/Etablissement/Controller/etablissement_controller.dart';
 import 'package:ecole/Niveau%20Serie/Model/niveau_serie_model.dart';
+import 'package:get/get.dart';
 
 class TClasseModel {
 int? IDClasse;
@@ -16,13 +18,13 @@ TNiveauSerieModel? DataNiveauSerie;
     this.DataNiveauSerie,
   });
  
-
+final controller =Get.find<TEtablissementController>();
 
   Map<String, dynamic> toMap() {
     return {
       'IDClasse': IDClasse,
       'LibClasse': LibClasse,
-      'IDEtablissement': IDEtablissement,
+      'IDEtablissement': controller.DataEtablissement.value.idEtablissement,
       'IDNiveauSerie': IDNiveauSerie,
       'Capacite': Capacite,
       'DataNiveauSerie': DataNiveauSerie?.toMap(),

@@ -16,7 +16,7 @@ class TPaginatedDataTable extends StatelessWidget {
     this.onPageChanged,
     this.dataRowHeight=35,
     this.tableHeight, 
-    this.minWidth,
+    this.minWidth=1500,
     this.showFirstLastButtons =true,
     this.showCheckboxColumn =true
     });

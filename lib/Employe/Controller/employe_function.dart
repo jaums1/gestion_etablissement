@@ -38,19 +38,19 @@ class TEmployeFunction with TFunctionData {
    void H_OnChangedDateNaissance()async{
    final date= await TShowDate().H_RecupDate();
    controller.variable.DateNaissance.value.text = TFormatters.formatDateFr(date).toString();
-   controller.DataEmploye.DateNaissance = date;
+   controller.DataEmploye.value.DateNaissance = date;
   }
    
    void H_OnChangedDateEmbauce()async{
    final date= await TShowDate().H_RecupDate();
    controller.variable.DateEmbauche.value.text = TFormatters.formatDateFr(date).toString();
-   controller.DataEmploye.DateEmbauche = date;
+   controller.DataEmploye.value.DateEmbauche = date;
   }
  
  void H_OnChangedDateFinContat()async{
    final date= await TShowDate().H_RecupDate();
    controller.variable.DateFinContrat.value.text = TFormatters.formatDateFr(date).toString();
-   controller.DataEmploye.DateFinContrat = date;
+   controller.DataEmploye.value.DateFinContrat = date;
   }
 
 

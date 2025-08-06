@@ -1,4 +1,5 @@
 import 'package:ecole/Configs/routes/route.dart';
+import 'package:ecole/Configs/utils/Constant/texte_string.dart';
 import 'package:ecole/Configs/utils/Popup/showdialogue.dart';
 import 'package:ecole/Employe/Controller/employe_controller.dart';
 import 'package:ecole/Employe/Controller/employe_filtre.dart';
@@ -15,20 +16,16 @@ class TEmployeValidation with TControllerData {
   H_Enregistrer() async{
     
   String NomComplet = "${controller.variable.Nom.text} ${controller.variable.Prenoms.text}"; 
-  String MatriculeEmploye =controller.variable.MatriculeEmploye.text;
  final index= filitre.H_Verification(param:NomComplet );
- final indexMatricule= filitre.H_VerificationMatricule(param: MatriculeEmploye);
 
 if (index !=-1) {
-  TLoader.errorSnack(title: "EXISTE",message: "$NomComplet existe déjà");
-  return;
-} else if(indexMatricule !=-1){
-  TLoader.errorSnack(title: "EXISTE",message: "Le matricule $MatriculeEmploye existe déjà");
+  TLoader.errorSnack(title: "EMPLOYE",message: "$NomComplet existe déjà");
   return;
 }
     final result =await controller.H_Enregistrer();
+
    if(result){ 
-    TLoader.successSnack(title: "ENREGISTRER",message: "Vos données ont été enregistrée");
+   TLoader.successSnack(title: TText.enregistrement,message: TText.messageEnregistrer);
     Get.offNamed(TRoutes.employe);
     }
  
@@ -38,7 +35,7 @@ if (index !=-1) {
   H_Modifier() async {
      final result = await controller.H_Modifier();
     if(result){ 
-    TLoader.successSnack(title: "MODIFIER",message: "Vos données ont été modifiée");
+    TLoader.successSnack(title: TText.modification,message: TText.messageModifier);
     Get.offNamed(TRoutes.employe);
     }
   }
@@ -46,10 +43,38 @@ if (index !=-1) {
 @override
   H_Supprimer({int? id, String? param}) {
     TShowdialogue().showQuestion(
-      titre: "Suppression",
-      message: "Voulez-vous vraiment supprimer cette ligne?",
+      titre:TText.suppression,
+      message: TText.messageSupprimer,
       onPressedValide: () =>controller.H_Supprimer(id: id) ,
     );
     
+  }
+
+ @override
+  H_EnregistrerShowDialog() async{
+     String NomComplet = "${controller.variable.Nom.text} ${controller.variable.Prenoms.text}"; 
+ final index= filitre.H_Verification(param:NomComplet );
+
+if (index !=-1) {
+  TLoader.errorSnack(title: "EMPLOYE",message: "$NomComplet existe déjà");
+  return;
+}
+    final result =await controller.H_Enregistrer();
+
+   if(result){ 
+    Get.back();
+    TLoader.successSnack(title: TText.enregistrement,message: TText.messageEnregistrer);
+    
+    }
+  }
+
+
+ @override
+  H_ModifierShowDialog() async {
+     final result = await controller.H_Modifier();
+    if(result){ 
+      Get.back();
+    TLoader.successSnack(title: TText.modification,message: TText.messageModifier);
+    }
   }
 }

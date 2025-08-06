@@ -1,5 +1,3 @@
-
-import 'package:ecole/Code_Projet/Controller/code_projet_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -10,12 +8,13 @@ import '../../../../../Configs/utils/Constant/sizes.dart';
 import '../../../../../Configs/utils/Constant/texte_string.dart';
 
 class TCodeEtablissementForm extends StatelessWidget {
-   TCodeEtablissementForm({super.key});
+  const TCodeEtablissementForm({super.key});
 
   @override
-  final code = TextEditingController();
+ 
   Widget build(BuildContext context) {
-    final controller = Get.put(TCodeProjetController());
+    // final controller = Get.put(TCodeProjetController());
+     final code = TextEditingController();
     return  Form(
               child: Padding(padding: EdgeInsets.symmetric(vertical: TSizes.spaceBtwSections),
                child: Column(

@@ -7,6 +7,7 @@ class TEndpoint {
 
   /////// ETABLISSEMENT
  static const linkEtablissement = "Etablissement";
+ static const linkValidation = "Validation";
 
    /////// CYCLE SCOLAIRE
  static const linkCycleScolaire = "Cycle";

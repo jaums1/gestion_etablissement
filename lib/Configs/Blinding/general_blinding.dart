@@ -27,8 +27,10 @@ class TGeneralBinding extends Bindings {
   @override
   void dependencies(){
    //////// GETPUT AVEC PERMENT TRUE 
-   Get.put<TUserController>(TUserController(),permanent: true);
-   Get.put<TEtablissementController>(TEtablissementController(),permanent: true);
+    Get.put<TEtablissementController>(TEtablissementController(),permanent: true);
+    Get.put<TEmployeController>(TEmployeController(),permanent: true);
+    Get.put<TUserController>(TUserController(),permanent: true);
+  
    Get.put<TTypeDecoupageController>(TTypeDecoupageController(),permanent: true);
    Get.put<TCycleController>(TCycleController(),permanent: true);
    Get.put<TNiveauScolaireController>(TNiveauScolaireController(),permanent: true); 
@@ -37,6 +39,14 @@ class TGeneralBinding extends Bindings {
    Get.put<TMatiereController>(TMatiereController(),permanent: true);
    Get.put<TCoefficientController>(TCoefficientController(),permanent: true);
    Get.put<TAnneeScolaireController>(TAnneeScolaireController(),permanent: true);
+   Get.put<SidebarController>(SidebarController(),permanent: true);
+
+   Get.put<TEleveController>(TEleveController(),permanent: true);
+   Get.put<TClasseController>(TClasseController(),permanent: true);
+   Get.put<TScolariteController>(TScolariteController(),permanent: true);
+   Get.put<TModalitePaiementController>(TModalitePaiementController(),permanent: true);
+   Get.put<TInscriptionController>(TInscriptionController(),permanent: true);
+ 
    
     ///// NIVEAU SERIE
   
@@ -54,6 +64,12 @@ class TGeneralBinding extends Bindings {
     await result.H_RecupeData();
     return result;
   },permanent: true);
+   
+  //  Get.putAsync<TUserController>(()async{
+  //   final result = TUserController();
+  //   await result.H_RecupeData();
+  //   return result;
+  // },permanent: true);
   
 
 
@@ -87,25 +103,24 @@ class TGeneralBinding extends Bindings {
      ///// MATIERE COEF
      
 
-      //////MENU
-      Get.lazyPut(()=>SidebarController(),fenix: true);
+      
      
       //////ELEVE
       // Get.lazyPut(()=>TEleveController(),fenix: true);
       
         //////ELEVE
-      Get.lazyPut(()=>TEmployeController(),fenix: true); 
+      
 
         //////CLASSE
-      Get.lazyPut(()=>TClasseController(),fenix: true);
+      // Get.lazyPut(()=>TClasseController(),fenix: true);
       
        //////MODALITE PAIEMENT
-      Get.lazyPut(()=>TModalitePaiementController(),fenix: true); 
+      // Get.lazyPut(()=>TModalitePaiementController(),fenix: true); 
 
           //////SCOLARITE
-      Get.lazyPut(()=>TScolariteController(),fenix: true);
+      // Get.lazyPut(()=>TScolariteController(),fenix: true);
       
-        Get.lazyPut(()=>TInscriptionController(),fenix: true);
+        // Get.lazyPut(()=>TInscriptionController(),fenix: true);
 
         Get.lazyPut(()=>TVersementController(),fenix: true);
   }

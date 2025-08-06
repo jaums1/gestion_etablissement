@@ -35,7 +35,7 @@ class TSerieController extends GetxController with TControllerData{
     serie.text    =  DataSerie.serie.toString()==""?"":DataSerie.serie.toString();
     
     }else{
-      DataSerie.typeEnseignement = controlleEtablissement.dataEtablissementModel.value.typeEnseignement ;
+      DataSerie.typeEnseignement = controlleEtablissement.DataEtablissement.value.typeEnseignement ;
       DataSerie.libSerie         = libSerie.text;
       DataSerie.serie            = serie.text;
 

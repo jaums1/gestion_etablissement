@@ -1,8 +1,11 @@
 import 'package:data_table_2/data_table_2.dart';
+import 'package:ecole/Configs/utils/Constant/colors.dart';
+import 'package:ecole/Configs/utils/Statut/statut.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../Configs/cammon/widgets/Data_table/table_action_icon_button.dart';
+import '../../Configs/utils/formatters/formatters.dart';
 import '../Controller/scolarite_controller.dart';
 import '../Controller/scolarite_page.dart';
 import '../Controller/scolarite_validation.dart';
@@ -18,18 +21,24 @@ class TScolariteSourceData extends DataTableSource {
        
         DataCell(Text("${index+1}",style: Theme.of(Get.context!).textTheme.bodyMedium,)),
        
-        DataCell(Text("${data.DataNiveauSerie!.niveauSerie}",style: Theme.of(Get.context!).textTheme.bodyMedium,
-        overflow: TextOverflow.ellipsis,maxLines: 1,)),
+        DataCell(Text("${data.DataNiveauScolaire!.niveau}",style: Theme.of(Get.context!).textTheme.bodyMedium,
+        overflow: TextOverflow.ellipsis,maxLines: 1,)), 
+        
+        DataCell(data.TypeScolarite=="Affecté(e)"? TStatutCustom.H_CardreCouleur(titre:data.TypeScolarite,color: TColors.primary):
+            TStatutCustom.H_CardreCouleur(titre:data.TypeScolarite,color: TColors.warning),
+        )
+        ,
        
-        DataCell(Text("${data.FraisInscription} Fcfa",
+        DataCell(
+          Text(TFormatters.formatCurrency(data.FraisInscription),
         overflow: TextOverflow.ellipsis,maxLines: 1,
         style: Theme.of(Get.context!).textTheme.bodyMedium,)),
 
-        DataCell(Text("${data.FraisAnnexe} Fcfa",
+        DataCell(Text(TFormatters.formatCurrency(data.FraisAnnexe),
         overflow: TextOverflow.ellipsis,maxLines: 1,
         style: Theme.of(Get.context!).textTheme.bodyMedium,)),
 
-        DataCell(Text("${data.MontantScolarite} Fcfa",
+        DataCell(Text(TFormatters.formatCurrency(data.MontantScolarite),
         overflow: TextOverflow.ellipsis,maxLines: 1,
         style: Theme.of(Get.context!).textTheme.bodyMedium,)),
 

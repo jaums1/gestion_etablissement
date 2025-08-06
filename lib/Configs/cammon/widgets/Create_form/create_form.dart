@@ -1,3 +1,4 @@
+import 'package:ecole/Configs/utils/Constant/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -13,7 +14,9 @@ final String? route;
   @override
   Widget build(BuildContext context) {
     final argument = Get.arguments;
-    return SingleChildScrollView(
+    return Scaffold(
+      backgroundColor: TColors.primaryBackground,
+      body:SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(TSizes.defaultSpace),
         child: Column(
@@ -22,7 +25,8 @@ final String? route;
           children: [
              ///// HEADER
           TRetourHeader(titre:
-          argument == TraitementAction.nouveau.name?"Enregistrement $titre":"Modification $titre",
+          argument == TraitementAction.nouveau.name?"Enregistrement $titre":
+          argument == TraitementAction.modifier.name?"Modification $titre" : "Détails $titre",
           route: route,),
             SizedBox(
               child: child,
@@ -30,6 +34,8 @@ final String? route;
           ],
         ),
         )
-        );
+        ) ,
+    );
+    
   }
 }

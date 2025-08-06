@@ -19,20 +19,21 @@ class TInscriptionDataTable extends StatelessWidget {
         
         // État de chargement avec timeout
          if (controller.isLoading.value==false) {
-        return TEtatChargement.H_EtatChargement();
+        return Center(child: TEtatChargement.H_EtatChargement());
       }
       
       // État quand les données sont vides
       if (controller.DataTableInscription.isEmpty) {
-        return TEtatChargement.H_EtatDataVide(onPressedChargement: () => controller.H_RecupeData(),);
+        return Center(child: TEtatChargement.H_EtatDataVide(onPressedChargement: () => controller.H_RecupeData(),));
       }
+    
+      if(controller.DataTableInscription.isEmpty || controller.DataTableFiltreInscription.isNotEmpty){}
 
          // Affichage des données
           return TPaginatedDataTable(
           minWidth: 1500,
            columns: controller.variable.columns,
-           source: TInscriptionSourceData(),
-                );
+           source: TInscriptionSourceData(),);
        
         
    } );

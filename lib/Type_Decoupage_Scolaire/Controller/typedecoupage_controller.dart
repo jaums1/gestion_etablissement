@@ -76,9 +76,9 @@ class TTypeDecoupageController extends GetxController with TControllerData {
 
  //// VALIDATION CONFIGURATION
   @override
-  H_ValiderConfig() {
-    if (selectRadio.value.isEmpty)return false;
-    H_Modifier();
+  H_ValiderConfig() async{
+    if (selectRadio.value.isEmpty || selectRadio.value=="null" )return false;
+  await  H_Modifier();
       return true;
     }
 

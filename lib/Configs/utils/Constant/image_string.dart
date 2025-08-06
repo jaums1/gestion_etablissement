@@ -17,6 +17,7 @@ static const String delivereEmailIllustration="assets/animations/sammy-line-man-
 static const String staticSuccessIllustration="assets/images/animations/sammy-line-man-and-woman-high-fiving-each-other.png";
 static const String docerAnimation="assets/animations/docer.json";
 static const String videAnimation="assets/animations/vide.json";
+static const String completedAnimation="assets/animations/Config.json";
 
  ///// BANNERS
  static const String bannersPromo1="assets/images/banners/banner_promo_1.jpg";

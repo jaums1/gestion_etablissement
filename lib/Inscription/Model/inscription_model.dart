@@ -1,9 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:ecole/Annee_Scolaire/Controller/annee_scolaire_controller.dart';
 import 'package:ecole/Classe/Model/classe_model.dart';
 import 'package:ecole/Eleves/Model/eleve_model.dart';
+import 'package:get/get.dart';
 
 import '../../Configs/utils/Constant/generer_reference.dart';
 import '../../Configs/utils/formatters/formatters.dart';
+import '../../Login/Controller/user_controller.dart';
 
 class TInscriptionModel {
    int? IDInscription;
@@ -26,6 +29,9 @@ class TInscriptionModel {
    DateTime? DateProchainVersement;
    String? HeureCreation;
    int? IDEtudiant;
+   int? IDUtilisateur;
+   String? Utilisateur;
+   String? Regime;
    String? Statut;
    TClasseModel? DataClasse;
    TModelEleve? DataEleve;
@@ -54,14 +60,21 @@ class TInscriptionModel {
     this.DataClasse,
     this.DataEleve,
     this.DateProchainVersement,
+    this.IDUtilisateur,
+    this.Utilisateur,
+    this.Regime,
+
   });
+
+ final controlleAS = Get.find<TAnneeScolaireController>();
+ final controlleUser = Get.find<TUserController>();
 
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'IDInscription': IDInscription,
       'IDClasse': IDClasse,
-      'IDAnneeScolaire': IDAnneeScolaire,
+      'IDAnneeScolaire': controlleAS.DataAnneeScolairePrincipale.value.IDAnneeScolaire,
       'IDEtablissement': IDEtablissement,
       'MontantVersement': MontantVersement,
       'DroitInscription': DroitInscription,
@@ -72,8 +85,10 @@ class TInscriptionModel {
       'NetAPayer': NetAPayer,
       'ResteAPayer': ResteAPayer,
       'Paiement': Paiement,
+      'Regime': Regime,
       'IDEtudiant': IDEtudiant,
       'TypePaiement': TypePaiement,
+      'IDUtilisateur': controlleUser.DataUserPrincipale.value.idUtilisateur,
       'RefVersement':TGenerationReference.H_GenererReference(ref:"Vers" ),
       
     };
@@ -100,7 +115,10 @@ class TInscriptionModel {
       DateCreation: map['DateCreation'] != null ? DateTime.parse(map['DateCreation']) : null,
       HeureCreation: map['HeureCreation'] != null ? map['HeureCreation'] as String : null,
       IDEtudiant: map['IDEtudiant'] != null ? map['IDEtudiant'] as int : null,
+      IDUtilisateur: map['IDUtilisateur'] != null ? map['IDUtilisateur'] as int : null,
       Statut: map['Statut'] != null ? map['Statut'] as String : null,
+      Regime: map['Regime'] != null ? map['Regime'] as String : null,
+      Utilisateur: map['Utilisateur'] != null ? map['Utilisateur'] as String : null,
       DataClasse: map['DataClasse'] != null ? TClasseModel.fromMap(map['DataClasse']) : null,
       DataEleve: map['DataEtudiant'] != null ? TModelEleve.fromMap(map['DataEtudiant'])  : null,
     );

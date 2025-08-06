@@ -1,13 +1,15 @@
 import 'package:ecole/Configs/cammon/widgets/buttons/button.dart';
 import 'package:ecole/Configs/utils/Constant/colors.dart';
 import 'package:ecole/Configs/utils/Constant/sizes.dart';
-import 'package:ecole/Configs/utils/Device/devices_utility.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 
 import '../../../../../Configs/cammon/widgets/Data_table/table_action_icon_button.dart';
 import '../../../../../Configs/cammon/widgets/containers/rounded_container_create.dart';
+import '../../../../../Configs/utils/formatters/formatters.dart';
+import '../../../../../Modalite_Paiement/Controller/modalite_paiement_controller.dart';
 import '../../../../../Modalite_Paiement/Controller/modalite_paiement_page.dart';
 import '../../../../../Modalite_Paiement/Controller/modalite_paiement_validation.dart';
 import '../../../../Controller/scolarite_controller.dart';
@@ -16,32 +18,27 @@ import '../../../../Controller/scolarite_controller.dart';
 
 class TScolariteEchelonVersement extends StatelessWidget {
  
-   const TScolariteEchelonVersement({super.key,this.argument="sus",this.alignment = WrapAlignment.start, this.controller});
+ const TScolariteEchelonVersement({super.key,this.argument="sus",this.alignment = WrapAlignment.start, this.controller});
   final WrapAlignment? alignment;
  final String? argument;
   final TScolariteController? controller;
   @override
   Widget build(BuildContext context) {
-    final page = TModalitePaiementPage();
-    final validation = TModalitePaiementValidation();
-     
+    final controllerMP = Get.find<TModalitePaiementController>(); 
+    
     return   Obx(
       ()=> Padding(
-        padding: const EdgeInsets.only(bottom: TSizes.md),
+        padding: const EdgeInsets.only(bottom: TSizes.sm),
         child: TRoundedContainerCreate(
              child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
                children: [
                  Wrap(
-                    alignment:alignment == WrapAlignment.center? WrapAlignment.center
-                    :
-                    TDeviceUtility.isDesktopScreen(context)? WrapAlignment.start:WrapAlignment.center,
-                    
-                    runSpacing: 10,
-                    spacing: 10,
-                    children: controller!.variable.DataTableModalitePaiement.map(
+                    runSpacing: 20,
+                    spacing: 20,
+                    children: controllerMP.DataTableModalitePaiement.map(
                       (data)=>  Container(
-                        width: 300,
+                        width: 200,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
                           // color: TColors.softGrey.withValues(alpha: 0.8),
@@ -68,8 +65,8 @@ class TScolariteEchelonVersement extends StatelessWidget {
                                   ),),
                                 ),
                                TTableActionIconButtons(iconSize: 20,
-                               onEditPressed: ()=>page.H_PageModifier(param: data.LibVersement),
-                               onDeletePressed: ()=>validation.H_Supprimer(param: data.LibVersement),
+                               onEditPressed: ()=>TModalitePaiementPage().H_PageModifier(param: data.LibVersement),
+                               onDeletePressed: ()=>TModalitePaiementValidation().H_Supprimer(param: data.LibVersement),
                                )
                                
                                
@@ -83,7 +80,7 @@ class TScolariteEchelonVersement extends StatelessWidget {
                                Expanded(
                                  child: Padding(
                                    padding: const EdgeInsets.only(left:  12.0),
-                                   child: Text("${data.Montant} Fcfa",style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                   child: Text(TFormatters.formatCurrency(data.Montant),style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                                     color: Colors.deepOrange,fontWeight: FontWeight.w600
                                                                ),),
                                  ),
@@ -111,7 +108,7 @@ class TScolariteEchelonVersement extends StatelessWidget {
                      Align(
                       child: Column(
                         children: [
-              controller!.variable.DataTableModalitePaiement.isEmpty?
+              controllerMP.DataTableModalitePaiement.isEmpty?
                          Padding(
                             padding: const EdgeInsets.symmetric(vertical:  15.0),
                             child: Text("Veuillez cliquer sur le bouton pour definir votre modalité",style: Theme.of(context).textTheme.bodyLarge!.copyWith(
@@ -120,8 +117,8 @@ class TScolariteEchelonVersement extends StatelessWidget {
                           ):SizedBox(height: 20,),
       
                           SizedBox(
-                          child: TButton.elevatedButton(text:"Definir votre modalité",
-                          onPressed: ()=>page.H_PageNouveau() ),
+                          child: TButton.textButton(text:"Definir votre modalité",
+                          onPressed: ()=>TModalitePaiementPage().H_PageNouveau() ),
                           ),
                          ],
                          ),

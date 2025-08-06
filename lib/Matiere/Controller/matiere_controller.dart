@@ -1,7 +1,6 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:ecole/Configs/utils/Implements/controller_data.dart';
 import 'package:ecole/Configs/utils/Popup/loaders.dart';
-import 'package:ecole/Matiere/Repository/matiere_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../Configs/utils/Constant/api_constants.dart';
@@ -44,8 +43,7 @@ class TMatiereController extends GetxController with TControllerData{
    ///// LES INSTANCES
      final _client = TDioHelper(baseUrl: TApi.httpLien);
    
-    final repositorycontroller = Get.put(TMatiereRepository());
-    //  final controller = Get.find<TPageMatiereController>();
+ 
     
     ///////// TRAITEMENT
    void HLitMatiere({String? param="AFFICHAGE"}){
@@ -175,10 +173,10 @@ class TMatiereController extends GetxController with TControllerData{
 
 
 @override
-  H_ValiderConfig() {
+  H_ValiderConfig() async{
     if (isSelectMatiere.isEmpty )return false;
     DataMatiere.value.DatatableMa = DataTableMatiereSelectionner;
-      H_Modifier();
+     await H_Modifier();
       return true;
   }
 

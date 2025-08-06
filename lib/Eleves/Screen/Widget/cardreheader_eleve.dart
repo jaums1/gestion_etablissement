@@ -1,7 +1,6 @@
 
 import 'package:ecole/Configs/cammon/widgets/formulaire/form.dart';
 import 'package:ecole/Configs/utils/Constant/enums.dart';
-import 'package:ecole/Coefficient/Controller/flitre_coefficient.dart';
 import 'package:ecole/Coefficient/Controller/matierecoef_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,7 +15,6 @@ class TCadreHeaderEleve extends StatelessWidget {
   Widget build(BuildContext context) {
     final controllerAction = Get.find<TCoefficientController>();
     final formulaire =TFormulaire();
-    final controllerFiltre =TFiltreCoefficient();
   
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 8),

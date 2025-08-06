@@ -12,11 +12,11 @@ class TShowDate{
       firstDate:dateLointaine==false? DateTime(1000) :DateTime.now(),
       lastDate: dateLointaine==false? DateTime.now() :DateTime(9000),
       keyboardType : TextInputType.datetime,
-      initialEntryMode:DatePickerEntryMode.calendarOnly,
+      // initialEntryMode:DatePickerEntryMode.calendarOnly,
       helpText : "Selectionner une date",
       cancelText: "Annuler",
       confirmText: "Valider"
-      // locale: const Locale('fr') 
+
       );
      
     return picked;
